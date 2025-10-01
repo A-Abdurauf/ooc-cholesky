@@ -1,0 +1,27 @@
+CHDR = \
+
+
+DHDR = \
+
+
+SHDR = \
+
+
+CSRC = \
+example_cgelqf.c example_cgels.c example_cgeqrs.c example_cgetrs.c example_cpotrf.c example_ctrsm.c example_cgelqs.c example_cgeqrf.c example_cgesv.c example_cposv.c example_cpotrs.c example_ctrsmpl.c example_cunmqr.c example_cunmlq.c example_cposv_f.f example_cposv_tile_f.f example_cgesv_f.f example_cgels_f.f
+
+DSRC = \
+example_dgelqf.c example_dgels.c example_dgeqrs.c example_dgetrs.c example_dpotrf.c example_dtrsm.c example_dgelqs.c example_dgeqrf.c example_dgesv.c example_dposv.c example_dpotrs.c example_dtrsmpl.c example_dormqr.c example_dormlq.c example_dposv_f.f example_dposv_tile_f.f example_dgesv_f.f example_dgels_f.f
+
+SSRC = \
+example_sgelqf.c example_sgels.c example_sgeqrs.c example_sgetrs.c example_spotrf.c example_strsm.c example_sgelqs.c example_sgeqrf.c example_sgesv.c example_sposv.c example_spotrs.c example_strsmpl.c example_sormqr.c example_sormlq.c example_sposv_f.f example_sposv_tile_f.f example_sgesv_f.f example_sgels_f.f
+
+CF90 = \
+
+
+DF90 = \
+
+
+SF90 = \
+
+

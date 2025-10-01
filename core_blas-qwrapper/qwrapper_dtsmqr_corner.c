@@ -1,0 +1,92 @@
+/**
+ *
+ * @file qwrapper_dtsmqr_corner.c
+ *
+ *  PLASMA core_blas quark wrapper
+ *  PLASMA is a software package provided by Univ. of Tennessee,
+ *  Univ. of California Berkeley and Univ. of Colorado Denver
+ *
+ * @version 2.8.0
+ * @author Hatem Ltaief
+ * @author Mathieu Faverge
+ * @author Azzam Haidar
+ * @date 2010-11-15
+ * @generated d Fri Apr  1 11:02:42 2016
+ *
+ **/
+#include "common.h"
+
+/***************************************************************************//**
+ *
+ **/
+void QUARK_CORE_dtsmqr_corner(Quark *quark, Quark_Task_Flags *task_flags,
+                              int m1, int n1, int m2, int n2, int m3, int n3, int k, int ib, int nb,
+                              double *A1, int lda1,
+                              double *A2, int lda2,
+                              double *A3, int lda3,
+                              const double *V, int ldv,
+                              const double *T, int ldt)
+{
+    int ldwork = nb;
+
+    plasma_profile_by_kernel( task_flags, TSMQR );
+
+    QUARK_Insert_Task(quark, CORE_dtsmqr_corner_quark, task_flags,
+        sizeof(int),                        &m1,    VALUE,
+        sizeof(int),                        &n1,    VALUE,
+        sizeof(int),                        &m2,    VALUE,
+        sizeof(int),                        &n2,    VALUE,
+        sizeof(int),                        &m3,    VALUE,
+        sizeof(int),                        &n3,    VALUE,
+        sizeof(int),                        &k,     VALUE,
+        sizeof(int),                        &ib,    VALUE,
+        sizeof(int),                        &nb,    VALUE,
+        sizeof(double)*nb*nb,    A1,            INOUT|QUARK_REGION_D|QUARK_REGION_L,
+        sizeof(int),                        &lda1,  VALUE,
+        sizeof(double)*nb*nb,    A2,            INOUT,
+        sizeof(int),                        &lda2,  VALUE,
+        sizeof(double)*nb*nb,    A3,            INOUT|QUARK_REGION_D|QUARK_REGION_L,
+        sizeof(int),                        &lda3,  VALUE,
+        sizeof(double)*nb*nb,    V,             INPUT,
+        sizeof(int),                        &ldv,   VALUE,
+        sizeof(double)*ib*nb,    T,             INPUT,
+        sizeof(int),                        &ldt,   VALUE,
+        sizeof(double)*4*nb*nb,    NULL,          SCRATCH,
+        sizeof(int),                        &ldwork, VALUE,
+        0);
+}
+
+
+#if defined(PLASMA_HAVE_WEAK)
+#pragma weak CORE_dtsmqr_corner_quark = PCORE_dtsmqr_corner_quark
+#define CORE_dtsmqr_corner_quark PCORE_dtsmqr_corner_quark
+#endif
+void CORE_dtsmqr_corner_quark(Quark *quark)
+{
+    int m1;
+    int n1;
+    int m2;
+    int n2;
+    int m3;
+    int n3;
+    int k;
+    int ib;
+    int nb;
+    double *A1;
+    int lda1;
+    double *A2;
+    int lda2;
+    double *A3;
+    int lda3;
+    double *V;
+    int ldv;
+    double *T;
+    int ldt;
+    double *WORK;
+    int ldwork;
+
+    quark_unpack_args_21(quark, m1, n1, m2, n2, m3, n3, k, ib, nb,
+                         A1, lda1, A2, lda2, A3, lda3, V, ldv, T, ldt, WORK, ldwork);
+    CORE_dtsmqr_corner(m1, n1, m2, n2, m3, n3, k, ib, nb,
+                       A1, lda1, A2, lda2, A3, lda3, V, ldv, T, ldt, WORK, ldwork);
+}

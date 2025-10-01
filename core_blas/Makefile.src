@@ -1,0 +1,27 @@
+CHDR = \
+
+
+DHDR = \
+
+
+SHDR = \
+
+
+CSRC = \
+core_cgeqrt.c core_ctsqrt.c core_ctsmqr.c core_cgelqt.c core_ctslqt.c core_ctsmlq.c core_cttqrt.c core_cttmqr.c core_cttlqt.c core_cttmlq.c core_cgetrf_incpiv.c core_ctstrf.c core_cgessm.c core_cssssm.c core_cpotrf.c core_ctrtri.c core_clauum.c core_cgemm.c core_csymm.c core_csyrk.c core_ctrsm.c core_ctrmm.c core_csyr2k.c core_cgeadd.c core_ctradd.c core_clacpy.c core_clange.c core_clansy.c core_clantr.c core_scasum.c core_ctrasm.c core_cunmqr.c core_cunmlq.c core_chemm.c core_cherk.c core_clanhe.c core_cher2k.c core_cgessq.c core_chessq.c core_csyssq.c core_ctrssq.c core_cswpab.c core_cgetrip.c core_cshift.c core_cplrnt.c core_cplghe.c core_cplgsy.c core_cpltmg.c core_cpltmg_fiedler.c core_cpltmg_toeppd.c core_cpltmg_condex.c core_cpltmg_chebvand.c core_cpltmg_circul.c core_cpltmg_hankel.c core_claswp.c core_cgetrf.c core_cgetrf_rectil.c core_cgetrf_reclap.c core_claset.c core_claset2.c core_cherfb.c core_chegst.c core_ctsmqr_hetra1.c core_ctsmqr_corner.c core_ctsmlq_hetra1.c core_ctsmlq_corner.c core_cparfb.c core_cpamm.c core_cpemv.c core_clarfy.c core_clatro.c core_clarfb_gemm.c core_cgemv.c core_csetvar.c core_cgeqp3_init.c core_cgeqp3_larfg.c core_cgeqp3_norms.c core_cgeqp3_pivot.c core_cgeqp3_update.c core_chbtype1cb.c core_chbtype2cb.c core_chbtype3cb.c core_cgbtype1cb.c core_cgbtype2cb.c core_cgbtype3cb.c core_cbrdalg1.c core_ctrdalg1.c core_chbelr.c core_chbrce.c core_chblrx.c core_cgbelr.c core_cgbrce.c core_cgblrx.c core_clarfx_tbrd.c core_cgetf2_nopiv.c core_cgetrf_nopiv.c core_clacpy_pivot.c core_cgeqp3_tntpiv.c core_cswap.c core_clascl.c core_clascal.c core_slag2c.c core_csteqr.c core_cstedc.c
+
+DSRC = \
+core_dgeqrt.c core_dtsqrt.c core_dtsmqr.c core_dgelqt.c core_dtslqt.c core_dtsmlq.c core_dttqrt.c core_dttmqr.c core_dttlqt.c core_dttmlq.c core_dgetrf_incpiv.c core_dtstrf.c core_dgessm.c core_dssssm.c core_dpotrf.c core_dtrtri.c core_dlauum.c core_dgemm.c core_dsymm.c core_dsyrk.c core_dtrsm.c core_dtrmm.c core_dsyr2k.c core_dgeadd.c core_dtradd.c core_dlacpy.c core_dlange.c core_dlansy.c core_dlantr.c core_dasum.c core_dtrasm.c core_dormqr.c core_dormlq.c core_dlag2s.c core_dgessq.c core_dsyssq.c core_dtrssq.c core_dswpab.c core_dgetrip.c core_dshift.c core_dplrnt.c core_dplgsy.c core_dpltmg.c core_dpltmg_fiedler.c core_dpltmg_toeppd.c core_dpltmg_condex.c core_dpltmg_chebvand.c core_dpltmg_circul.c core_dpltmg_hankel.c core_dlaswp.c core_dgetrf.c core_dgetrf_rectil.c core_dgetrf_reclap.c core_dlaset.c core_dlaset2.c core_dsyrfb.c core_dsygst.c core_dtsmqr_sytra1.c core_dtsmqr_corner.c core_dtsmlq_sytra1.c core_dtsmlq_corner.c core_dparfb.c core_dpamm.c core_dpemv.c core_dlarfy.c core_dlatro.c core_dlarfb_gemm.c core_dgemv.c core_dsetvar.c core_dgeqp3_init.c core_dgeqp3_larfg.c core_dgeqp3_norms.c core_dgeqp3_pivot.c core_dgeqp3_update.c core_dsbtype1cb.c core_dsbtype2cb.c core_dsbtype3cb.c core_dgbtype1cb.c core_dgbtype2cb.c core_dgbtype3cb.c core_dbrdalg1.c core_dtrdalg1.c core_dhbelr.c core_dhbrce.c core_dhblrx.c core_dgbelr.c core_dgbrce.c core_dgblrx.c core_dlarfx_tbrd.c core_dgetf2_nopiv.c core_dgetrf_nopiv.c core_dlacpy_pivot.c core_dgeqp3_tntpiv.c core_dswap.c core_dlascl.c core_dlascal.c core_dsteqr.c core_dstedc.c
+
+SSRC = \
+core_sgeqrt.c core_stsqrt.c core_stsmqr.c core_sgelqt.c core_stslqt.c core_stsmlq.c core_sttqrt.c core_sttmqr.c core_sttlqt.c core_sttmlq.c core_sgetrf_incpiv.c core_ststrf.c core_sgessm.c core_sssssm.c core_spotrf.c core_strtri.c core_slauum.c core_sgemm.c core_ssymm.c core_ssyrk.c core_strsm.c core_strmm.c core_ssyr2k.c core_sgeadd.c core_stradd.c core_slacpy.c core_slange.c core_slansy.c core_slantr.c core_sasum.c core_strasm.c core_sormqr.c core_sormlq.c core_sgessq.c core_ssyssq.c core_strssq.c core_sswpab.c core_sgetrip.c core_sshift.c core_splrnt.c core_splgsy.c core_spltmg.c core_spltmg_fiedler.c core_spltmg_toeppd.c core_spltmg_condex.c core_spltmg_chebvand.c core_spltmg_circul.c core_spltmg_hankel.c core_slaswp.c core_sgetrf.c core_sgetrf_rectil.c core_sgetrf_reclap.c core_slaset.c core_slaset2.c core_ssyrfb.c core_ssygst.c core_stsmqr_sytra1.c core_stsmqr_corner.c core_stsmlq_sytra1.c core_stsmlq_corner.c core_sparfb.c core_spamm.c core_spemv.c core_slarfy.c core_slatro.c core_slarfb_gemm.c core_sgemv.c core_ssetvar.c core_sgeqp3_init.c core_sgeqp3_larfg.c core_sgeqp3_norms.c core_sgeqp3_pivot.c core_sgeqp3_update.c core_ssbtype1cb.c core_ssbtype2cb.c core_ssbtype3cb.c core_sgbtype1cb.c core_sgbtype2cb.c core_sgbtype3cb.c core_sbrdalg1.c core_strdalg1.c core_shbelr.c core_shbrce.c core_shblrx.c core_sgbelr.c core_sgbrce.c core_sgblrx.c core_slarfx_tbrd.c core_sgetf2_nopiv.c core_sgetrf_nopiv.c core_slacpy_pivot.c core_sgeqp3_tntpiv.c core_sswap.c core_slascl.c core_slascal.c core_ssteqr.c core_sstedc.c core_slapst.c core_slaed2_compressq.c core_slaed2_computeK.c core_slaed3_computeW.c core_slaed3_computevectors.c core_slaed3_merge.c core_slaed3_reduceW.c core_slaed3_updatevectors.c core_slaed4.c core_slaed0_betaapprox.c
+
+CF90 = \
+
+
+DF90 = \
+
+
+SF90 = \
+
+

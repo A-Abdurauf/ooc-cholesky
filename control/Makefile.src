@@ -1,0 +1,27 @@
+CHDR = \
+compute_c.h
+
+DHDR = \
+compute_d.h
+
+SHDR = \
+compute_s.h
+
+CSRC = \
+plasma_cf77.c workspace_c.c pctile.c ctile.c
+
+DSRC = \
+plasma_df77.c workspace_d.c pdtile.c dtile.c
+
+SSRC = \
+plasma_sf77.c workspace_s.c pstile.c stile.c
+
+CF90 = \
+plasma_cf90.F90 plasma_cf90_wrappers.F90
+
+DF90 = \
+plasma_df90.F90 plasma_dsf90.F90 plasma_df90_wrappers.F90
+
+SF90 = \
+plasma_sf90.F90 plasma_sf90_wrappers.F90
+

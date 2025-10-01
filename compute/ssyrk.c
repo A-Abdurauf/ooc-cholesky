@@ -1,0 +1,382 @@
+/**
+ *
+ * @file ssyrk.c
+ *
+ *  PLASMA computational routines
+ *  PLASMA is a software package provided by Univ. of Tennessee,
+ *  Univ. of California Berkeley and Univ. of Colorado Denver
+ *
+ * @version 2.8.0
+ * @author Mathieu Faverge
+ * @date 2010-11-15
+ * @generated s Fri Apr  1 11:02:54 2016
+ *
+ **/
+#include "common.h"
+
+/***************************************************************************//**
+ *
+ * @ingroup float
+ *
+ *  PLASMA_ssyrk - Performs one of the hermitian rank k operations
+ *
+ *    \f[ C = \alpha [ op( A ) \times g( op( A )' )] + \beta C \f],
+ *
+ *  where op( X ) is one of
+ *
+ *    op( X ) = X  or op( X ) = g( X' )
+ *
+ *  where alpha and beta are real scalars, C is an n-by-n hermitian
+ *  matrix and A is an n-by-k matrix in the first case and a k-by-n
+ *  matrix in the second case.
+ *
+ *******************************************************************************
+ *
+ * @param[in] uplo
+ *          = PlasmaUpper: Upper triangle of C is stored;
+ *          = PlasmaLower: Lower triangle of C is stored.
+ *
+ * @param[in] trans
+ *          Specifies whether the matrix A is transposed or ugate transposed:
+ *          = PlasmaNoTrans:   A is not transposed;
+ *          = PlasmaTrans  :   A is transposed.
+ *
+ * @param[in] N
+ *          N specifies the order of the matrix C. N must be at least zero.
+ *
+ * @param[in] K
+ *          K specifies the number of columns of the matrix op( A ).
+ *
+ * @param[in] alpha
+ *          alpha specifies the scalar alpha.
+ *
+ * @param[in] A
+ *          A is a LDA-by-ka matrix, where ka is K when trans = PlasmaNoTrans,
+ *          and is N otherwise.
+ *
+ * @param[in] LDA
+ *          The leading dimension of the array A. LDA must be at least
+ *          max( 1, N ) if trans == PlasmaNoTrans, otherwise LDA must
+ *          be at least max( 1, K ).
+ *
+ * @param[in] beta
+ *          beta specifies the scalar beta
+ *
+ * @param[in,out] C
+ *          C is a LDC-by-N matrix.
+ *          On exit, the array uplo part of the matrix is overwritten
+ *          by the uplo part of the updated matrix.
+ *
+ * @param[in] LDC
+ *          The leading dimension of the array C. LDC >= max( 1, N ).
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval PLASMA_SUCCESS successful exit
+ *
+ *******************************************************************************
+ *
+ * @sa PLASMA_ssyrk_Tile
+ * @sa PLASMA_ssyrk_Tile_Async
+ * @sa PLASMA_csyrk
+ * @sa PLASMA_dsyrk
+ * @sa PLASMA_ssyrk
+ *
+ ******************************************************************************/
+int PLASMA_ssyrk(PLASMA_enum uplo, PLASMA_enum trans, int N, int K,
+                 float alpha, float *A, int LDA,
+                 float beta,  float *C, int LDC)
+{
+    int NB;
+    int Am, An;
+    int status;
+    PLASMA_desc descA, descC;
+    plasma_context_t *plasma;
+    PLASMA_sequence *sequence = NULL;
+    PLASMA_request request = PLASMA_REQUEST_INITIALIZER;
+
+    plasma = plasma_context_self();
+    if (plasma == NULL) {
+        plasma_fatal_error("PLASMA_ssyrk", "PLASMA not initialized");
+        return PLASMA_ERR_NOT_INITIALIZED;
+    }
+
+    /* Check input arguments */
+    if ((uplo != PlasmaUpper) && (uplo != PlasmaLower)) {
+        plasma_error("PLASMA_ssyrk", "illegal value of uplo");
+        return -1;
+    }
+    if ((trans != PlasmaNoTrans) && (trans != PlasmaTrans)) {
+        plasma_error("PLASMA_ssyrk", "illegal value of trans");
+        return -2;
+    }
+    if ( trans == PlasmaNoTrans ) {
+        Am = N; An = K;
+    } else {
+        Am = K; An = N;
+    }
+    if (N < 0) {
+        plasma_error("PLASMA_ssyrk", "illegal value of N");
+        return -3;
+    }
+    if (K < 0) {
+        plasma_error("PLASMA_ssyrk", "illegal value of K");
+        return -4;
+    }
+    if (LDA < max(1, Am)) {
+        plasma_error("PLASMA_ssyrk", "illegal value of LDA");
+        return -7;
+    }
+    if (LDC < max(1, N)) {
+        plasma_error("PLASMA_ssyrk", "illegal value of LDC");
+        return -10;
+    }
+
+    /* Quick return */
+    if (N == 0 ||
+        ((alpha == (float)0.0 || K == 0.0) && beta == (float)1.0))
+        return PLASMA_SUCCESS;
+
+    /* Tune NB depending on M, N & NRHS; Set NBNBSIZE */
+    status = plasma_tune(PLASMA_FUNC_SSYRK, N, K, 0);
+    if (status != PLASMA_SUCCESS) {
+        plasma_error("PLASMA_ssyrk", "plasma_tune() failed");
+        return status;
+    }
+
+    /* Set MT & NT & KT */
+    NB = PLASMA_NB;
+
+    plasma_sequence_create(plasma, &sequence);
+
+    if ( PLASMA_TRANSLATION == PLASMA_OUTOFPLACE ) {
+        plasma_sooplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, sequence, &request,
+                             plasma_desc_mat_free(&(descA)) );
+        plasma_sooplap2tile( descC, C, NB, NB, LDC, N,  0, 0, N,  N,   sequence, &request,
+                             plasma_desc_mat_free(&(descA)); plasma_desc_mat_free(&(descC)));
+    } else {
+        plasma_siplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An,
+                            sequence, &request);
+        plasma_siplap2tile( descC, C, NB, NB, LDC, N,  0, 0, N,  N,
+                            sequence, &request);
+    }
+
+    /* Call the tile interface */
+    PLASMA_ssyrk_Tile_Async(uplo, trans, alpha, &descA, beta, &descC, sequence, &request);
+
+    if ( PLASMA_TRANSLATION == PLASMA_OUTOFPLACE ) {
+        plasma_sooptile2lap( descC, C, NB, NB, LDC, N,  sequence, &request);
+        plasma_dynamic_sync();
+        plasma_desc_mat_free(&descA);
+        plasma_desc_mat_free(&descC);
+    } else {
+        plasma_siptile2lap( descA, A, NB, NB, LDA, An,  sequence, &request);
+        plasma_siptile2lap( descC, C, NB, NB, LDC, N,  sequence, &request);
+        plasma_dynamic_sync();
+    }
+
+    status = sequence->status;
+    plasma_sequence_destroy(plasma, sequence);
+    return status;
+}
+
+/***************************************************************************//**
+ *
+ * @ingroup float_Tile
+ *
+ *  PLASMA_ssyrk_Tile - Performs rank k update.
+ *  Tile equivalent of PLASMA_ssyrk().
+ *  Operates on matrices stored by tiles.
+ *  All matrices are passed through descriptors.
+ *  All dimensions are taken from the descriptors.
+ *
+ *******************************************************************************
+ *
+ * @param[in] uplo
+ *          = PlasmaUpper: Upper triangle of C is stored;
+ *          = PlasmaLower: Lower triangle of C is stored.
+ *
+ * @param[in] trans
+ *          Specifies whether the matrix A is transposed or ugate transposed:
+ *          = PlasmaNoTrans:   A is not transposed;
+ *          = PlasmaTrans:     A is transposed.
+ *
+ * @param[in] alpha
+ *          alpha specifies the scalar alpha.
+ *
+ * @param[in] A
+ *          A is a LDA-by-ka matrix, where ka is K when trans = PlasmaNoTrans,
+ *          and is N otherwise.
+ *
+ * @param[in] beta
+ *          beta specifies the scalar beta
+ *
+ * @param[in,out] C
+ *          C is a LDC-by-N matrix.
+ *          On exit, the array uplo part of the matrix is overwritten
+ *          by the uplo part of the updated matrix.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval PLASMA_SUCCESS successful exit
+ *
+ *******************************************************************************
+ *
+ * @sa PLASMA_ssyrk
+ * @sa PLASMA_ssyrk_Tile_Async
+ * @sa PLASMA_csyrk_Tile
+ * @sa PLASMA_dsyrk_Tile
+ * @sa PLASMA_ssyrk_Tile
+ *
+ ******************************************************************************/
+int PLASMA_ssyrk_Tile(PLASMA_enum uplo, PLASMA_enum trans,
+                      float alpha, PLASMA_desc *A,
+                      float beta,  PLASMA_desc *C)
+{
+    plasma_context_t *plasma;
+    PLASMA_sequence *sequence = NULL;
+    PLASMA_request request = PLASMA_REQUEST_INITIALIZER;
+    int status;
+
+    plasma = plasma_context_self();
+    if (plasma == NULL) {
+        plasma_fatal_error("PLASMA_ssyrk_Tile", "PLASMA not initialized");
+        return PLASMA_ERR_NOT_INITIALIZED;
+    }
+    plasma_sequence_create(plasma, &sequence);
+    PLASMA_ssyrk_Tile_Async(uplo, trans, alpha, A, beta, C, sequence, &request);
+    plasma_dynamic_sync();
+    status = sequence->status;
+    plasma_sequence_destroy(plasma, sequence);
+    return status;
+}
+
+/***************************************************************************//**
+ *
+ * @ingroup float_Tile_Async
+ *
+ *  PLASMA_ssyrk_Tile_Async - Performs rank-k update.
+ *  Non-blocking equivalent of PLASMA_ssyrk_Tile().
+ *  May return before the computation is finished.
+ *  Allows for pipelining of operations at runtime.
+ *
+ *******************************************************************************
+ *
+ * @param[in] sequence
+ *          Identifies the sequence of function calls that this call belongs to
+ *          (for completion checks and exception handling purposes).
+ *
+ * @param[out] request
+ *          Identifies this function call (for exception handling purposes).
+ *
+ *******************************************************************************
+ *
+ * @sa PLASMA_ssyrk
+ * @sa PLASMA_ssyrk_Tile
+ * @sa PLASMA_csyrk_Tile_Async
+ * @sa PLASMA_dsyrk_Tile_Async
+ * @sa PLASMA_ssyrk_Tile_Async
+ *
+ ******************************************************************************/
+int PLASMA_ssyrk_Tile_Async(PLASMA_enum uplo, PLASMA_enum trans,
+                            float alpha, PLASMA_desc *A,
+                            float beta,  PLASMA_desc *C,
+                            PLASMA_sequence *sequence, PLASMA_request *request)
+{
+    plasma_context_t *plasma;
+    PLASMA_desc descA;
+    PLASMA_desc descC;
+    int N, K;
+    int Am, An, Amb;
+
+    plasma = plasma_context_self();
+    if (plasma == NULL) {
+        plasma_fatal_error("PLASMA_ssyrk_Tile_Async", "PLASMA not initialized");
+        return PLASMA_ERR_NOT_INITIALIZED;
+    }
+    if (sequence == NULL) {
+        plasma_fatal_error("PLASMA_ssyrk_Tile_Async", "NULL sequence");
+        return PLASMA_ERR_UNALLOCATED;
+    }
+    if (request == NULL) {
+        plasma_fatal_error("PLASMA_ssyrk_Tile_Async", "NULL request");
+        return PLASMA_ERR_UNALLOCATED;
+    }
+    /* Check sequence status */
+    if (sequence->status == PLASMA_SUCCESS)
+        request->status = PLASMA_SUCCESS;
+    else
+        return plasma_request_fail(sequence, request, PLASMA_ERR_SEQUENCE_FLUSHED);
+
+    /* Check descriptors for correctness */
+    if (plasma_desc_check(A) != PLASMA_SUCCESS) {
+        plasma_error("PLASMA_ssyrk_Tile_Async", "invalid first descriptor");
+        return plasma_request_fail(sequence, request, PLASMA_ERR_ILLEGAL_VALUE);
+    } else {
+        descA = *A;
+    }
+    if (plasma_desc_check(C) != PLASMA_SUCCESS) {
+        plasma_error("PLASMA_ssyrk_Tile_Async", "invalid third descriptor");
+        return plasma_request_fail(sequence, request, PLASMA_ERR_ILLEGAL_VALUE);
+    } else {
+        descC = *C;
+    }
+    /* Check input arguments */
+    if ((uplo != PlasmaUpper) && (uplo != PlasmaLower)) {
+        plasma_error("PLASMA_ssyrk", "illegal value of uplo");
+        return plasma_request_fail(sequence, request, -1);
+    }
+    if ((trans != PlasmaNoTrans) && (trans != PlasmaTrans)) {
+        plasma_error("PLASMA_ssyrk", "illegal value of transA");
+        return plasma_request_fail(sequence, request, -2);
+    }
+
+    if ( trans == PlasmaNoTrans ) {
+        Am  = descA.m;
+        An  = descA.n;
+        Amb = descA.mb;
+    } else {
+        Am  = descA.n;
+        An  = descA.m;
+        Amb = descA.nb;
+    }
+
+    if (descC.mb != descC.nb) {
+        plasma_error("PLASMA_ssyrk_Tile_Async", "only square tiles supported");
+        return plasma_request_fail(sequence, request, PLASMA_ERR_ILLEGAL_VALUE);
+    }
+    if (Amb != descC.mb) {
+        plasma_error("PLASMA_ssyrk_Tile_Async", "tile sizes have to match");
+        return plasma_request_fail(sequence, request, PLASMA_ERR_ILLEGAL_VALUE);
+    }
+    if (descC.m != descC.n) {
+        plasma_error("PLASMA_ssyrk_Tile_Async", "only square matrix C is supported");
+        return plasma_request_fail(sequence, request, PLASMA_ERR_ILLEGAL_VALUE);
+    }
+    if (Am != descC.m) {
+        plasma_error("PLASMA_ssyrk_Tile_Async", "sizes of matrices have to match");
+        return plasma_request_fail(sequence, request, PLASMA_ERR_ILLEGAL_VALUE);
+    }
+
+    N = descC.m;
+    K = An;
+
+    /* Quick return */
+    if ( N == 0 ||
+        ((alpha == (float)0.0 || K == 0) && beta == (float)1.0))
+        return PLASMA_SUCCESS;
+
+    plasma_parallel_call_8(plasma_pssyrk,
+        PLASMA_enum, uplo,
+        PLASMA_enum, trans,
+        float, alpha,
+        PLASMA_desc, descA,
+        float, beta,
+        PLASMA_desc, descC,
+        PLASMA_sequence*, sequence,
+        PLASMA_request*, request);
+
+    return PLASMA_SUCCESS;
+}

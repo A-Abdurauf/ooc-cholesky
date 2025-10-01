@@ -1,0 +1,27 @@
+CHDR = \
+cgecfi2.h
+
+DHDR = \
+dgecfi2.h
+
+SHDR = \
+sgecfi2.h
+
+CSRC = \
+cgels.c cgelqf.c cgelqs.c cgeqrf.c cgeqrs.c cgesv_incpiv.c cgetrf_incpiv.c cgetrs_incpiv.c cgesv.c cgetrf.c cgetrs.c claswp.c claswpc.c cposv.c cpotrf.c cpotrs.c ctrsm.c cgemm.c csymm.c csyrk.c ctrsmpl.c ctrsmrv.c cgeadd.c ctradd.c cpotri.c ctrtri.c clauum.c ctrmm.c csyr2k.c cgetri.c clange.c clansy.c clantr.c claset.c clacpy.c clascal.c cunmqr.c cunmlq.c cungqr.c cunglq.c chemm.c cherk.c clanhe.c cher2k.c cgecfi2.c cgecfi.c cgetmi.c cplrnt.c cpltmg.c cplghe.c cplgsy.c chegv.c chegvd.c cheev.c cheevd.c cheevr.c chegst.c chetrd.c cgesvd.c cgesdd.c cgebrd.c cgecon.c cpocon.c cgeqp3.c cgetrf_nopiv.c cgetrf_tntpiv.c cstedc.c pcgelqf.c pcgeqrf.c pcpotrf.c pctrtri.c pclauum.c pcgelqfrh.c pcgeqrfrh.c pctrsm.c pcgemm.c pcsymm.c pcsyrk.c pcsyr2k.c pctrsmpl.c pctrsmrv.c pclange.c pclansy.c pclantr.c pclacpy.c pctradd.c pcgetrf_incpiv.c pctrmm.c pcunmqr.c pcunmlq.c pcungqr.c pcunglq.c pcunmqrrh.c pcungqrrh.c pcunmlqrh.c pcunglqrh.c pclanhe.c pchemm.c pcherk.c pcher2k.c pclaset.c pclaset2.c pclascal.c pcpack.c pcshift.c pcgetmi2.c pcpltmg.c pcplghe.c pcplgsy.c pcpltmg_condex.c pcpltmg_fiedler.c pcpltmg_toeppd.c pcpltmg_circul.c pcpltmg_chebvand.c pcpltmg_hankel.c pcpltmg_house.c pcgetrf_reclap.c pcgetrf_rectil.c pclaswp.c pclaswpc.c pcbarrier.c pcgebrd_ge2gb.c pcgebrd_gb2bd_v1.c pchetrd_he2hb.c pchetrd_hb2st_v1.c pchegst.c pclarft_blgtrd.c pcunmqr_blgtrd.c pchbcpy_t2bl.c pcgbcpy_t2bl.c pcgeqp3.c pcgetrf_nopiv.c pcgetrf_tntpiv.c pcswaps.c pclaset_identity.c pcstedc.c pslag2c.c
+
+DSRC = \
+dgels.c dgelqf.c dgelqs.c dgeqrf.c dgeqrs.c dgesv_incpiv.c dgetrf_incpiv.c dgetrs_incpiv.c dgesv.c dgetrf.c dgetrs.c dlaswp.c dlaswpc.c dposv.c dpotrf.c dpotrs.c dtrsm.c dgemm.c dsymm.c dsyrk.c dtrsmpl.c dtrsmrv.c dgeadd.c dtradd.c dpotri.c dtrtri.c dlauum.c dtrmm.c dsyr2k.c dgetri.c dlange.c dlansy.c dlantr.c dlaset.c dlacpy.c dlascal.c dormqr.c dormlq.c dorgqr.c dorglq.c dsposv.c dsgesv.c dsungesv.c dgecfi2.c dgecfi.c dgetmi.c dplrnt.c dpltmg.c dplgsy.c dsygv.c dsygvd.c dsyev.c dsyevd.c dsyevr.c dsygst.c dsytrd.c dgesvd.c dgesdd.c dgebrd.c dgecon.c dpocon.c dgeqp3.c dgetrf_nopiv.c dgetrf_tntpiv.c dstedc.c pdgelqf.c pdgeqrf.c pdpotrf.c pdtrtri.c pdlauum.c pdgelqfrh.c pdgeqrfrh.c pdtrsm.c pdgemm.c pdsymm.c pdsyrk.c pdsyr2k.c pdtrsmpl.c pdtrsmrv.c pdlange.c pdlansy.c pdlantr.c pdlacpy.c pdtradd.c pdgetrf_incpiv.c pdtrmm.c pdormqr.c pdormlq.c pdorgqr.c pdorglq.c pdormqrrh.c pdorgqrrh.c pdormlqrh.c pdorglqrh.c pdlag2s.c pdlaset.c pdlaset2.c pdlascal.c pdpack.c pdshift.c pdgetmi2.c pdpltmg.c pdplgsy.c pdpltmg_condex.c pdpltmg_fiedler.c pdpltmg_toeppd.c pdpltmg_circul.c pdpltmg_chebvand.c pdpltmg_hankel.c pdpltmg_house.c pdgetrf_reclap.c pdgetrf_rectil.c pdlaswp.c pdlaswpc.c pdbarrier.c pdgebrd_ge2gb.c pdgebrd_gb2bd_v1.c pdsytrd_he2hb.c pdsytrd_hb2st_v1.c pdsygst.c pdlarft_blgtrd.c pdormqr_blgtrd.c pdsbcpy_t2bl.c pdgbcpy_t2bl.c pdgeqp3.c pdgetrf_nopiv.c pdgetrf_tntpiv.c pdswaps.c pdlaset_identity.c pdstedc.c
+
+SSRC = \
+sgels.c sgelqf.c sgelqs.c sgeqrf.c sgeqrs.c sgesv_incpiv.c sgetrf_incpiv.c sgetrs_incpiv.c sgesv.c sgetrf.c sgetrs.c slaswp.c slaswpc.c sposv.c spotrf.c spotrs.c strsm.c sgemm.c ssymm.c ssyrk.c strsmpl.c strsmrv.c sgeadd.c stradd.c spotri.c strtri.c slauum.c strmm.c ssyr2k.c sgetri.c slange.c slansy.c slantr.c slaset.c slacpy.c slascal.c sormqr.c sormlq.c sorgqr.c sorglq.c sgecfi2.c sgecfi.c sgetmi.c splrnt.c spltmg.c splgsy.c ssygv.c ssygvd.c ssyev.c ssyevd.c ssyevr.c ssygst.c ssytrd.c sgesvd.c sgesdd.c sgebrd.c sgecon.c spocon.c sgeqp3.c sgetrf_nopiv.c sgetrf_tntpiv.c sstedc.c psgelqf.c psgeqrf.c pspotrf.c pstrtri.c pslauum.c psgelqfrh.c psgeqrfrh.c pstrsm.c psgemm.c pssymm.c pssyrk.c pssyr2k.c pstrsmpl.c pstrsmrv.c pslange.c pslansy.c pslantr.c pslacpy.c pstradd.c psgetrf_incpiv.c pstrmm.c psormqr.c psormlq.c psorgqr.c psorglq.c psormqrrh.c psorgqrrh.c psormlqrh.c psorglqrh.c pslaset.c pslaset2.c pslascal.c pspack.c psshift.c psgetmi2.c pspltmg.c psplgsy.c pspltmg_condex.c pspltmg_fiedler.c pspltmg_toeppd.c pspltmg_circul.c pspltmg_chebvand.c pspltmg_hankel.c pspltmg_house.c psgetrf_reclap.c psgetrf_rectil.c pslaswp.c pslaswpc.c psbarrier.c psgebrd_ge2gb.c psgebrd_gb2bd_v1.c pssytrd_he2hb.c pssytrd_hb2st_v1.c pssygst.c pslarft_blgtrd.c psormqr_blgtrd.c pssbcpy_t2bl.c psgbcpy_t2bl.c psgeqp3.c psgetrf_nopiv.c psgetrf_tntpiv.c psswaps.c pslaset_identity.c psstedc.c pslaed0.c pslaed1.c
+
+CF90 = \
+
+
+DF90 = \
+
+
+SF90 = \
+
+

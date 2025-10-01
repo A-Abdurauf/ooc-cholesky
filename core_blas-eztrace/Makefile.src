@@ -1,0 +1,27 @@
+CHDR = \
+
+
+DHDR = \
+
+
+SHDR = \
+
+
+CSRC = \
+coreblas_c.c
+
+DSRC = \
+coreblas_d.c
+
+SSRC = \
+coreblas_s.c
+
+CF90 = \
+
+
+DF90 = \
+
+
+SF90 = \
+
+

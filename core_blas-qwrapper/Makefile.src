@@ -1,0 +1,27 @@
+CHDR = \
+
+
+DHDR = \
+
+
+SHDR = \
+
+
+CSRC = \
+qwrapper_cgeqrt.c qwrapper_ctsqrt.c qwrapper_ctsmqr.c qwrapper_cgelqt.c qwrapper_ctslqt.c qwrapper_ctsmlq.c qwrapper_cttqrt.c qwrapper_cttmqr.c qwrapper_cttlqt.c qwrapper_cttmlq.c qwrapper_cgetrf_incpiv.c qwrapper_ctstrf.c qwrapper_cgessm.c qwrapper_cssssm.c qwrapper_cpotrf.c qwrapper_ctrtri.c qwrapper_clauum.c qwrapper_cgemm.c qwrapper_csymm.c qwrapper_csyrk.c qwrapper_ctrsm.c qwrapper_ctrmm.c qwrapper_csyr2k.c qwrapper_cgeadd.c qwrapper_ctradd.c qwrapper_clacpy.c qwrapper_clange.c qwrapper_clansy.c qwrapper_clantr.c qwrapper_scasum.c qwrapper_ctrasm.c qwrapper_cunmqr.c qwrapper_cunmlq.c qwrapper_chemm.c qwrapper_cherk.c qwrapper_clanhe.c qwrapper_cher2k.c qwrapper_cplssq.c qwrapper_cgessq.c qwrapper_chessq.c qwrapper_csyssq.c qwrapper_ctrssq.c qwrapper_cswpab.c qwrapper_cgetrip.c qwrapper_cshift.c qwrapper_cplrnt.c qwrapper_cplghe.c qwrapper_cplgsy.c qwrapper_cpltmg.c qwrapper_cpltmg_fiedler.c qwrapper_cpltmg_toeppd.c qwrapper_cpltmg_chebvand.c qwrapper_cpltmg_circul.c qwrapper_cpltmg_hankel.c qwrapper_claswp.c qwrapper_cgetrf.c qwrapper_cgetrf_rectil.c qwrapper_cgetrf_reclap.c qwrapper_claset.c qwrapper_claset2.c qwrapper_cherfb.c qwrapper_chegst.c qwrapper_ctsmqr_hetra1.c qwrapper_ctsmqr_corner.c qwrapper_ctsmlq_hetra1.c qwrapper_ctsmlq_corner.c qwrapper_cpamm.c qwrapper_clatro.c qwrapper_cgemv.c qwrapper_cgemv_tile.c qwrapper_cgemm_tile.c qwrapper_csetvar.c qwrapper_cswap.c qwrapper_slag2c.c qwrapper_clascl.c qwrapper_clascal.c qwrapper_csteqr.c qwrapper_cstedc.c qwrapper_claset_identity.c qwrapper_cgeqp3_init.c qwrapper_cgeqp3_larfg.c qwrapper_cgeqp3_norms.c qwrapper_cgeqp3_pivot.c qwrapper_cgeqp3_update.c qwrapper_cbrdalg1.c qwrapper_ctrdalg1.c qwrapper_cgetrf_nopiv.c qwrapper_clacpy_pivot.c qwrapper_cgeqp3_tntpiv.c
+
+DSRC = \
+qwrapper_dgeqrt.c qwrapper_dtsqrt.c qwrapper_dtsmqr.c qwrapper_dgelqt.c qwrapper_dtslqt.c qwrapper_dtsmlq.c qwrapper_dttqrt.c qwrapper_dttmqr.c qwrapper_dttlqt.c qwrapper_dttmlq.c qwrapper_dgetrf_incpiv.c qwrapper_dtstrf.c qwrapper_dgessm.c qwrapper_dssssm.c qwrapper_dpotrf.c qwrapper_dtrtri.c qwrapper_dlauum.c qwrapper_dgemm.c qwrapper_dsymm.c qwrapper_dsyrk.c qwrapper_dtrsm.c qwrapper_dtrmm.c qwrapper_dsyr2k.c qwrapper_dgeadd.c qwrapper_dtradd.c qwrapper_dlacpy.c qwrapper_dlange.c qwrapper_dlansy.c qwrapper_dlantr.c qwrapper_dasum.c qwrapper_dtrasm.c qwrapper_dormqr.c qwrapper_dormlq.c qwrapper_dlag2s.c qwrapper_dplssq.c qwrapper_dgessq.c qwrapper_dsyssq.c qwrapper_dtrssq.c qwrapper_dswpab.c qwrapper_dgetrip.c qwrapper_dshift.c qwrapper_dplrnt.c qwrapper_dplgsy.c qwrapper_dpltmg.c qwrapper_dpltmg_fiedler.c qwrapper_dpltmg_toeppd.c qwrapper_dpltmg_chebvand.c qwrapper_dpltmg_circul.c qwrapper_dpltmg_hankel.c qwrapper_dlaswp.c qwrapper_dgetrf.c qwrapper_dgetrf_rectil.c qwrapper_dgetrf_reclap.c qwrapper_dlaset.c qwrapper_dlaset2.c qwrapper_dsyrfb.c qwrapper_dsygst.c qwrapper_dtsmqr_sytra1.c qwrapper_dtsmqr_corner.c qwrapper_dtsmlq_sytra1.c qwrapper_dtsmlq_corner.c qwrapper_dpamm.c qwrapper_dlatro.c qwrapper_dgemv.c qwrapper_dgemv_tile.c qwrapper_dgemm_tile.c qwrapper_dsetvar.c qwrapper_dswap.c qwrapper_dlascl.c qwrapper_dlascal.c qwrapper_dsteqr.c qwrapper_dstedc.c qwrapper_dlaset_identity.c qwrapper_dgeqp3_init.c qwrapper_dgeqp3_larfg.c qwrapper_dgeqp3_norms.c qwrapper_dgeqp3_pivot.c qwrapper_dgeqp3_update.c qwrapper_dbrdalg1.c qwrapper_dtrdalg1.c qwrapper_dgetrf_nopiv.c qwrapper_dlacpy_pivot.c qwrapper_dgeqp3_tntpiv.c
+
+SSRC = \
+qwrapper_sgeqrt.c qwrapper_stsqrt.c qwrapper_stsmqr.c qwrapper_sgelqt.c qwrapper_stslqt.c qwrapper_stsmlq.c qwrapper_sttqrt.c qwrapper_sttmqr.c qwrapper_sttlqt.c qwrapper_sttmlq.c qwrapper_sgetrf_incpiv.c qwrapper_ststrf.c qwrapper_sgessm.c qwrapper_sssssm.c qwrapper_spotrf.c qwrapper_strtri.c qwrapper_slauum.c qwrapper_sgemm.c qwrapper_ssymm.c qwrapper_ssyrk.c qwrapper_strsm.c qwrapper_strmm.c qwrapper_ssyr2k.c qwrapper_sgeadd.c qwrapper_stradd.c qwrapper_slacpy.c qwrapper_slange.c qwrapper_slansy.c qwrapper_slantr.c qwrapper_sasum.c qwrapper_strasm.c qwrapper_sormqr.c qwrapper_sormlq.c qwrapper_splssq.c qwrapper_sgessq.c qwrapper_ssyssq.c qwrapper_strssq.c qwrapper_sswpab.c qwrapper_sgetrip.c qwrapper_sshift.c qwrapper_splrnt.c qwrapper_splgsy.c qwrapper_spltmg.c qwrapper_spltmg_fiedler.c qwrapper_spltmg_toeppd.c qwrapper_spltmg_chebvand.c qwrapper_spltmg_circul.c qwrapper_spltmg_hankel.c qwrapper_slaswp.c qwrapper_sgetrf.c qwrapper_sgetrf_rectil.c qwrapper_sgetrf_reclap.c qwrapper_slaset.c qwrapper_slaset2.c qwrapper_ssyrfb.c qwrapper_ssygst.c qwrapper_stsmqr_sytra1.c qwrapper_stsmqr_corner.c qwrapper_stsmlq_sytra1.c qwrapper_stsmlq_corner.c qwrapper_spamm.c qwrapper_slatro.c qwrapper_sgemv.c qwrapper_sgemv_tile.c qwrapper_sgemm_tile.c qwrapper_ssetvar.c qwrapper_sswap.c qwrapper_slascl.c qwrapper_slascal.c qwrapper_ssteqr.c qwrapper_sstedc.c qwrapper_slaed0_betaapprox.c qwrapper_slaed1_pipelined.c qwrapper_slaed2_compressq.c qwrapper_slaed2_computeK.c qwrapper_slaed2_copyvectorsback.c qwrapper_sDC_fakedep.c qwrapper_slaed3_computeW.c qwrapper_slaed3_computevectors.c qwrapper_slaed3_freebigwork.c qwrapper_slaed3_pipelined.c qwrapper_slaed3_reduceW.c qwrapper_slaed3_updatevectors.c qwrapper_slaed4.c qwrapper_slaset_identity.c qwrapper_sgeqp3_init.c qwrapper_sgeqp3_larfg.c qwrapper_sgeqp3_norms.c qwrapper_sgeqp3_pivot.c qwrapper_sgeqp3_update.c qwrapper_sbrdalg1.c qwrapper_strdalg1.c qwrapper_sgetrf_nopiv.c qwrapper_slacpy_pivot.c qwrapper_sgeqp3_tntpiv.c
+
+CF90 = \
+
+
+DF90 = \
+
+
+SF90 = \
+
+

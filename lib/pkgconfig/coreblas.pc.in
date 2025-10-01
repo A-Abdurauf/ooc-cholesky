@@ -1,0 +1,13 @@
+prefix=__PREFIX
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: coreblas
+Description: CPU kernels for PLASMA (Parallel Linear Algebra for Scalable Multi-core Architectures) Library
+Version: 2.8.0
+Requires.private:
+Cflags: -I__PREFIX/include __INCLUDE_EXT
+Libs: -L__PREFIX/lib -lcoreblas __LIBEXT
+Libs.private: -L__PREFIX/lib -lcoreblas __LIBEXT
+Requires.private: __REQUIRE

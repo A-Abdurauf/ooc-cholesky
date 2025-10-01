@@ -1,0 +1,101 @@
+/**
+ *
+ * @file pspltmg.c
+ *
+ *  PLASMA auxiliary routines
+ *  PLASMA is a software package provided by Univ. of Tennessee,
+ *  Univ. of California Berkeley and Univ. of Colorado Denver
+ *
+ * @version 2.8.0
+ * @author Mathieu Faverge
+ * @date 2010-11-15
+ * @generated s Fri Apr  1 11:02:59 2016
+ *
+ **/
+#include "common.h"
+
+#define A(m, n) BLKADDR(A, float, m, n)
+/***************************************************************************//**
+ *  Parallel tile matrix generation - static scheduling
+ **/
+void plasma_pspltmg(plasma_context_t *plasma)
+{
+    PLASMA_enum mtxtype;
+    PLASMA_desc A;
+    unsigned long long int seed;
+    PLASMA_sequence *sequence;
+    PLASMA_request *request;
+
+    int m, n;
+    int next_m;
+    int next_n;
+    int ldam;
+    int tempmm, tempnn;
+
+    plasma_unpack_args_5(mtxtype, A, seed, sequence, request);
+    if (sequence->status != PLASMA_SUCCESS)
+        return;
+
+    n = 0;
+    m = PLASMA_RANK;
+    while (m >= A.mt) {
+        n++;
+        m = m - A.mt;
+    }
+
+    while ( n < A.nt ) {
+        next_n = n;
+        next_m = m;
+
+        next_m += PLASMA_SIZE;
+        while ( next_m >= A.mt && next_n < A.nt ) {
+            next_n++;
+            next_m = next_m - A.mt;
+        }
+
+        tempmm = m == A.mt-1 ? A.m-m*A.mb : A.mb;
+        tempnn = n == A.nt-1 ? A.n-n*A.nb : A.nb;
+        ldam = BLKLDD(A, m);
+
+        CORE_spltmg(
+            mtxtype, tempmm, tempnn, A(m, n), ldam,
+            A.m, A.n, m*A.mb, n*A.nb, seed );
+
+        m = next_m;
+        n = next_n;
+    }
+}
+
+/***************************************************************************//**
+ *  Parallel tile matrix generation - dynamic scheduling
+ **/
+void plasma_pspltmg_quark( PLASMA_enum mtxtype, PLASMA_desc A, unsigned long long int seed,
+                            PLASMA_sequence *sequence, PLASMA_request *request )
+{
+    plasma_context_t *plasma;
+    Quark_Task_Flags task_flags = Quark_Task_Flags_Initializer;
+
+    int m, n;
+    int ldam;
+    int tempmm, tempnn;
+
+    plasma = plasma_context_self();
+    if (sequence->status != PLASMA_SUCCESS)
+        return;
+    QUARK_Task_Flag_Set(&task_flags, TASK_SEQUENCE, (intptr_t)sequence->quark_sequence);
+    plasma_profile_by_function( &task_flags, PLRNT );
+
+    for (m = 0; m < A.mt; m++) {
+        tempmm = m == A.mt-1 ? A.m-m*A.mb : A.mb;
+        ldam = BLKLDD(A, m);
+
+        for (n = 0; n < A.nt; n++) {
+            tempnn = n == A.nt-1 ? A.n-n*A.nb : A.nb;
+
+            QUARK_CORE_spltmg(
+                plasma->quark, &task_flags,
+                mtxtype, tempmm, tempnn, A(m, n), ldam,
+                A.m, A.n, m*A.mb, n*A.nb, seed );
+        }
+    }
+}

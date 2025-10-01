@@ -1,0 +1,1107 @@
+/**
+ *
+ * @file control.c
+ *
+ *  PLASMA auxiliary routines
+ *  PLASMA is a software package provided by Univ. of Tennessee,
+ *  Univ. of California Berkeley and Univ. of Colorado Denver
+ *
+ * @version 2.8.0
+ * @author Jakub Kurzak
+ * @date 2010-11-15
+ *
+ **/
+#include <stdio.h>
+#include <stdlib.h>
+#if defined(PLASMA_WITH_MKL)
+#include <omp.h>
+#endif
+#if defined(_WIN32) || defined(_WIN64)
+#include "plasmawinthread.h"
+#else
+#include <pthread.h>
+#endif
+#include <atomic>
+#include <unordered_map>
+
+#include "allocate.h"
+#include "auxiliary.h"
+#include "common.h"
+#include "dist.h"
+
+/***************************************************************************/
+/**
+ *  Busy-waiting barrier initialization
+ **/
+void plasma_barrier_init(plasma_context_t *plasma) {
+#undef barrier_id
+#undef barrier_nblocked_thrds
+  make_atomic(plasma->barrier_id) = 0;
+  make_atomic(plasma->barrier_nblocked_thrds) = 0;
+  pthread_mutex_init(&(plasma->barrier_synclock), NULL);
+  pthread_cond_init(&(plasma->barrier_synccond), NULL);
+#define barrier_nblocked_thrds
+#define barrier_id
+}
+
+/***************************************************************************/
+/**
+ *  Busy-waiting barrier finalize
+ **/
+void plasma_barrier_finalize(plasma_context_t *plasma) {
+  pthread_mutex_destroy(&(plasma->barrier_synclock));
+  pthread_cond_destroy(&(plasma->barrier_synccond));
+}
+
+/***************************************************************************/
+/**
+ *  Busy-waiting barrier
+ **/
+void plasma_barrier(plasma_context_t *plasma) {
+#undef barrier_id
+#undef barrier_nblocked_thrds
+  int id;
+
+  pthread_mutex_lock(&(plasma->barrier_synclock));
+  id = make_atomic(plasma->barrier_id);
+  make_atomic(plasma->barrier_nblocked_thrds)++;
+  if (make_atomic(plasma->barrier_nblocked_thrds) == PLASMA_SIZE) {
+    make_atomic(plasma->barrier_nblocked_thrds) = 0;
+    make_atomic(plasma->barrier_id)++;
+    pthread_cond_broadcast(&(plasma->barrier_synccond));
+  }
+  while (id == plasma->barrier_id)
+    pthread_cond_wait(&(plasma->barrier_synccond), &(plasma->barrier_synclock));
+  pthread_mutex_unlock(&(plasma->barrier_synclock));
+#define barrier_id
+#define barrier_nblocked_thrds
+}
+
+/***************************************************************************/
+/**
+ *  Busy-waiting barrier initialization
+ **/
+void plasma_barrier_bw_init(plasma_context_t *plasma) {
+  int core;
+
+  for (core = 0; core < CONTEXT_THREADS_MAX; core++) {
+    plasma->barrier_in[core] = 0;
+    plasma->barrier_out[core] = 0;
+  }
+}
+
+/***************************************************************************/
+/**
+ *  Busy-waiting barrier finalize
+ **/
+void plasma_barrier_bw_finalize(plasma_context_t *plasma) {}
+
+/***************************************************************************/
+/**
+ *  Busy-waiting barrier
+ **/
+void plasma_barrier_bw(plasma_context_t *plasma) {
+  int core;
+  int size = PLASMA_SIZE;
+
+  if (PLASMA_RANK == 0) {
+    for (core = 1; core < size; core++)
+      while (plasma->barrier_in[core] == 0)
+        ;
+
+    for (core = 1; core < size; core++) plasma->barrier_in[core] = 0;
+
+    for (core = 1; core < size; core++) plasma->barrier_out[core] = 1;
+  } else {
+    plasma->barrier_in[PLASMA_RANK] = 1;
+    while (plasma->barrier_out[PLASMA_RANK] == 0)
+      ;
+    plasma->barrier_out[PLASMA_RANK] = 0;
+  }
+}
+
+/***************************************************************************/
+/**
+ *  Main thread control
+ **/
+void *plasma_parallel_section(void *plasma_ptr) {
+  plasma_context_t *plasma = (plasma_context_t *)(plasma_ptr);
+  PLASMA_enum action;
+
+  /* Set thread affinity for the worker */
+  plasma_setaffinity(plasma->thread_bind[plasma_rank(plasma)]);
+
+  plasma_barrier(plasma);
+  while (1) {
+    pthread_mutex_lock(&plasma->action_mutex);
+    while ((action = plasma->action) == PLASMA_ACT_STAND_BY)
+      pthread_cond_wait(&plasma->action_condt, &plasma->action_mutex);
+    pthread_mutex_unlock(&plasma->action_mutex);
+    plasma_barrier(plasma);
+
+    switch (action) {
+      case PLASMA_ACT_PARALLEL:
+        plasma->parallel_func_ptr(plasma);
+        break;
+      case PLASMA_ACT_DYNAMIC:
+        QUARK_Worker_Loop(plasma->quark, plasma_rank(plasma));
+        break;
+      case PLASMA_ACT_FINALIZE:
+        return NULL;
+      default:
+        plasma_fatal_error("plasma_parallel_section", "undefined action");
+        return NULL;
+    }
+    plasma_barrier(plasma);
+  }
+
+  plasma_unsetaffinity();
+  return NULL;
+}
+
+/***************************************************************************/
+/**
+ *
+ * @ingroup Auxiliary
+ *
+ *  PLASMA_Init - Initialize PLASMA.
+ *
+ *******************************************************************************
+ *
+ * @param[in] cores
+ *          Number of cores to use (threads to launch).
+ *          If cores = 0, cores = PLASMA_NUM_THREADS if it is set, the
+ *          system number of core otherwise.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval PLASMA_SUCCESS successful exit
+ *
+ ******************************************************************************/
+int PLASMA_Init(int cores) { return PLASMA_Init_Affinity(cores, NULL); }
+
+#ifdef PLASMA_WITH_HPCASIA24
+#ifdef PLASMA_WITH_CUDA
+int PLASMA_Init_Affinity_Sequential_GPU(int cores, int *coresbind);
+int PLASMA_Init_Sequential_GPU(int cores) {
+  return PLASMA_Init_Affinity_Sequential_GPU(cores, NULL);
+}
+int PLASMA_Init_Reuse_Data_Static_Table(int cores) {
+  return PLASMA_Init_Affinity_Reuse_Data_Static_Table(cores, NULL);
+}
+#endif
+#endif
+
+/***************************************************************************/
+/**
+ *
+ * @ingroup Auxiliary
+ *
+ *  PLASMA_Init_Affinity - Initialize PLASMA.
+ *
+ *******************************************************************************
+ *
+ * @param[in] cores
+ *          Number of cores to use (threads to launch).
+ *          If cores = 0, cores = PLASMA_NUM_THREADS if it is set, the
+ *          system number of core otherwise.
+ *
+ * @param[in] coresbind
+ *          Array to specify where to bind each thread.
+ *          Each thread i is binded to coresbind[hwloc(i)] if hwloc is
+ *          provided, or to coresbind[i] otherwise.
+ *          If coresbind = NULL, coresbind = PLASMA_AFF_THREADS if it
+ *          is set, the identity function otherwise.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval PLASMA_SUCCESS successful exit
+ *
+ ******************************************************************************/
+int PLASMA_Init_Affinity(int cores, int *coresbind) {
+  plasma_context_t *plasma;
+  int status;
+  int core;
+
+  /* Create context and insert in the context map */
+  plasma = plasma_context_create();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_create() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+  status = plasma_context_insert(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_insert() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+#ifdef PLASMA_WITH_HPCASIA24
+  plasma->benchmark_state = NULL;
+#endif
+
+  /* Init number of cores and topology */
+  plasma_topology_init();
+
+  /* Set number of cores */
+  if (cores < 1) {
+    plasma->world_size = plasma_get_numthreads();
+    if (plasma->world_size == -1) {
+      plasma->world_size = 1;
+      plasma_warning(
+          "PLASMA_Init",
+          "Could not find the number of cores: the thread number is set to 1");
+    }
+  } else
+    plasma->world_size = cores;
+
+  if (plasma->world_size <= 0) {
+    plasma_fatal_error("PLASMA_Init", "failed to get system size");
+    return PLASMA_ERR_NOT_FOUND;
+  }
+  /* Check if not more cores than the hard limit */
+  if (plasma->world_size > CONTEXT_THREADS_MAX) {
+    plasma_fatal_error("PLASMA_Init", "not supporting so many cores");
+    return PLASMA_ERR_INTERNAL_LIMIT;
+  }
+
+  /* Get the size of each NUMA node */
+  plasma->group_size = plasma_get_numthreads_numa();
+  while (((plasma->world_size) % (plasma->group_size)) != 0)
+    (plasma->group_size)--;
+
+  /* Initialize barriers */
+  plasma_barrier_init(plasma);
+  plasma_barrier_bw_init(plasma);
+
+  /* Initialize default thread attributes */
+  status = pthread_attr_init(&plasma->thread_attr);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_init() failed");
+    return status;
+  }
+  /* Set scope to system */
+  status = pthread_attr_setscope(&plasma->thread_attr, PTHREAD_SCOPE_SYSTEM);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_setscope() failed");
+    return status;
+  }
+  /* Set concurrency */
+  status = pthread_setconcurrency(plasma->world_size);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_setconcurrency() failed");
+    return status;
+  }
+  /*  Launch threads */
+  memset(plasma->thread_id, 0, CONTEXT_THREADS_MAX * sizeof(pthread_t));
+  if (coresbind != NULL) {
+    memcpy(plasma->thread_bind, coresbind, plasma->world_size * sizeof(int));
+  } else {
+    plasma_get_affthreads(plasma->thread_bind);
+  }
+  /* Assign rank and thread ID for the master */
+  plasma->thread_rank[0] = 0;
+  plasma->thread_id[0] = pthread_self();
+#ifdef PLASMA_WITH_CUDA
+  CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream[0],
+                                       cudaStreamNonBlocking));
+  CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[0]));
+  CHECK_CUBLAS(
+      cublasSetStream(plasma->cublas_handle[0], plasma->cuda_stream[0]));
+  CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[0]));
+  CHECK_CUSOLVER(
+      cusolverDnSetStream(plasma->cusolver_handle[0], plasma->cuda_stream[0]));
+#endif
+
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream[core],
+                                         cudaStreamNonBlocking));
+    CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[core]));
+    CHECK_CUBLAS(cublasSetStream(plasma->cublas_handle[core],
+                                 plasma->cuda_stream[core]));
+    CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[core]));
+    CHECK_CUSOLVER(cusolverDnSetStream(plasma->cusolver_handle[core],
+                                       plasma->cuda_stream[core]));
+#endif
+    plasma->thread_rank[core] = core;
+    pthread_create(&plasma->thread_id[core], &plasma->thread_attr,
+                   plasma_parallel_section, (void *)plasma);
+  }
+
+  /* Ensure BLAS are sequential and set thread affinity for the master */
+#if defined(PLASMA_WITH_MKL)
+#if defined(__ICC) || defined(__INTEL_COMPILER)
+  kmp_set_defaults("KMP_AFFINITY=disabled");
+#endif
+#endif
+
+  /* Initialize the dynamic scheduler */
+  plasma->quark = QUARK_Setup(plasma->world_size);
+  plasma_barrier(plasma);
+
+  plasma_setlapack_sequential(plasma);
+
+  return PLASMA_SUCCESS;
+}
+
+#ifdef PLASMA_WITH_HPCASIA24
+#ifdef PLASMA_WITH_CUDA
+int PLASMA_Init_Affinity_Sequential_GPU(int cores, int *coresbind) {
+  plasma_context_t *plasma;
+  int status;
+  int core;
+
+  /* Create context and insert in the context map */
+  plasma = plasma_context_create();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_create() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+  status = plasma_context_insert(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_insert() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+  /* Init number of cores and topology */
+  plasma_topology_init();
+
+  /* Set number of cores */
+  if (cores < 1) {
+    plasma->world_size = plasma_get_numthreads();
+    if (plasma->world_size == -1) {
+      plasma->world_size = 1;
+      plasma_warning(
+          "PLASMA_Init",
+          "Could not find the number of cores: the thread number is set to 1");
+    }
+  } else
+    plasma->world_size = cores;
+
+  if (plasma->world_size <= 0) {
+    plasma_fatal_error("PLASMA_Init", "failed to get system size");
+    return PLASMA_ERR_NOT_FOUND;
+  }
+  /* Check if not more cores than the hard limit */
+  if (plasma->world_size > CONTEXT_THREADS_MAX) {
+    plasma_fatal_error("PLASMA_Init", "not supporting so many cores");
+    return PLASMA_ERR_INTERNAL_LIMIT;
+  }
+
+  /* Get the size of each NUMA node */
+  plasma->group_size = plasma_get_numthreads_numa();
+  while (((plasma->world_size) % (plasma->group_size)) != 0)
+    (plasma->group_size)--;
+
+  /* Initialize barriers */
+  plasma_barrier_init(plasma);
+  plasma_barrier_bw_init(plasma);
+
+  /* Initialize default thread attributes */
+  status = pthread_attr_init(&plasma->thread_attr);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_init() failed");
+    return status;
+  }
+  /* Set scope to system */
+  status = pthread_attr_setscope(&plasma->thread_attr, PTHREAD_SCOPE_SYSTEM);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_setscope() failed");
+    return status;
+  }
+  /* Set concurrency */
+  status = pthread_setconcurrency(plasma->world_size);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_setconcurrency() failed");
+    return status;
+  }
+  /*  Launch threads */
+  memset(plasma->thread_id, 0, CONTEXT_THREADS_MAX * sizeof(pthread_t));
+  if (coresbind != NULL) {
+    memcpy(plasma->thread_bind, coresbind, plasma->world_size * sizeof(int));
+  } else {
+    plasma_get_affthreads(plasma->thread_bind);
+  }
+  /* Assign rank and thread ID for the master */
+  plasma->thread_rank[0] = 0;
+  plasma->thread_id[0] = pthread_self();
+#ifdef PLASMA_WITH_CUDA
+  plasma->cuda_stream[0] = NULL;
+  CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[0]));
+  CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[0]));
+#endif
+
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    plasma->cuda_stream[core] = NULL;
+    CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[core]));
+    CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[core]));
+#endif
+    plasma->thread_rank[core] = core;
+    pthread_create(&plasma->thread_id[core], &plasma->thread_attr,
+                   plasma_parallel_section, (void *)plasma);
+  }
+
+  /* Ensure BLAS are sequential and set thread affinity for the master */
+#if defined(PLASMA_WITH_MKL)
+#if defined(__ICC) || defined(__INTEL_COMPILER)
+  kmp_set_defaults("KMP_AFFINITY=disabled");
+#endif
+#endif
+
+  /* Initialize the dynamic scheduler */
+  plasma->quark = QUARK_Setup(plasma->world_size);
+  plasma_barrier(plasma);
+
+  plasma_setlapack_sequential(plasma);
+
+  return PLASMA_SUCCESS;
+}
+
+int PLASMA_Init_Affinity_Reuse_Data_Static_Table(int cores, int *coresbind) {
+  plasma_context_t *plasma;
+  int status;
+  int core;
+
+  /* Create context and insert in the context map */
+  plasma = plasma_context_create();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_create() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+  status = plasma_context_insert(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_insert() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+  /* Init number of cores and topology */
+  plasma_topology_init();
+
+  /* Set number of cores */
+  if (cores < 1) {
+    plasma->world_size = plasma_get_numthreads();
+    if (plasma->world_size == -1) {
+      plasma->world_size = 1;
+      plasma_warning(
+          "PLASMA_Init",
+          "Could not find the number of cores: the thread number is set to 1");
+    }
+  } else
+    plasma->world_size = cores;
+
+  if (plasma->world_size <= 0) {
+    plasma_fatal_error("PLASMA_Init", "failed to get system size");
+    return PLASMA_ERR_NOT_FOUND;
+  }
+  /* Check if not more cores than the hard limit */
+  if (plasma->world_size > CONTEXT_THREADS_MAX) {
+    plasma_fatal_error("PLASMA_Init", "not supporting so many cores");
+    return PLASMA_ERR_INTERNAL_LIMIT;
+  }
+
+  /* Get the size of each NUMA node */
+  plasma->group_size = plasma_get_numthreads_numa();
+  while (((plasma->world_size) % (plasma->group_size)) != 0)
+    (plasma->group_size)--;
+
+  /* Initialize barriers */
+  plasma_barrier_init(plasma);
+  plasma_barrier_bw_init(plasma);
+
+  /* Initialize default thread attributes */
+  status = pthread_attr_init(&plasma->thread_attr);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_init() failed");
+    return status;
+  }
+  /* Set scope to system */
+  status = pthread_attr_setscope(&plasma->thread_attr, PTHREAD_SCOPE_SYSTEM);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_setscope() failed");
+    return status;
+  }
+  /* Set concurrency */
+  status = pthread_setconcurrency(plasma->world_size);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_setconcurrency() failed");
+    return status;
+  }
+  /*  Launch threads */
+  memset(plasma->thread_id, 0, CONTEXT_THREADS_MAX * sizeof(pthread_t));
+  if (coresbind != NULL) {
+    memcpy(plasma->thread_bind, coresbind, plasma->world_size * sizeof(int));
+  } else {
+    plasma_get_affthreads(plasma->thread_bind);
+  }
+  /* Assign rank and thread ID for the master */
+  plasma->thread_rank[0] = 0;
+  plasma->thread_id[0] = pthread_self();
+  CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream[0],
+                                       cudaStreamNonBlocking));
+  CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream_c2g[0],
+                                       cudaStreamNonBlocking));
+  CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream_g2c[0],
+                                       cudaStreamNonBlocking));
+  CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[0]));
+  CHECK_CUBLAS(
+      cublasSetStream(plasma->cublas_handle[0], plasma->cuda_stream[0]));
+  CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[0]));
+  CHECK_CUSOLVER(
+      cusolverDnSetStream(plasma->cusolver_handle[0], plasma->cuda_stream[0]));
+
+  for (core = 1; core < plasma->world_size; core++) {
+    CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream[core],
+                                         cudaStreamNonBlocking));
+    CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream_c2g[core],
+                                         cudaStreamNonBlocking));
+    CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream_g2c[core],
+                                         cudaStreamNonBlocking));
+    CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[core]));
+    CHECK_CUBLAS(cublasSetStream(plasma->cublas_handle[core],
+                                 plasma->cuda_stream[core]));
+    CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[core]));
+    CHECK_CUSOLVER(cusolverDnSetStream(plasma->cusolver_handle[core],
+                                       plasma->cuda_stream[core]));
+    plasma->thread_rank[core] = core;
+    pthread_create(&plasma->thread_id[core], &plasma->thread_attr,
+                   plasma_parallel_section, (void *)plasma);
+  }
+
+  /* Ensure BLAS are sequential and set thread affinity for the master */
+#if defined(PLASMA_WITH_MKL)
+#if defined(__ICC) || defined(__INTEL_COMPILER)
+  kmp_set_defaults("KMP_AFFINITY=disabled");
+#endif
+#endif
+
+  /* Initialize the dynamic scheduler */
+  plasma->quark = QUARK_Setup(plasma->world_size);
+  plasma_barrier(plasma);
+
+  plasma_setlapack_sequential(plasma);
+
+  return PLASMA_SUCCESS;
+}
+#endif
+#endif
+
+/***************************************************************************/
+/**
+ *
+ * @ingroup Auxiliary
+ *
+ *  PLASMA_Finalize - Finalize PLASMA.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval PLASMA_SUCCESS successful exit
+ *
+ ******************************************************************************/
+int PLASMA_Finalize() {
+  int core;
+  int status;
+  void *exitcodep;
+  plasma_context_t *plasma;
+
+  plasma = plasma_context_self();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Finalize()", "PLASMA not initialized");
+    return PLASMA_ERR_NOT_INITIALIZED;
+  }
+
+  /* Terminate the dynamic scheduler */
+  plasma_dynamic_sync();
+
+  /* Free quark structures */
+  QUARK_Free(plasma->quark);
+
+  /* Set termination action */
+  pthread_mutex_lock(&plasma->action_mutex);
+  plasma->action = PLASMA_ACT_FINALIZE;
+  pthread_mutex_unlock(&plasma->action_mutex);
+  pthread_cond_broadcast(&plasma->action_condt);
+
+  /* Barrier and clear action */
+  plasma_barrier(plasma);
+  plasma->action = PLASMA_ACT_STAND_BY;
+
+#ifdef PLASMA_WITH_CUDA
+  CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream[0]));
+  CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[0]));
+#endif
+  // Join threads
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream[core]));
+    CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[core]));
+#endif
+
+    status = pthread_join(plasma->thread_id[core], &exitcodep);
+    if (status != 0) {
+      plasma_fatal_error("PLASMA_Finalize", "pthread_join() failed");
+      return status;
+    }
+  }
+  plasma_barrier_finalize(plasma);
+  plasma_barrier_bw_finalize(plasma);
+
+  /* Unbind main thread */
+  plasma_unsetaffinity();
+
+  /* Destroy thread attributes */
+  status = pthread_attr_destroy(&plasma->thread_attr);
+  if (status != 0)
+    plasma_fatal_error("PLASMA_Finalize", "pthread_attr_destroy() failed");
+
+  /* Destroy topology */
+  plasma_topology_finalize();
+
+  status = plasma_context_remove(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Finalize", "plasma_context_remove() failed");
+    return status;
+  }
+
+  /* Restore the concurency */
+  /* actually it's really bad, we shoulde set the concurrency only
+   * if it's not already done and restore it only we had change it */
+  pthread_setconcurrency(0);
+
+  return PLASMA_SUCCESS;
+}
+
+#ifdef PLASMA_WITH_CUDA
+#ifdef PLASMA_WITH_HPCASIA24
+int PLASMA_Finalize_Sequential_GPU() {
+  int core;
+  int status;
+  void *exitcodep;
+  plasma_context_t *plasma;
+
+  plasma = plasma_context_self();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Finalize()", "PLASMA not initialized");
+    return PLASMA_ERR_NOT_INITIALIZED;
+  }
+
+  /* Terminate the dynamic scheduler */
+  plasma_dynamic_sync();
+
+  /* Free quark structures */
+  QUARK_Free(plasma->quark);
+
+  /* Set termination action */
+  pthread_mutex_lock(&plasma->action_mutex);
+  plasma->action = PLASMA_ACT_FINALIZE;
+  pthread_mutex_unlock(&plasma->action_mutex);
+  pthread_cond_broadcast(&plasma->action_condt);
+
+  /* Barrier and clear action */
+  plasma_barrier(plasma);
+  plasma->action = PLASMA_ACT_STAND_BY;
+
+#ifdef PLASMA_WITH_CUDA
+  CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[0]));
+#endif
+  // Join threads
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[core]));
+#endif
+
+    status = pthread_join(plasma->thread_id[core], &exitcodep);
+    if (status != 0) {
+      plasma_fatal_error("PLASMA_Finalize", "pthread_join() failed");
+      return status;
+    }
+  }
+  plasma_barrier_finalize(plasma);
+  plasma_barrier_bw_finalize(plasma);
+
+  /* Unbind main thread */
+  plasma_unsetaffinity();
+
+  /* Destroy thread attributes */
+  status = pthread_attr_destroy(&plasma->thread_attr);
+  if (status != 0)
+    plasma_fatal_error("PLASMA_Finalize", "pthread_attr_destroy() failed");
+
+  /* Destroy topology */
+  plasma_topology_finalize();
+
+  status = plasma_context_remove(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Finalize", "plasma_context_remove() failed");
+    return status;
+  }
+
+  /* Restore the concurency */
+  /* actually it's really bad, we shoulde set the concurrency only
+   * if it's not already done and restore it only we had change it */
+  pthread_setconcurrency(0);
+
+  return PLASMA_SUCCESS;
+}
+
+int PLASMA_Finalize_Reuse_Data_Static_Table() {
+  int core;
+  int status;
+  void *exitcodep;
+  plasma_context_t *plasma;
+
+  plasma = plasma_context_self();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Finalize()", "PLASMA not initialized");
+    return PLASMA_ERR_NOT_INITIALIZED;
+  }
+
+  /* Terminate the dynamic scheduler */
+  plasma_dynamic_sync();
+
+  /* Free quark structures */
+  QUARK_Free(plasma->quark);
+
+  /* Set termination action */
+  pthread_mutex_lock(&plasma->action_mutex);
+  plasma->action = PLASMA_ACT_FINALIZE;
+  pthread_mutex_unlock(&plasma->action_mutex);
+  pthread_cond_broadcast(&plasma->action_condt);
+
+  /* Barrier and clear action */
+  plasma_barrier(plasma);
+  plasma->action = PLASMA_ACT_STAND_BY;
+
+#ifdef PLASMA_WITH_CUDA
+  CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream[0]));
+  CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream_c2g[0]));
+  CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream_g2c[0]));
+  CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[0]));
+#endif
+  // Join threads
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream[core]));
+    CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream_c2g[core]));
+    CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream_g2c[core]));
+    CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[core]));
+#endif
+
+    status = pthread_join(plasma->thread_id[core], &exitcodep);
+    if (status != 0) {
+      plasma_fatal_error("PLASMA_Finalize", "pthread_join() failed");
+      return status;
+    }
+  }
+  plasma_barrier_finalize(plasma);
+  plasma_barrier_bw_finalize(plasma);
+
+  /* Unbind main thread */
+  plasma_unsetaffinity();
+
+  /* Destroy thread attributes */
+  status = pthread_attr_destroy(&plasma->thread_attr);
+  if (status != 0)
+    plasma_fatal_error("PLASMA_Finalize", "pthread_attr_destroy() failed");
+
+  /* Destroy topology */
+  plasma_topology_finalize();
+
+  status = plasma_context_remove(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Finalize", "plasma_context_remove() failed");
+    return status;
+  }
+
+  /* Restore the concurency */
+  /* actually it's really bad, we shoulde set the concurrency only
+   * if it's not already done and restore it only we had change it */
+  pthread_setconcurrency(0);
+
+  return PLASMA_SUCCESS;
+}
+#endif
+#endif
+
+#ifdef PLASMA_WITH_CUDA
+namespace plasma::dist {
+int PLASMA_Init_GPU_Dist(const RankMapping *rankMapping) {
+  return PLASMA_Init_Affinity_GPU_Dist(rankMapping, NULL);
+}
+
+int PLASMA_Init_Affinity_GPU_Dist(const RankMapping *rankMapping,
+                                  int *coresbind) {
+  int cores = rankMapping->size();
+  plasma_context_t *plasma;
+  int status;
+  int core;
+
+  /* Create context and insert in the context map */
+  plasma = plasma_context_create();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_create() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+  status = plasma_context_insert(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Init", "plasma_context_insert() failed");
+    return PLASMA_ERR_OUT_OF_RESOURCES;
+  }
+#ifdef PLASMA_WITH_HPCASIA24
+  plasma->benchmark_state = NULL;
+#endif
+
+  /* Init number of cores and topology */
+  plasma_topology_init();
+
+  /* Set number of cores */
+  if (cores < 1) {
+    plasma->world_size = plasma_get_numthreads();
+    if (plasma->world_size == -1) {
+      plasma->world_size = 1;
+      plasma_warning(
+          "PLASMA_Init",
+          "Could not find the number of cores: the thread number is set to 1");
+    }
+  } else
+    plasma->world_size = cores;
+
+  if (plasma->world_size <= 0) {
+    plasma_fatal_error("PLASMA_Init", "failed to get system size");
+    return PLASMA_ERR_NOT_FOUND;
+  }
+  /* Check if not more cores than the hard limit */
+  if (plasma->world_size > CONTEXT_THREADS_MAX) {
+    plasma_fatal_error("PLASMA_Init", "not supporting so many cores");
+    return PLASMA_ERR_INTERNAL_LIMIT;
+  }
+
+  /* Get the size of each NUMA node */
+  plasma->group_size = plasma_get_numthreads_numa();
+  while (((plasma->world_size) % (plasma->group_size)) != 0)
+    (plasma->group_size)--;
+
+  /* Initialize barriers */
+  plasma_barrier_init(plasma);
+  plasma_barrier_bw_init(plasma);
+
+  /* Initialize default thread attributes */
+  status = pthread_attr_init(&plasma->thread_attr);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_init() failed");
+    return status;
+  }
+  /* Set scope to system */
+  status = pthread_attr_setscope(&plasma->thread_attr, PTHREAD_SCOPE_SYSTEM);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_attr_setscope() failed");
+    return status;
+  }
+  /* Set concurrency */
+  status = pthread_setconcurrency(plasma->world_size);
+  if (status != 0) {
+    plasma_fatal_error("PLASMA_Init", "pthread_setconcurrency() failed");
+    return status;
+  }
+  /*  Launch threads */
+  memset(plasma->thread_id, 0, CONTEXT_THREADS_MAX * sizeof(pthread_t));
+  if (coresbind != NULL) {
+    memcpy(plasma->thread_bind, coresbind, plasma->world_size * sizeof(int));
+  } else {
+    plasma_get_affthreads(plasma->thread_bind);
+  }
+  /* Assign rank and thread ID for the master */
+  plasma->thread_rank[0] = 0;
+  plasma->thread_id[0] = pthread_self();
+  int currentDevice;
+  CHECK_CUDA(cudaGetDevice(&currentDevice));
+#ifdef PLASMA_WITH_CUDA
+  CHECK_CUDA(cudaSetDevice(rankMapping->find(0)->second));
+  CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream[0],
+                                       cudaStreamNonBlocking));
+  CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[0]));
+  CHECK_CUBLAS(
+      cublasSetStream(plasma->cublas_handle[0], plasma->cuda_stream[0]));
+  CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[0]));
+  CHECK_CUSOLVER(
+      cusolverDnSetStream(plasma->cusolver_handle[0], plasma->cuda_stream[0]));
+#endif
+
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    CHECK_CUDA(cudaSetDevice(rankMapping->find(core)->second));
+    CHECK_CUDA(cudaStreamCreateWithFlags(&plasma->cuda_stream[core],
+                                         cudaStreamNonBlocking));
+    CHECK_CUBLAS(cublasCreate(&plasma->cublas_handle[core]));
+    CHECK_CUBLAS(cublasSetStream(plasma->cublas_handle[core],
+                                 plasma->cuda_stream[core]));
+    CHECK_CUSOLVER(cusolverDnCreate(&plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnCreateParams(&plasma->cusolver_params[core]));
+    CHECK_CUSOLVER(cusolverDnSetStream(plasma->cusolver_handle[core],
+                                       plasma->cuda_stream[core]));
+#endif
+    plasma->thread_rank[core] = core;
+    pthread_create(&plasma->thread_id[core], &plasma->thread_attr,
+                   plasma_parallel_section, (void *)plasma);
+  }
+  CHECK_CUDA(cudaSetDevice(currentDevice));
+
+  /* Ensure BLAS are sequential and set thread affinity for the master */
+#if defined(PLASMA_WITH_MKL)
+#if defined(__ICC) || defined(__INTEL_COMPILER)
+  kmp_set_defaults("KMP_AFFINITY=disabled");
+#endif
+#endif
+
+  /* Initialize the dynamic scheduler */
+  plasma->quark = QUARK_Setup(plasma->world_size);
+  auto rankMappingIntPtr = new int[rankMapping->size()];
+  int deviceCount;
+  cudaGetDeviceCount(&deviceCount);
+  auto rootRankOfDeviceIntPtr = new int[deviceCount];
+  for (int i = 0; i < deviceCount; ++i) {
+    rootRankOfDeviceIntPtr[i] = -1;
+  }
+  for (auto [k, v] : *rankMapping) {
+    rankMappingIntPtr[k] = v;
+    rootRankOfDeviceIntPtr[v] = k;
+  }
+  plasma->rankMapping = rankMappingIntPtr;
+  plasma->rootRankOfDevice = rootRankOfDeviceIntPtr;
+  plasma->uniqueDevice = 0;
+  for (int i = 0; i < deviceCount; ++i) {
+    if (rootRankOfDeviceIntPtr[i] != -1) {
+      plasma->uniqueDevice++;
+    }
+  }
+  plasma->dataTable =
+      static_cast<void **>(malloc(deviceCount * sizeof(void *)));
+  plasma_barrier(plasma);
+
+  plasma_setlapack_sequential(plasma);
+
+  return PLASMA_SUCCESS;
+}
+
+int PLASMA_Finalize_GPU_Dist() {
+  int core;
+  int status;
+  void *exitcodep;
+  plasma_context_t *plasma;
+
+  plasma = plasma_context_self();
+  if (plasma == NULL) {
+    plasma_fatal_error("PLASMA_Finalize()", "PLASMA not initialized");
+    return PLASMA_ERR_NOT_INITIALIZED;
+  }
+
+  /* Terminate the dynamic scheduler */
+  plasma_dynamic_sync();
+
+  /* Free quark structures */
+  QUARK_Free(plasma->quark);
+
+  /* Set termination action */
+  pthread_mutex_lock(&plasma->action_mutex);
+  plasma->action = PLASMA_ACT_FINALIZE;
+  pthread_mutex_unlock(&plasma->action_mutex);
+  pthread_cond_broadcast(&plasma->action_condt);
+
+  /* Barrier and clear action */
+  plasma_barrier(plasma);
+  plasma->action = PLASMA_ACT_STAND_BY;
+
+  int currentDevice;
+  CHECK_CUDA(cudaGetDevice(&currentDevice));
+#ifdef PLASMA_WITH_CUDA
+  CHECK_CUDA(cudaSetDevice(plasma->rankMapping[0]));
+  CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream[0]));
+  CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[0]));
+  CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[0]));
+#endif
+  // Join threads
+  for (core = 1; core < plasma->world_size; core++) {
+#ifdef PLASMA_WITH_CUDA
+    CHECK_CUDA(cudaSetDevice(plasma->rankMapping[core]));
+    CHECK_CUDA(cudaStreamDestroy(plasma->cuda_stream[core]));
+    CHECK_CUBLAS(cublasDestroy(plasma->cublas_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroy(plasma->cusolver_handle[core]));
+    CHECK_CUSOLVER(cusolverDnDestroyParams(plasma->cusolver_params[core]));
+#endif
+
+    status = pthread_join(plasma->thread_id[core], &exitcodep);
+    if (status != 0) {
+      plasma_fatal_error("PLASMA_Finalize", "pthread_join() failed");
+      return status;
+    }
+  }
+  CHECK_CUDA(cudaSetDevice(currentDevice));
+  delete[] plasma->rankMapping;
+  plasma->rankMapping = nullptr;
+  delete[] plasma->rootRankOfDevice;
+  plasma->rootRankOfDevice = nullptr;
+  free(plasma->dataTable);
+  plasma->dataTable = nullptr;
+  plasma_barrier_finalize(plasma);
+  plasma_barrier_bw_finalize(plasma);
+
+  /* Unbind main thread */
+  plasma_unsetaffinity();
+
+  /* Destroy thread attributes */
+  status = pthread_attr_destroy(&plasma->thread_attr);
+  if (status != 0)
+    plasma_fatal_error("PLASMA_Finalize", "pthread_attr_destroy() failed");
+
+  /* Destroy topology */
+  plasma_topology_finalize();
+
+  status = plasma_context_remove(plasma, pthread_self());
+  if (status != PLASMA_SUCCESS) {
+    plasma_fatal_error("PLASMA_Finalize", "plasma_context_remove() failed");
+    return status;
+  }
+
+  /* Restore the concurency */
+  /* actually it's really bad, we shoulde set the concurrency only
+   * if it's not already done and restore it only we had change it */
+  pthread_setconcurrency(0);
+
+  return PLASMA_SUCCESS;
+}
+
+RankMapping getVerifyRankMapping() {
+  RankMapping rankMapping{};
+  int count;
+  cudaGetDeviceCount(&count);
+  int rank = 0;
+  for (int i = 0; i < count; ++i) {
+    for (int j = 0; j < 4; ++j) {
+      rankMapping.insert({rank, i});
+      rank++;
+    }
+  }
+  return rankMapping;
+}
+}  // namespace plasma::dist
+#endif
