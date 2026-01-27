@@ -21,11 +21,15 @@
 #include <context.h>
 #include <math.h>
 #include <plasma.h>
+#include <plasma_d_mixed.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#undef max
+#undef min
+#include <chrono>
 #include <iostream>
+#include <fstream>
 #ifdef PLASMA_WITH_MKL
 #include <mkl_lapacke.h>
 #else
@@ -38,28 +42,63 @@ int check_factorization(int, double *, double *, int, int);
 int IONE = 1;
 int ISEED[4] = {0, 0, 0, 1}; /* initial seed for dlarnv() */
 
-int main() {
+int main(int argc, char **argv) {
   int cores = 2;
-  int N = 256;
+  int N = 1024; // match your covariance size
+  int nb = 128;
+  std::string bin_path = "/home/abduraa/MX_project/logs/my_cov_weak_1024.bin";
+  std::string format;
 
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> A{N, N};
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> L{N, N};
+  for (int i = 1; i < argc; ++i) {
+    std::string arg = argv[i];
+    if (arg == "--n" && i + 1 < argc) {
+      N = std::stoi(argv[++i]);
+    } else if (arg == "--nb" && i + 1 < argc) {
+      nb = std::stoi(argv[++i]);
+    } else if (arg == "--bin" && i + 1 < argc) {
+      bin_path = argv[++i];
+    } else if (arg == "--cores" && i + 1 < argc) {
+      cores = std::stoi(argv[++i]);
+    } else if (arg == "--format" && i + 1 < argc) {
+      format = argv[++i];
+    }
+  }
+
+  if (!format.empty()) {
+    setenv("MX_FORCE_FORMAT", format.c_str(), 1);
+  }
+
+  std::vector<double> data(static_cast<size_t>(N) * N);
+  std::ifstream in(bin_path, std::ios::binary);
+  if (!in) {
+    throw std::runtime_error("cannot open input bin");
+  }
+  in.read(reinterpret_cast<char *>(data.data()),
+          static_cast<std::streamsize>(data.size() * sizeof(double)));
+  Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                            Eigen::RowMajor>>
+      A(data.data(), N, N);
+  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> L = A;
 
   PLASMA_Init(cores);
 
   plasma_context_t *plasma = plasma_context_self();
   plasma->autotuning_enabled = 0;
-  plasma->nb = 128;
+  plasma->nb = nb;  // tile size
 
-  A.setRandom();
-  A = (A * A.transpose()).eval();
-  A.diagonal().array() += N;
-  L = A;
+  auto start = std::chrono::high_resolution_clock::now();
 
-  const auto status = PLASMA_dpotrf_gpu(PlasmaLower, N, L.data(), N);
+  // Call the tile-first path to avoid the column-major → tile transform in
+  // PLASMA_dpotrf_gpu.
+  const auto status =
+      PLASMA_dpotrf_gpu_reuse_data_table_mixed_precision(PlasmaLower, N,
+                                                         L.data(), N);
   if (status != 0) {
     printf("factorization failed in %s:%d\n", __FILE__, __LINE__);
   }
+  auto duration = std::chrono::high_resolution_clock::now() - start;
+  // print duration
+  std::cout << "Runtime: " << duration.count() << " microseconds" << std::endl;
 
   L.triangularView<Eigen::StrictlyUpper>().setZero();
   double error = 0;

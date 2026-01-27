@@ -38,6 +38,7 @@ CUBLASAPI cublasStatus_t CUBLASWINAPI mixedKernelsSyrkExRowMajorNTN(
   switch (Atype) {
     case CUDA_R_8F_E4M3:
     case CUDA_R_16F:
+    case CUDA_R_16BF:
     case CUDA_R_32F:
       status = mixedKernelsGemmExRowMajorNTN(
           handle, cublasLtMeta, n, n, k, alpha, A, Atype, lda, A, Atype, lda, 0,

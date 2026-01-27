@@ -1,0 +1,246 @@
+--- 1. Cleaning and Setting up Build Directory ---
+--- 2. Running CMake Configuration ---
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-11 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-11 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- MKL NOT ENABLED
+-- Found BLAS: /usr/lib/x86_64-linux-gnu/libopenblas.so
+-- Found LAPACK: /usr/lib/x86_64-linux-gnu/libopenblas.so
+-- Found OpenMP_C: -fopenmp (found version "4.5")
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5")
+-- 
+-- Configured Eigen 5.0.0-dev+c18f5bc9
+-- 
+-- Found CUDAToolkit: /usr/local/cuda-12.5/targets/x86_64-linux/include (found version "12.5.82")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE
+-- The CUDA compiler identification is NVIDIA 12.5.82
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /usr/local/cuda-12.5/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Configuring done (3.6s)
+-- Generating done (0.2s)
+-- Build files have been written to: /home/abduraa/MX_project/ooc-cholesky/build
+--- 3. Building Libraries (Plasma and mixed_kernels) ---
+[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/syrk.cpp.o
+[  3%] Building CUDA object mixed_kernels/CMakeFiles/mixed_kernels.dir/casting.cu.o
+[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/gemm.cpp.o
+[  4%] Linking CXX static library libmixed_kernels.a
+[  4%] Built target mixed_kernels
+[ 12%] Building C object CMakeFiles/plasma.dir/control/allocate.c.o
+[ 12%] Building CXX object CMakeFiles/plasma.dir/control/control.cpp.o
+[ 12%] Building C object CMakeFiles/plasma.dir/control/descriptor.c.o
+[ 12%] Building C object CMakeFiles/plasma.dir/control/context.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/plasma_threadsetting.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/quark/quark.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/plasmaos.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/async.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/auxiliary.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/quark/icl_hash.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/core_blas/global.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/quark/quarkos.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/core_blas/core_dsyrk.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/descriptor.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/quark/icl_list.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgemm.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/core_dlacpy.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_alloc.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/core_dtrsm.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpotrf.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/core_blas/gkkleader.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/core_dshift.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpotrf.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgetrip.c.o
+[ 39%] Building C object CMakeFiles/plasma.dir/control/pdtile.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgemm.c.o
+[ 28%] Building C object CMakeFiles/plasma.dir/core_blas/primes.c.o
+[ 39%] Building CXX object CMakeFiles/plasma.dir/control/pdtile_dist.cpp.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrsm.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dsyrk.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dlacpy.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplgsy.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas/core_dswpab.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dplgsy.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dshift.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgetrip.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/dlacpy.c.o
+[ 53%] Building C object CMakeFiles/plasma.dir/compute/dpotrf.c.o
+[ 71%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_mixed_precision.cpp.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/pdshift.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/pdgetmi2.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpltmg.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpltmg.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/dgecfi.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/pdplgsy.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/pdpack.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrmm.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/dgecfi2.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplrnt.c.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/pdlacpy.c.o
+[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_hpcasia24.cpp.o
+[ 71%] Building C object CMakeFiles/plasma.dir/compute/dplgsy.c.o
+[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_mixed_precision.cpp.o
+[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist.cpp.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf_gpu.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/dpltmg.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdpltmg.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/dplrnt.c.o
+[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_hpcasia24.cpp.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/dpotrf_gpu.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/dgemm.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist_mixed_precision.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist.cpp.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdtrmm.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/dtrmm.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/dtrsm.c.o
+[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdtrsm.c.o
+[ 90%] Building CXX object CMakeFiles/plasma.dir/control/event.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist_mixed_precision.cpp.o
+[ 93%] Building CUDA object CMakeFiles/plasma.dir/compute/castType.cu.o
+[ 93%] Building CUDA object CMakeFiles/plasma.dir/mx_quant/mx_wrapper.cu.o
+[ 95%] Linking CXX static library libplasma.a
+[ 95%] Built target plasma
+[ 96%] Building C object CMakeFiles/example_dpotrf.dir/examples/example_dpotrf.c.o
+[ 97%] Building CXX object CMakeFiles/example_dpotrf_gpu.dir/examples/example_dpotrf_gpu.cpp.o
+[ 98%] Linking CXX executable example_dpotrf
+[ 98%] Built target example_dpotrf
+[100%] Linking CXX executable example_dpotrf_gpu
+[100%] Built target example_dpotrf_gpu
+--- 4. Moving to Examples and Compiling Custom CUDA Object (mx_wrapper.o) ---
+--- 5. Linking Final Executable (example_tiled_SPD) ---
+--- 6. Running the Mixed-Precision Executable ---
+[DEBUG] using NB=256 (autotune=0)
+
+[DEBUG] --- ENTERING makeMixedPrecisionTiledArray ---
+[DEBUG] nb used: 256, nt: 8
+
+[DEBUG] Epsilon Ratio for Tile (0, 0): 2.87942
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (1, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (1, 1): 2.84699
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (2, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (2, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (2, 2): 2.78561
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (3, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (3, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (3, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (3, 3): 2.86693
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (4, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (4, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (4, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (4, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (4, 4): 2.79625
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (5, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (5, 5): 2.8502
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (6, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (6, 6): 2.74936
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (7, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 65536, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (7, 7): 2.8501
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+FLOPS: 0.032118
+[TIMES] tile+quant(us): 269080, factor(us): 89177, uncompress(us): 0
+Runtime: 467015814 microseconds
+error: 2.09971e-14
+--- Script Execution Complete ---

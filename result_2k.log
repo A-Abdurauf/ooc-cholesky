@@ -1,0 +1,1721 @@
+--- 1. Cleaning and Setting up Build Directory ---
+--- 2. Running CMake Configuration ---
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-11 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-11 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- MKL NOT ENABLED
+-- Found BLAS: /usr/lib/x86_64-linux-gnu/libopenblas.so
+-- Found LAPACK: /usr/lib/x86_64-linux-gnu/libopenblas.so
+-- Found OpenMP_C: -fopenmp (found version "4.5")
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5")
+-- 
+-- Configured Eigen 5.0.0-dev+c18f5bc9
+-- 
+-- Found CUDAToolkit: /usr/local/cuda-12.5/targets/x86_64-linux/include (found version "12.5.82")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE
+-- The CUDA compiler identification is NVIDIA 12.5.82
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /usr/local/cuda-12.5/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Configuring done (3.9s)
+-- Generating done (0.2s)
+-- Build files have been written to: /home/abduraa/MX_project/ooc-cholesky/build
+--- 3. Building Libraries (Plasma and mixed_kernels) ---
+[  3%] Building CUDA object mixed_kernels/CMakeFiles/mixed_kernels.dir/casting.cu.o
+[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/syrk.cpp.o
+[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/gemm.cpp.o
+[  4%] Linking CXX static library libmixed_kernels.a
+[  4%] Built target mixed_kernels
+[  8%] Building C object CMakeFiles/plasma.dir/control/context.c.o
+[  9%] Building C object CMakeFiles/plasma.dir/control/descriptor.c.o
+[  9%] Building CXX object CMakeFiles/plasma.dir/control/control.cpp.o
+[ 17%] Building C object CMakeFiles/plasma.dir/control/async.c.o
+[ 17%] Building C object CMakeFiles/plasma.dir/control/auxiliary.c.o
+[ 23%] Building C object CMakeFiles/plasma.dir/quark/quarkos.c.o
+[ 23%] Building C object CMakeFiles/plasma.dir/control/plasmaos.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/quark/icl_hash.c.o
+[ 23%] Building C object CMakeFiles/plasma.dir/core_blas/global.c.o
+[ 23%] Building C object CMakeFiles/plasma.dir/quark/icl_list.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/plasma_threadsetting.c.o
+[ 23%] Building C object CMakeFiles/plasma.dir/control/allocate.c.o
+[ 23%] Building C object CMakeFiles/plasma.dir/quark/quark.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/primes.c.o
+[ 32%] Building CXX object CMakeFiles/plasma.dir/control/pdtile_dist.cpp.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/descriptor.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/gkkleader.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dshift.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/control/pdtile.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/core_dswpab.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_alloc.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgetrip.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrsm.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplgsy.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dlacpy.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgemm.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpotrf.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/compute/dgecfi2.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dlacpy.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dtrsm.c.o
+[ 44%] Building C object CMakeFiles/plasma.dir/core_blas/core_dsyrk.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplrnt.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/compute/pdgetmi2.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpotrf.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgetrip.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/compute/pdpack.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dsyrk.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dshift.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/compute/dpotrf.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/compute/pdshift.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgemm.c.o
+[ 59%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dplgsy.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/pdplgsy.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dplgsy.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dlacpy.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/pdlacpy.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpltmg.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrmm.c.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdtrmm.c.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdpltmg.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpltmg.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dpltmg.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dtrsm.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dplrnt.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/pdtrsm.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_mixed_precision.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/control/event.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist.cpp.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dtrmm.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_hpcasia24.cpp.o
+[ 93%] Building CUDA object CMakeFiles/plasma.dir/compute/castType.cu.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_mixed_precision.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist_mixed_precision.cpp.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf_gpu.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist_mixed_precision.cpp.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/dpotrf_gpu.c.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dgemm.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_hpcasia24.cpp.o
+[ 79%] Building C object CMakeFiles/plasma.dir/compute/dgecfi.c.o
+[ 79%] Building CUDA object CMakeFiles/plasma.dir/mx_quant/mx_wrapper.cu.o
+[ 95%] Linking CXX static library libplasma.a
+[ 95%] Built target plasma
+[ 96%] Building C object CMakeFiles/example_dpotrf.dir/examples/example_dpotrf.c.o
+[ 97%] Building CXX object CMakeFiles/example_dpotrf_gpu.dir/examples/example_dpotrf_gpu.cpp.o
+[ 98%] Linking CXX executable example_dpotrf
+[100%] Linking CXX executable example_dpotrf_gpu
+[100%] Built target example_dpotrf_gpu
+--- 4. Moving to Examples and Compiling Custom CUDA Object (mx_wrapper.o) ---
+--- 5. Linking Final Executable (example_tiled_SPD) ---
+--- 6. Running the Mixed-Precision Executable ---
+[DEBUG] using NB=64 (autotune=0)
+
+[DEBUG] --- ENTERING makeMixedPrecisionTiledArray ---
+[DEBUG] nb used: 64, nt: 32
+
+[DEBUG] Epsilon Ratio for Tile (0, 0): 1.97046
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (1, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (1, 1): 1.96145
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (2, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (2, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (2, 2): 1.96509
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (3, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (3, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (3, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (3, 3): 1.96581
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (4, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (4, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (4, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (4, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (4, 4): 1.88513
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (5, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (5, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (5, 5): 1.96079
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (6, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (6, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (6, 6): 1.89648
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (7, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (7, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (7, 7): 1.95258
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (8, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (8, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (8, 8): 1.78507
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (9, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (9, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (9, 9): 1.94787
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (10, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (10, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (10, 10): 1.89862
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (11, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (11, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (11, 11): 1.96498
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (12, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (12, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (12, 12): 1.88844
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (13, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (13, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (13, 13): 1.96332
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (14, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (14, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (14, 14): 1.9156
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (15, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (15, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (15, 15): 1.96785
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (16, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (16, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (16, 16): 1.75588
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (17, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (17, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (17, 17): 1.95315
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (18, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (18, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (18, 18): 1.89169
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (19, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (19, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (19, 19): 1.94779
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (20, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (20, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (20, 20): 1.81857
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (21, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (21, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (21, 21): 1.94257
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (22, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (22, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (22, 22): 1.9075
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (23, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (23, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (23, 23): 1.94051
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (24, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (24, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (24, 24): 1.77015
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (25, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (25, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (25, 25): 1.92875
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (26, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (26, 25) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (26, 26): 1.91676
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (27, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 25) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (27, 26) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (27, 27): 1.95067
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (28, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 25) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 26) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (28, 27) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (28, 28): 1.8457
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (29, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 25) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 26) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 27) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (29, 28) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (29, 29): 1.96022
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (30, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 25) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 26) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 27) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 28) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (30, 29) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (30, 30): 1.90614
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+--- Tile (31, 0) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 1) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 2) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 3) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 4) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 5) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 6) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 7) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 8) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 9) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 10) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 11) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 12) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 13) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 14) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 15) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 16) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 17) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 18) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 19) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 20) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 21) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 22) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 23) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 24) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 25) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 26) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 27) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 28) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 29) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+--- Tile (31, 30) selected for CUDA_R_32F (MX E4M3 Quantization) ---
+  Tile Size: 4096, Global Max: 0
+  Launching mx_quantize_fp32_to_mx kernel (ebits=4, mbits=3, norm=448.0f)...
+
+[DEBUG] Epsilon Ratio for Tile (31, 31): 1.97517
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+FLOPS: 0.022359
+[TIMES] tile+quant(us): 570866, factor(us): 128097, uncompress(us): 0
+Runtime: 800685441 microseconds
+error: 9.76996e-15
+--- Script Execution Complete ---
