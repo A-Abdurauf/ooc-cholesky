@@ -2,6 +2,7 @@
 #define MX_QUANTIZE_CUH
 
 #include <cuda.h>
+#include <cuda_fp16.h>
 #include "common.cuh"
 
 //------------------------------------------------------
@@ -16,6 +17,15 @@ float quantize_mx_elem(float x,
                        float elem_max_norm,
                        RoundingMode rm)
 {
+    // Special-case MX_FP16 to match Eigen path:
+    // scale -> FP16 round-to-nearest-even -> rescale (no explicit clamp).
+    if (ebits == 5 && mbits == 10) {
+        float scaled = x / scale;
+        __half h = __float2half_rn(scaled);
+        float q = __half2float(h);
+        return q * scale;
+    }
+
     float scaled = x / scale;
 
     // saturate
