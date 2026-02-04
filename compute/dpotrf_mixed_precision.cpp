@@ -81,6 +81,23 @@ static int8_t computeScale(const float *data, size_t n) {
   return static_cast<int8_t>(scale);
 }
 
+static int computeScaleBits(const float *data, size_t n, int scale_bits) {
+  if (scale_bits <= 0) {
+    return static_cast<int>(computeScale(data, n));
+  }
+  float max_val = 0.0f;
+  for (size_t i = 0; i < n; ++i) {
+    max_val = std::fmax(max_val, std::fabs(data[i]));
+  }
+  if (max_val <= 0.0f) return 0;
+  int scale = static_cast<int>(std::floor(std::log2(max_val)));
+  const int max_scale = (1 << (scale_bits - 1)) - 1;
+  const int min_scale = - (1 << (scale_bits - 1));
+  if (scale > max_scale) scale = max_scale;
+  if (scale < min_scale) scale = min_scale;
+  return scale;
+}
+
 static float pow2(int exp) { return std::ldexp(1.0f, exp); }
 
 static float quantizeFp(float x, int ebits, int mbits, float max_norm) {
@@ -480,6 +497,12 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
           std::string target_low;
           const std::string fp32_bucket = bucket_format("MX_BUCKET_FP32");
           const std::string fp16_bucket = bucket_format("MX_BUCKET_FP16");
+          static const int fp32_scale_bits = []() {
+            const char *env = getenv("MX_FP32_SCALE_BITS");
+            if (!env) return 11;
+            int v = atoi(env);
+            return v > 0 ? v : 11;
+          }();
           if (has_forced) {
             if (fmt == "fp32") {
               force_fp32_all = true;
@@ -489,6 +512,8 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
               target_low = "bf16";
             } else if (fmt == "mx_fp16" || fmt == "mx_f16") {
               target_low = "mx_fp16";
+            } else if (fmt == "mx_fp32" || fmt == "mx_f32") {
+              target_low = "mx_fp32";
             } else if (fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" || fmt == "e4m3") {
               target_low = "mx_e4m3";
             } else if (fmt == "mx_e5m2" || fmt == "mx_fp8_e5m2" || fmt == "e5m2") {
@@ -593,6 +618,74 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                                        static_cast<size_t>(tile.n));
             }
           };
+          auto apply_mx_quant_fp64 = [&](const char *label, int ebits, int mbits,
+                                         float max_norm, int scale_bits) {
+            std::cout << "--- Tile (" << row << ", " << col
+                      << ") selected for CUDA_R_64F (" << label
+                      << " Quantization) ---" << std::endl;
+
+            tile.dtype = CUDA_R_64F;
+
+            size_t tile_size = tile.m * tile.n;
+            double *h_output = nullptr;
+
+            cudaMallocHost((void **)&tile.data, sizeof(double) * tile_size);
+            h_output = static_cast<double *>(tile.data);
+            g_pinned_tiles++;
+            g_pinned_bytes += sizeof(double) * tile_size;
+
+            std::vector<float> tmp(tile_size);
+            Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic,
+                         Eigen::RowMajor>>{
+              tmp.data(),
+              static_cast<Eigen::Index>(tile.m),
+              static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<float>();
+
+            const long total_elements = static_cast<long>(tile_size);
+            const bool block_mode = (mx_mode() == MxMode::Block);
+
+            const bool debug_tile = debug_tile_enabled() && debug_tile_match(row, col);
+            std::vector<float> pre_tile;
+            if (debug_tile) {
+              pre_tile.assign(tmp.begin(), tmp.end());
+              debug_dump_sample("pre-quant", tmp.data(), tile_size);
+            }
+
+            if (block_mode) {
+              for (size_t r = 0; r < static_cast<size_t>(tile.m); ++r) {
+                float *row = tmp.data() + r * static_cast<size_t>(tile.n);
+                const int row_scale = computeScaleBits(row, tile.n, scale_bits);
+                const float scale = pow2(row_scale);
+                const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                for (size_t c = 0; c < static_cast<size_t>(tile.n); ++c) {
+                  const float x = row[c] * inv_scale;
+                  const float q = quantizeFp(x, ebits, mbits, max_norm);
+                  row[c] = q * scale;
+                }
+              }
+            } else {
+              const int tile_scale = computeScaleBits(tmp.data(), tile_size, scale_bits);
+              const float scale = pow2(tile_scale);
+              const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+              for (size_t i = 0; i < tile_size; ++i) {
+                const float x = tmp[i] * inv_scale;
+                const float q = quantizeFp(x, ebits, mbits, max_norm);
+                tmp[i] = q * scale;
+              }
+            }
+
+            for (size_t i = 0; i < tile_size; ++i) {
+              h_output[i] = static_cast<double>(tmp[i]);
+            }
+
+            if (debug_tile) {
+              debug_dump_sample("post-quant", tmp.data(), tile_size);
+              debug_dump_tile_to_file(label, row, col,
+                                       pre_tile.data(), tmp.data(),
+                                       static_cast<size_t>(tile.m),
+                                       static_cast<size_t>(tile.n));
+            }
+          };
           auto apply_plain_fp_quant = [&](const char *label, int ebits, int mbits,
                                           float max_norm) {
             std::cout << "--- Tile (" << row << ", " << col
@@ -677,6 +770,13 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             if (v == "mx_fp16") {
               log_tile_target("mx_fp16");
               apply_mx_quant("MX_FP16", 5, 10, 65504.0f);
+              return true;
+            }
+            if (v == "mx_fp32" || v == "mx_f32") {
+              log_tile_target("mx_fp32");
+              apply_mx_quant_fp64("MX_FP32", 8, 23,
+                                  (std::numeric_limits<float>::max)(),
+                                  fp32_scale_bits);
               return true;
             }
             if (v == "mx_e4m3" || v == "e4m3") {
@@ -786,6 +886,11 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             } else if (target_low == "mx_fp16") {
               log_tile_target("mx_fp16");
               apply_mx_quant("MX_FP16", 5, 10, 65504.0f);
+            } else if (target_low == "mx_fp32") {
+              log_tile_target("mx_fp32");
+              apply_mx_quant_fp64("MX_FP32", 8, 23,
+                                  (std::numeric_limits<float>::max)(),
+                                  fp32_scale_bits);
             } else if (target_low == "mx_e5m2") {
               log_tile_target("mx_e5m2");
               apply_mx_quant("MX_E5M2", 5, 2, 57344.0f);

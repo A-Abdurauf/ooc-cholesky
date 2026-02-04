@@ -30,6 +30,8 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+#include <limits>
 #ifdef PLASMA_WITH_MKL
 #include <mkl_lapacke.h>
 #else
@@ -126,7 +128,8 @@ int main(int argc, char **argv) {
   Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
                             Eigen::RowMajor>>
       A(data.data(), N, N);
-  Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> L = A;
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> A_ref = A;
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> L = A;
 
   PLASMA_Init(cores);
 
@@ -150,10 +153,42 @@ int main(int argc, char **argv) {
 
   L.triangularView<Eigen::StrictlyUpper>().setZero();
   double error = 0;
-  A = A.selfadjointView<Eigen::Lower>();
-  error = (A - L * L.transpose()).array().abs().rowwise().sum().maxCoeff();
+  A_ref = A_ref.selfadjointView<Eigen::Lower>();
+  error = (A_ref - L * L.transpose()).array().abs().rowwise().sum().maxCoeff();
 
   std::cout << "error: " << error << std::endl;
+
+  // KL divergence between N(0, Σ0) and N(0, Σ1)
+  // Σ0 = A_ref, Σ1 = L * L^T
+  double kl_divergence = std::numeric_limits<double>::quiet_NaN();
+  const int n = N;
+  if (n > 0) {
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Y =
+        L.triangularView<Eigen::Lower>().solve(A_ref);
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> X =
+        L.transpose().triangularView<Eigen::Upper>().solve(Y);
+
+    const double trace = X.trace();
+    Eigen::LLT<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> llt(X);
+    if (llt.info() == Eigen::Success) {
+      const auto &Lx = llt.matrixL();
+      double logdet = 0.0;
+      for (int i = 0; i < n; ++i) {
+        const double d = Lx(i, i);
+        if (d <= 0.0) {
+          logdet = std::numeric_limits<double>::quiet_NaN();
+          break;
+        }
+        logdet += 2.0 * std::log(d);
+      }
+      if (std::isfinite(logdet)) {
+        kl_divergence = 0.5 * (trace - logdet - static_cast<double>(n));
+      }
+    }
+  }
+
+  std::cout << std::setprecision(16)
+            << "kl_divergence: " << kl_divergence << std::endl;
 
   PLASMA_Finalize();
 
