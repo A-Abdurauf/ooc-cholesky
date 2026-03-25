@@ -1,0 +1,4 @@
+nohup: ignoring input
+Found 5 weak-correlation bin files.
+[NB_MAP] my_cov_weak_20k.bin -> n=20000, nb=2048
+=== BIN=/home/abduraa/MX_project/logs/my_cov_weak_20k.bin MX_MODE=tile NB=2048 EPS=1e-8 FORMAT=e4m3 FP32_BUCKET=fp32 FP16_BUCKET=fp16 ===

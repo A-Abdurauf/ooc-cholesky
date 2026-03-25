@@ -1,0 +1,583 @@
+--- 1. Cleaning and Setting up Build Directory ---
+--- 2. Running CMake Configuration ---
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/gcc-11 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/g++-11 - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- MKL NOT ENABLED
+-- Found BLAS: /usr/lib/x86_64-linux-gnu/libopenblas.so
+-- Found LAPACK: /usr/lib/x86_64-linux-gnu/libopenblas.so
+-- Found OpenMP_C: -fopenmp (found version "4.5")
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5")
+-- 
+-- Configured Eigen 5.0.0-dev+6ede62db
+-- 
+-- Found CUDAToolkit: /usr/local/cuda-12.5/targets/x86_64-linux/include (found version "12.5.82")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE
+-- The CUDA compiler identification is NVIDIA 12.5.82
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /usr/local/cuda-12.5/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Configuring done (3.8s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/abduraa/MX_project/ooc-cholesky/build
+--- 3. Building Libraries (Plasma and mixed_kernels) ---
+[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/syrk.cpp.o
+[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/gemm.cpp.o
+[  3%] Building CUDA object mixed_kernels/CMakeFiles/mixed_kernels.dir/casting.cu.o
+[  4%] Linking CXX static library libmixed_kernels.a
+[  4%] Built target mixed_kernels
+[ 12%] Building C object CMakeFiles/plasma.dir/control/context.c.o
+[ 12%] Building CXX object CMakeFiles/plasma.dir/control/control.cpp.o
+[ 14%] Building C object CMakeFiles/plasma.dir/control/descriptor.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/auxiliary.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/plasma_threadsetting.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/allocate.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/quark/quark.c.o
+[ 29%] Building C object CMakeFiles/plasma.dir/core_blas/gkkleader.c.o
+[ 14%] Building C object CMakeFiles/plasma.dir/control/async.c.o
+[ 18%] Building C object CMakeFiles/plasma.dir/control/plasmaos.c.o
+[ 29%] Building CXX object CMakeFiles/plasma.dir/control/pdtile_dist.cpp.o
+[ 29%] Building C object CMakeFiles/plasma.dir/quark/icl_hash.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/global.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_alloc.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dtrsm.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dplgsy.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/quark/icl_list.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/primes.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/core_blas/descriptor.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgetrip.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgemm.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/control/pdtile.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpotrf.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dswpab.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dsyrk.c.o
+[ 32%] Building C object CMakeFiles/plasma.dir/quark/quarkos.c.o
+[ 40%] Building C object CMakeFiles/plasma.dir/core_blas/core_dlacpy.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dlacpy.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplgsy.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dshift.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdgetmi2.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrsm.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgetrip.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpotrf.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dsyrk.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas/core_dshift.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdshift.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/compute/dpotrf.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgemm.c.o
+[ 76%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpltmg.c.o
+[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdpack.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dgecfi.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dtrmm.c.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdtrsm.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dtrsm.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_mixed_precision.cpp.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdpltmg.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/pdplgsy.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_hpcasia24.cpp.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dplrnt.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist_mixed_precision.cpp.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/dpotrf_gpu.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist_mixed_precision.cpp.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dpltmg.c.o
+[ 93%] Building CUDA object CMakeFiles/plasma.dir/mx_quant/mx_wrapper.cu.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/pdlacpy.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplrnt.c.o
+[ 93%] Building CUDA object CMakeFiles/plasma.dir/compute/castType.cu.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dgecfi2.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dgemm.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpltmg.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_hpcasia24.cpp.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dplgsy.c.o
+[ 77%] Building C object CMakeFiles/plasma.dir/compute/dlacpy.c.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdtrmm.c.o
+[ 93%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf_gpu.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/control/event.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_mixed_precision.cpp.o
+[ 77%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrmm.c.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist.cpp.o
+[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist.cpp.o
+[ 95%] Linking CXX static library libplasma.a
+[ 95%] Built target plasma
+[ 97%] Building C object CMakeFiles/example_dpotrf.dir/examples/example_dpotrf.c.o
+[ 97%] Building CXX object CMakeFiles/example_dpotrf_gpu.dir/examples/example_dpotrf_gpu.cpp.o
+[ 98%] Linking CXX executable example_dpotrf
+[ 98%] Built target example_dpotrf
+[100%] Linking CXX executable example_dpotrf_gpu
+[100%] Built target example_dpotrf_gpu
+--- 4. Moving to Examples and Compiling Custom CUDA Object (mx_wrapper.o) ---
+--- 5. Linking Final Executable (example_tiled_SPD) ---
+--- 6. Running the Mixed-Precision Executable ---
+[DEBUG] using NB=512 (autotune=0)
+
+[DEBUG] --- ENTERING makeMixedPrecisionTiledArray ---
+[DEBUG] nb used: 512, nt: 16
+
+[DEBUG] Epsilon Ratio for Tile (0, 0): 3.80979
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (0, 0) fp64
+[TILE_DTYPE] (0, 0) fp64
+---------------- Tile (1, 0) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (1, 0) fp32
+[TILE_DTYPE] (1, 0) fp32
+
+[DEBUG] Epsilon Ratio for Tile (1, 1): 3.80085
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (1, 1) fp64
+[TILE_DTYPE] (1, 1) fp64
+---------------- Tile (2, 0) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (2, 0) fp32
+[TILE_DTYPE] (2, 0) fp32
+---------------- Tile (2, 1) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (2, 1) fp32
+[TILE_DTYPE] (2, 1) fp32
+
+[DEBUG] Epsilon Ratio for Tile (2, 2): 3.776
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (2, 2) fp64
+[TILE_DTYPE] (2, 2) fp64
+---------------- Tile (3, 0) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (3, 0) fp32
+[TILE_DTYPE] (3, 0) fp32
+---------------- Tile (3, 1) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (3, 1) fp32
+[TILE_DTYPE] (3, 1) fp32
+---------------- Tile (3, 2) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (3, 2) fp32
+[TILE_DTYPE] (3, 2) fp32
+
+[DEBUG] Epsilon Ratio for Tile (3, 3): 3.79438
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (3, 3) fp64
+[TILE_DTYPE] (3, 3) fp64
+[TILE_TARGET] (4, 0) fp16
+[TILE_DTYPE] (4, 0) fp16
+---------------- Tile (4, 1) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (4, 1) fp32
+[TILE_DTYPE] (4, 1) fp32
+---------------- Tile (4, 2) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (4, 2) fp32
+[TILE_DTYPE] (4, 2) fp32
+---------------- Tile (4, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (4, 3) fp32
+[TILE_DTYPE] (4, 3) fp32
+
+[DEBUG] Epsilon Ratio for Tile (4, 4): 3.74837
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (4, 4) fp64
+[TILE_DTYPE] (4, 4) fp64
+[TILE_TARGET] (5, 0) mx_e5m2
+--- Tile (5, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 4.49776e-08, Mode: block
+[TILE_DTYPE] (5, 0) fp32
+---------------- Tile (5, 1) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (5, 1) fp32
+[TILE_DTYPE] (5, 1) fp32
+---------------- Tile (5, 2) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (5, 2) fp32
+[TILE_DTYPE] (5, 2) fp32
+---------------- Tile (5, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (5, 3) fp32
+[TILE_DTYPE] (5, 3) fp32
+---------------- Tile (5, 4) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (5, 4) fp32
+[TILE_DTYPE] (5, 4) fp32
+
+[DEBUG] Epsilon Ratio for Tile (5, 5): 3.7851
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (5, 5) fp64
+[TILE_DTYPE] (5, 5) fp64
+[TILE_TARGET] (6, 0) fp16
+[TILE_DTYPE] (6, 0) fp16
+---------------- Tile (6, 1) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (6, 1) fp32
+[TILE_DTYPE] (6, 1) fp32
+---------------- Tile (6, 2) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (6, 2) fp32
+[TILE_DTYPE] (6, 2) fp32
+---------------- Tile (6, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (6, 3) fp32
+[TILE_DTYPE] (6, 3) fp32
+---------------- Tile (6, 4) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (6, 4) fp32
+[TILE_DTYPE] (6, 4) fp32
+---------------- Tile (6, 5) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (6, 5) fp32
+[TILE_DTYPE] (6, 5) fp32
+
+[DEBUG] Epsilon Ratio for Tile (6, 6): 3.7692
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (6, 6) fp64
+[TILE_DTYPE] (6, 6) fp64
+[TILE_TARGET] (7, 0) mx_e5m2
+--- Tile (7, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 3.66632e-09, Mode: block
+[TILE_DTYPE] (7, 0) fp32
+[TILE_TARGET] (7, 1) fp16
+[TILE_DTYPE] (7, 1) fp16
+[TILE_TARGET] (7, 2) fp16
+[TILE_DTYPE] (7, 2) fp16
+---------------- Tile (7, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (7, 3) fp32
+[TILE_DTYPE] (7, 3) fp32
+---------------- Tile (7, 4) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (7, 4) fp32
+[TILE_DTYPE] (7, 4) fp32
+---------------- Tile (7, 5) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (7, 5) fp32
+[TILE_DTYPE] (7, 5) fp32
+---------------- Tile (7, 6) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (7, 6) fp32
+[TILE_DTYPE] (7, 6) fp32
+
+[DEBUG] Epsilon Ratio for Tile (7, 7): 3.78934
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (7, 7) fp64
+[TILE_DTYPE] (7, 7) fp64
+[TILE_TARGET] (8, 0) fp16
+[TILE_DTYPE] (8, 0) fp16
+[TILE_TARGET] (8, 1) fp16
+[TILE_DTYPE] (8, 1) fp16
+---------------- Tile (8, 2) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (8, 2) fp32
+[TILE_DTYPE] (8, 2) fp32
+---------------- Tile (8, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (8, 3) fp32
+[TILE_DTYPE] (8, 3) fp32
+---------------- Tile (8, 4) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (8, 4) fp32
+[TILE_DTYPE] (8, 4) fp32
+[TILE_TARGET] (8, 5) fp16
+[TILE_DTYPE] (8, 5) fp16
+[TILE_TARGET] (8, 6) fp16
+[TILE_DTYPE] (8, 6) fp16
+---------------- Tile (8, 7) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (8, 7) fp32
+[TILE_DTYPE] (8, 7) fp32
+
+[DEBUG] Epsilon Ratio for Tile (8, 8): 3.79896
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (8, 8) fp64
+[TILE_DTYPE] (8, 8) fp64
+[TILE_TARGET] (9, 0) fp16
+[TILE_DTYPE] (9, 0) fp16
+[TILE_TARGET] (9, 1) fp16
+[TILE_DTYPE] (9, 1) fp16
+---------------- Tile (9, 2) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (9, 2) fp32
+[TILE_DTYPE] (9, 2) fp32
+---------------- Tile (9, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (9, 3) fp32
+[TILE_DTYPE] (9, 3) fp32
+---------------- Tile (9, 4) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (9, 4) fp32
+[TILE_DTYPE] (9, 4) fp32
+[TILE_TARGET] (9, 5) fp16
+[TILE_DTYPE] (9, 5) fp16
+---------------- Tile (9, 6) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (9, 6) fp32
+[TILE_DTYPE] (9, 6) fp32
+---------------- Tile (9, 7) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (9, 7) fp32
+[TILE_DTYPE] (9, 7) fp32
+---------------- Tile (9, 8) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (9, 8) fp32
+[TILE_DTYPE] (9, 8) fp32
+
+[DEBUG] Epsilon Ratio for Tile (9, 9): 3.794
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (9, 9) fp64
+[TILE_DTYPE] (9, 9) fp64
+[TILE_TARGET] (10, 0) mx_e5m2
+--- Tile (10, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 5.20215e-09, Mode: block
+[TILE_DTYPE] (10, 0) fp32
+[TILE_TARGET] (10, 1) mx_e5m2
+--- Tile (10, 1) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.20536e-08, Mode: block
+[TILE_DTYPE] (10, 1) fp32
+[TILE_TARGET] (10, 2) fp16
+[TILE_DTYPE] (10, 2) fp16
+[TILE_TARGET] (10, 3) fp16
+[TILE_DTYPE] (10, 3) fp16
+[TILE_TARGET] (10, 4) fp16
+[TILE_DTYPE] (10, 4) fp16
+[TILE_TARGET] (10, 5) mx_e5m2
+--- Tile (10, 5) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 2.61842e-09, Mode: block
+[TILE_DTYPE] (10, 5) fp32
+[TILE_TARGET] (10, 6) fp16
+[TILE_DTYPE] (10, 6) fp16
+[TILE_TARGET] (10, 7) fp16
+[TILE_DTYPE] (10, 7) fp16
+---------------- Tile (10, 8) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (10, 8) fp32
+[TILE_DTYPE] (10, 8) fp32
+---------------- Tile (10, 9) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (10, 9) fp32
+[TILE_DTYPE] (10, 9) fp32
+
+[DEBUG] Epsilon Ratio for Tile (10, 10): 3.79118
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (10, 10) fp64
+[TILE_DTYPE] (10, 10) fp64
+[TILE_TARGET] (11, 0) mx_e5m2
+--- Tile (11, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 4.25683e-09, Mode: block
+[TILE_DTYPE] (11, 0) fp32
+[TILE_TARGET] (11, 1) mx_e5m2
+--- Tile (11, 1) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 4.91181e-09, Mode: block
+[TILE_DTYPE] (11, 1) fp32
+[TILE_TARGET] (11, 2) fp16
+[TILE_DTYPE] (11, 2) fp16
+[TILE_TARGET] (11, 3) fp16
+[TILE_DTYPE] (11, 3) fp16
+[TILE_TARGET] (11, 4) fp16
+[TILE_DTYPE] (11, 4) fp16
+[TILE_TARGET] (11, 5) mx_e5m2
+--- Tile (11, 5) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 9.69188e-10, Mode: block
+[TILE_DTYPE] (11, 5) fp32
+[TILE_TARGET] (11, 6) fp16
+[TILE_DTYPE] (11, 6) fp16
+[TILE_TARGET] (11, 7) fp16
+[TILE_DTYPE] (11, 7) fp16
+---------------- Tile (11, 8) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (11, 8) fp32
+[TILE_DTYPE] (11, 8) fp32
+---------------- Tile (11, 9) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (11, 9) fp32
+[TILE_DTYPE] (11, 9) fp32
+---------------- Tile (11, 10) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (11, 10) fp32
+[TILE_DTYPE] (11, 10) fp32
+
+[DEBUG] Epsilon Ratio for Tile (11, 11): 3.78863
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (11, 11) fp64
+[TILE_DTYPE] (11, 11) fp64
+[TILE_TARGET] (12, 0) mx_e5m2
+--- Tile (12, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 3.76071e-07, Mode: block
+[TILE_DTYPE] (12, 0) fp32
+[TILE_TARGET] (12, 1) fp16
+[TILE_DTYPE] (12, 1) fp16
+[TILE_TARGET] (12, 2) fp16
+[TILE_DTYPE] (12, 2) fp16
+---------------- Tile (12, 3) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 3) fp32
+[TILE_DTYPE] (12, 3) fp32
+---------------- Tile (12, 4) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 4) fp32
+[TILE_DTYPE] (12, 4) fp32
+[TILE_TARGET] (12, 5) fp16
+[TILE_DTYPE] (12, 5) fp16
+---------------- Tile (12, 6) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 6) fp32
+[TILE_DTYPE] (12, 6) fp32
+---------------- Tile (12, 7) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 7) fp32
+[TILE_DTYPE] (12, 7) fp32
+[TILE_TARGET] (12, 8) fp16
+[TILE_DTYPE] (12, 8) fp16
+---------------- Tile (12, 9) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 9) fp32
+[TILE_DTYPE] (12, 9) fp32
+---------------- Tile (12, 10) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 10) fp32
+[TILE_DTYPE] (12, 10) fp32
+---------------- Tile (12, 11) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (12, 11) fp32
+[TILE_DTYPE] (12, 11) fp32
+
+[DEBUG] Epsilon Ratio for Tile (12, 12): 3.76738
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (12, 12) fp64
+[TILE_DTYPE] (12, 12) fp64
+[TILE_TARGET] (13, 0) mx_e5m2
+--- Tile (13, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 2.29898e-10, Mode: block
+[TILE_DTYPE] (13, 0) fp32
+[TILE_TARGET] (13, 1) mx_e5m2
+--- Tile (13, 1) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 4.12219e-07, Mode: block
+[TILE_DTYPE] (13, 1) fp32
+[TILE_TARGET] (13, 2) mx_e5m2
+--- Tile (13, 2) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.05299e-06, Mode: block
+[TILE_DTYPE] (13, 2) fp32
+[TILE_TARGET] (13, 3) fp16
+[TILE_DTYPE] (13, 3) fp16
+[TILE_TARGET] (13, 4) fp16
+[TILE_DTYPE] (13, 4) fp16
+[TILE_TARGET] (13, 5) fp16
+[TILE_DTYPE] (13, 5) fp16
+---------------- Tile (13, 6) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 6) fp32
+[TILE_DTYPE] (13, 6) fp32
+---------------- Tile (13, 7) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 7) fp32
+[TILE_DTYPE] (13, 7) fp32
+---------------- Tile (13, 8) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 8) fp32
+[TILE_DTYPE] (13, 8) fp32
+---------------- Tile (13, 9) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 9) fp32
+[TILE_DTYPE] (13, 9) fp32
+---------------- Tile (13, 10) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 10) fp32
+[TILE_DTYPE] (13, 10) fp32
+---------------- Tile (13, 11) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 11) fp32
+[TILE_DTYPE] (13, 11) fp32
+---------------- Tile (13, 12) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (13, 12) fp32
+[TILE_DTYPE] (13, 12) fp32
+
+[DEBUG] Epsilon Ratio for Tile (13, 13): 3.79183
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (13, 13) fp64
+[TILE_DTYPE] (13, 13) fp64
+[TILE_TARGET] (14, 0) mx_e5m2
+--- Tile (14, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.58848e-10, Mode: block
+[TILE_DTYPE] (14, 0) fp32
+[TILE_TARGET] (14, 1) mx_e5m2
+--- Tile (14, 1) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 3.37723e-09, Mode: block
+[TILE_DTYPE] (14, 1) fp32
+[TILE_TARGET] (14, 2) mx_e5m2
+--- Tile (14, 2) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.66976e-07, Mode: block
+[TILE_DTYPE] (14, 2) fp32
+[TILE_TARGET] (14, 3) fp16
+[TILE_DTYPE] (14, 3) fp16
+[TILE_TARGET] (14, 4) fp16
+[TILE_DTYPE] (14, 4) fp16
+[TILE_TARGET] (14, 5) mx_e5m2
+--- Tile (14, 5) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.24118e-08, Mode: block
+[TILE_DTYPE] (14, 5) fp32
+[TILE_TARGET] (14, 6) fp16
+[TILE_DTYPE] (14, 6) fp16
+[TILE_TARGET] (14, 7) fp16
+[TILE_DTYPE] (14, 7) fp16
+[TILE_TARGET] (14, 8) fp16
+[TILE_DTYPE] (14, 8) fp16
+---------------- Tile (14, 9) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (14, 9) fp32
+[TILE_DTYPE] (14, 9) fp32
+---------------- Tile (14, 10) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (14, 10) fp32
+[TILE_DTYPE] (14, 10) fp32
+---------------- Tile (14, 11) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (14, 11) fp32
+[TILE_DTYPE] (14, 11) fp32
+---------------- Tile (14, 12) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (14, 12) fp32
+[TILE_DTYPE] (14, 12) fp32
+---------------- Tile (14, 13) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (14, 13) fp32
+[TILE_DTYPE] (14, 13) fp32
+
+[DEBUG] Epsilon Ratio for Tile (14, 14): 3.79678
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (14, 14) fp64
+[TILE_DTYPE] (14, 14) fp64
+[TILE_TARGET] (15, 0) mx_e5m2
+--- Tile (15, 0) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 5.76655e-13, Mode: block
+[TILE_DTYPE] (15, 0) fp32
+[TILE_TARGET] (15, 1) mx_e5m2
+--- Tile (15, 1) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.32719e-10, Mode: block
+[TILE_DTYPE] (15, 1) fp32
+[TILE_TARGET] (15, 2) mx_e5m2
+--- Tile (15, 2) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 3.98209e-10, Mode: block
+[TILE_DTYPE] (15, 2) fp32
+[TILE_TARGET] (15, 3) mx_e5m2
+--- Tile (15, 3) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 1.6983e-07, Mode: block
+[TILE_DTYPE] (15, 3) fp32
+[TILE_TARGET] (15, 4) mx_e5m2
+--- Tile (15, 4) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 7.37329e-07, Mode: block
+[TILE_DTYPE] (15, 4) fp32
+[TILE_TARGET] (15, 5) mx_e5m2
+--- Tile (15, 5) selected for CUDA_R_32F (MX_E5M2 Quantization) ---
+  Tile Size: 262144, MaxVals: 5.10891e-09, Mode: block
+[TILE_DTYPE] (15, 5) fp32
+[TILE_TARGET] (15, 6) fp16
+[TILE_DTYPE] (15, 6) fp16
+[TILE_TARGET] (15, 7) fp16
+[TILE_DTYPE] (15, 7) fp16
+[TILE_TARGET] (15, 8) fp16
+[TILE_DTYPE] (15, 8) fp16
+[TILE_TARGET] (15, 9) fp16
+[TILE_DTYPE] (15, 9) fp16
+[TILE_TARGET] (15, 10) fp16
+[TILE_DTYPE] (15, 10) fp16
+---------------- Tile (15, 11) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (15, 11) fp32
+[TILE_DTYPE] (15, 11) fp32
+---------------- Tile (15, 12) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (15, 12) fp32
+[TILE_DTYPE] (15, 12) fp32
+---------------- Tile (15, 13) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (15, 13) fp32
+[TILE_DTYPE] (15, 13) fp32
+---------------- Tile (15, 14) selected for CUDA_R_32F -------------------
+[TILE_TARGET] (15, 14) fp32
+[TILE_DTYPE] (15, 14) fp32
+
+[DEBUG] Epsilon Ratio for Tile (15, 15): 3.77949
+[DEBUG] Source Epsilon / FP32 Epsilon: 1
+[DEBUG] Low format cutoff (mx_e5m2): 9.53674e-07 (scale-aware=1)
+[TILE_TARGET] (15, 15) fp64
+[TILE_DTYPE] (15, 15) fp64
+FLOPS: 0.581319
+[TIMES] tile+quant(us): 4020577, factor(us): 315260, uncompress(us): 0
+Runtime: 6143554293 microseconds
+error: 4.86684e-05
+kl_divergence: nan
+Log: /home/abduraa/MX_project/logs/mx_ooc_data/run_20260318_163739.log
+Tiling CSV: /home/abduraa/MX_project/logs/mx_ooc_data/plots/tiling_20260318_163739.csv
+Tiling PNG: /home/abduraa/MX_project/logs/mx_ooc_data/plots/tiling_20260318_163739.png
+Summary: /home/abduraa/MX_project/logs/mx_ooc_data/8k_summary.txt
+--- Script Execution Complete ---

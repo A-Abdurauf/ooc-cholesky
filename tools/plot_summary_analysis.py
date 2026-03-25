@@ -48,7 +48,7 @@ def clean_df(df: pd.DataFrame) -> pd.DataFrame:
 
     df["data_size"] = df["bin"].apply(extract_size)
     # coerce numerics
-    for col in ["nb", "n", "cores", "rel_factor_error", "total_tiles",
+    for col in ["nb", "n", "cores", "rel_factor_error", "kl_divergence", "total_tiles",
                 "fp64", "fp32", "fp16", "bf16", "mx_fp16", "low", "data_size"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
@@ -170,11 +170,11 @@ def plot_figure2(df: pd.DataFrame, out_dir: Path):
     ].copy()
     nb_order = [32, 64, 128, 256]
     format_order = [
-        "e4m3", "e5m2", "e3m2", "e2m3", "e2m1",
         "fp8_e4m3", "fp8_e5m2",
+        "e4m3", "e5m2", "e3m2", "e2m3", "e2m1",
     ]
 
-    for data_size, sub_all in df_use.groupby(["data_size"]):
+    for data_size, sub_all in df_use.groupby("data_size"):
         fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
         axes = axes.flatten()
         fig_handles = None
@@ -250,7 +250,7 @@ def plot_figure3(df: pd.DataFrame, out_dir: Path):
     df["fp32_present"] = df["fp32"].fillna(0) > 0
 
     nb_order = [32, 64, 128, 256]
-    format_order = ["e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
 
     for data_size, sub_all in df.groupby(["data_size"]):
         fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
@@ -351,7 +351,7 @@ def plot_figure4(df: pd.DataFrame, out_dir: Path):
     df["fp32_present"] = df["fp32"].fillna(0) > 0
 
     nb_order = [32, 64, 128, 256]
-    format_order = ["e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
 
     for data_size, sub_all in df.groupby(["data_size"]):
         fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
@@ -493,7 +493,7 @@ def plot_figure5(df: pd.DataFrame, out_dir: Path):
         ("fp8_e5m2", ["mx_e5m2"], "E5M2"),
     ]
 
-    for data_size, sub_all in df_use.groupby(["data_size"]):
+    for data_size, sub_all in df_use.groupby("data_size"):
         fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
         axes = axes.flatten()
         fig_handles = None
@@ -620,7 +620,7 @@ def plot_figure6(df: pd.DataFrame, out_dir: Path):
         ("fp8_e5m2", ["mx_e2m3"], "FP8 e5m2 vs MX e2m3"),
     ]
 
-    for data_size, sub_all in df_use.groupby(["data_size"]):
+    for data_size, sub_all in df_use.groupby("data_size"):
         fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
         axes = axes.flatten()
         fig_handles = None
@@ -857,15 +857,16 @@ def plot_figure8(df: pd.DataFrame, out_dir: Path):
 
     df_use = df.copy()
     df_use = df_use[df_use["data_size"].isin([2048, 4096])]
-    df_use = df_use[df_use["mx_mode"] == "block"]
-
-    df_use["fp16_bucket_norm"] = df_use["fp16_bucket"].astype(str).str.lower()
+    if "fp16_bucket_type" in df_use.columns:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket_type"].astype(str).str.lower()
+    else:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket"].astype(str).str.lower()
     if "fp32_bucket" in df_use.columns:
         df_use["fp32_bucket_norm"] = df_use["fp32_bucket"].astype(str).str.lower()
 
     nb_order = [32, 64, 128, 256]
-    format_order = ["e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
-    mx_fp8_buckets = {"mx_e4m3", "mx_e5m2"}
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+    mx_fp8_buckets = {"mx_e4m3", "mx_e5m2", "e4m3", "e5m2"}
 
     for data_size, sub_all in df_use.groupby(["data_size"]):
         fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
@@ -881,46 +882,91 @@ def plot_figure8(df: pd.DataFrame, out_dir: Path):
                 ax.set_visible(False)
                 continue
 
-            fp16_vals = []
-            mx_vals = []
+            block_fp16_vals = []
+            block_mx_vals = []
+            tile_fp16_vals = []
+            tile_mx_vals = []
+            block_fp16_missing = []
+            block_mx_missing = []
+            tile_fp16_missing = []
+            tile_mx_missing = []
             for fmt in format_order:
                 g = sub[sub["format"] == fmt]
 
                 fp16_rows = g[g["fp16_bucket_norm"] == "fp16"]
                 mx_rows = g[g["fp16_bucket_norm"].isin(mx_fp8_buckets)]
 
-                fp16_val = fp16_rows.sort_values("fp16_bucket_norm").drop_duplicates(
+                fp16_block = fp16_rows[fp16_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
                     subset=["format", "mx_mode", "fp16_bucket_norm"]
                 )
-                mx_val = mx_rows.sort_values("fp16_bucket_norm").drop_duplicates(
+                mx_block = mx_rows[mx_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                fp16_tile = fp16_rows[fp16_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                mx_tile = mx_rows[mx_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
                     subset=["format", "mx_mode", "fp16_bucket_norm"]
                 )
 
-                fp16_vals.append(fp16_val["rel_factor_error"].iloc[0] if not fp16_val.empty else float("nan"))
-                mx_vals.append(mx_val["rel_factor_error"].iloc[0] if not mx_val.empty else float("nan"))
+                b_fp16 = fp16_block["rel_factor_error"].iloc[0] if not fp16_block.empty else float("nan")
+                b_mx = mx_block["rel_factor_error"].iloc[0] if not mx_block.empty else float("nan")
+                t_fp16 = fp16_tile["rel_factor_error"].iloc[0] if not fp16_tile.empty else float("nan")
+                t_mx = mx_tile["rel_factor_error"].iloc[0] if not mx_tile.empty else float("nan")
 
-            if any(pd.notna(v) for v in fp16_vals + mx_vals):
+                block_fp16_vals.append(b_fp16)
+                block_mx_vals.append(b_mx)
+                tile_fp16_vals.append(t_fp16)
+                tile_mx_vals.append(t_mx)
+
+                block_fp16_missing.append(pd.isna(b_fp16))
+                block_mx_missing.append(pd.isna(b_mx))
+                tile_fp16_missing.append(pd.isna(t_fp16))
+                tile_mx_missing.append(pd.isna(t_mx))
+
+            if any(pd.notna(v) for v in block_fp16_vals + block_mx_vals + tile_fp16_vals + tile_mx_vals):
                 x = pd.Series(range(len(format_order))).to_numpy()
-                width = 0.3
-                bars1 = ax.bar(x - width / 2, fp16_vals, width=width, label="block FP16", color="#1f77b4")
-                bars2 = ax.bar(x + width / 2, mx_vals, width=width, label="block MX FP8 (fp16 bucket)", color="#ff7f0e")
+                width = 0.18
+                b_fp16_plot = [0.0 if pd.isna(v) else v for v in block_fp16_vals]
+                b_mx_plot = [0.0 if pd.isna(v) else v for v in block_mx_vals]
+                t_fp16_plot = [0.0 if pd.isna(v) else v for v in tile_fp16_vals]
+                t_mx_plot = [0.0 if pd.isna(v) else v for v in tile_mx_vals]
+
+                bars1 = ax.bar(x - 1.5 * width, t_fp16_plot, width=width, label="tile FP16", color="#4c78a8")
+                bars2 = ax.bar(x - 0.5 * width, t_mx_plot, width=width, label="tile MX FP8 (fp16 bucket)", color="#72b7b2")
+                bars3 = ax.bar(x + 0.5 * width, b_fp16_plot, width=width, label="block FP16", color="#1f77b4")
+                bars4 = ax.bar(x + 1.5 * width, b_mx_plot, width=width, label="block MX FP8 (fp16 bucket)", color="#ff7f0e")
                 ax.set_xticks(x, format_order)
                 ax.tick_params(axis="x", rotation=45)
                 row_max[idx // 2] = max(row_max[idx // 2], pd.Series([
                     *[b.get_height() for b in bars1],
                     *[b.get_height() for b in bars2],
+                    *[b.get_height() for b in bars3],
+                    *[b.get_height() for b in bars4],
                 ]).max(skipna=True))
                 if fig_handles is None:
                     fig_handles, fig_labels = ax.get_legend_handles_labels()
 
-                for bars in (bars1, bars2):
-                    for b in bars:
-                        if pd.isna(b.get_height()):
-                            continue
-                        ax.annotate(f"{b.get_height():.2e}",
-                                    xy=(b.get_x() + b.get_width() / 2, b.get_height()),
-                                    xytext=(0, 3), textcoords="offset points",
-                                    ha="center", va="bottom", fontsize=7, rotation=45)
+                def annotate_missing(bars, missing, hatch):
+                    for i, b in enumerate(bars):
+                        if missing[i]:
+                            b.set_facecolor("#dddddd")
+                            b.set_edgecolor("#666666")
+                            b.set_hatch(hatch)
+                            ax.annotate("NA",
+                                        xy=(b.get_x() + b.get_width() / 2, 0),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+                        else:
+                            ax.annotate(f"{b.get_height():.2e}",
+                                        xy=(b.get_x() + b.get_width() / 2, b.get_height()),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+
+                annotate_missing(bars1, tile_fp16_missing, "//")
+                annotate_missing(bars2, tile_mx_missing, "\\")
+                annotate_missing(bars3, block_fp16_missing, "//")
+                annotate_missing(bars4, block_mx_missing, "\\")
             else:
                 ax.set_xticks(pd.Series(range(len(format_order))).to_numpy(), format_order)
 
@@ -945,6 +991,696 @@ def plot_figure8(df: pd.DataFrame, out_dir: Path):
         plt.close(fig)
 
 
+def plot_figure9(df: pd.DataFrame, out_dir: Path):
+    # KL divergence impact of MX-FP32 bucket (fp32 vs mx_fp32)
+    if "kl_divergence" not in df.columns:
+        return
+    df_use = df.copy()
+    df_use = df_use[pd.to_numeric(df_use["kl_divergence"], errors="coerce").notna()].copy()
+
+    fmt_map = {
+        "fp8e4m3": "fp8_e4m3",
+        "fp8_e4m3": "fp8_e4m3",
+        "fp8e5m2": "fp8_e5m2",
+        "fp8_e5m2": "fp8_e5m2",
+        "e4m3": "e4m3",
+        "e5m2": "e5m2",
+        "e3m2": "e3m2",
+        "e2m3": "e2m3",
+        "e2m1": "e2m1",
+    }
+    df_use["format_norm"] = df_use["format"].astype(str).str.lower().map(fmt_map)
+    df_use = df_use[df_use["format_norm"].notna()].copy()
+
+    if "fp32_bucket" not in df_use.columns:
+        return
+    df_use["fp32_bucket_norm"] = df_use["fp32_bucket"].astype(str).str.lower()
+    df_use["fp16_bucket_norm"] = df_use["fp16_bucket"].astype(str).str.lower()
+
+    df_use = df_use[df_use["fp32_bucket_norm"].isin(["fp32", "mx_fp32"])].copy()
+
+    nb_order = [32, 64, 128, 256]
+    format_order = [
+        "fp8_e4m3", "fp8_e5m2",
+        "e4m3", "e5m2", "e3m2", "e2m3", "e2m1",
+    ]
+
+    def pick_value(group: pd.DataFrame, bucket: str, fp16_bucket: str) -> float:
+        g = group[(group["fp32_bucket_norm"] == bucket) & (group["fp16_bucket_norm"] == fp16_bucket)]
+        if g.empty:
+            return float("nan")
+        return g["kl_divergence"].iloc[0]
+
+    mx_modes = sorted(df_use["mx_mode"].dropna().unique().tolist())
+
+    fp16_bucket_types = [
+        "fp16",
+        "mx_fp16",
+        "e4m3",
+        "e5m2",
+    ]
+
+    for data_size, sub_all in df_use.groupby(["data_size"]):
+        for mx_mode in mx_modes:
+            sub_mode = sub_all[sub_all["mx_mode"] == mx_mode]
+            if sub_mode.empty:
+                continue
+
+            for fp16_bucket in fp16_bucket_types:
+                sub_bucket = sub_mode[sub_mode["fp16_bucket_norm"] == fp16_bucket]
+                if sub_bucket.empty:
+                    continue
+
+                fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
+                axes = axes.flatten()
+                fig_handles = None
+                fig_labels = None
+                row_max = [0.0, 0.0]
+
+                for idx, nb in enumerate(nb_order):
+                    ax = axes[idx]
+                    sub = sub_bucket[sub_bucket["nb"] == nb]
+                    if sub.empty:
+                        ax.set_visible(False)
+                        continue
+
+                    fp32_vals = []
+                    mx_vals = []
+                    for fmt in format_order:
+                        g = sub[sub["format_norm"] == fmt]
+                        fp32_vals.append(pick_value(g, "fp32", fp16_bucket))
+                        mx_vals.append(pick_value(g, "mx_fp32", fp16_bucket))
+
+                    if any(pd.notna(v) for v in fp32_vals + mx_vals):
+                        x = pd.Series(range(len(format_order))).to_numpy()
+                        width = 0.35
+                        bars1 = ax.bar(x - width / 2, fp32_vals, width=width,
+                                       label="fp32 bucket", color="#4c78a8")
+                        bars2 = ax.bar(x + width / 2, mx_vals, width=width,
+                                       label="mx_fp32 bucket", color="#f58518")
+                        ax.set_xticks(x, format_order)
+                        ax.tick_params(axis="x", rotation=45)
+                        row_max[idx // 2] = max(row_max[idx // 2], pd.Series([
+                            *[b.get_height() for b in bars1],
+                            *[b.get_height() for b in bars2],
+                        ]).max(skipna=True))
+                        if fig_handles is None:
+                            fig_handles, fig_labels = ax.get_legend_handles_labels()
+
+                        for bars in (bars1, bars2):
+                            for b in bars:
+                                if pd.isna(b.get_height()):
+                                    continue
+                                ax.annotate(f"{b.get_height():.2e}",
+                                            xy=(b.get_x() + b.get_width() / 2, b.get_height()),
+                                            xytext=(0, 3), textcoords="offset points",
+                                            ha="center", va="bottom", fontsize=7, rotation=45)
+                    else:
+                        ax.set_xticks(pd.Series(range(len(format_order))).to_numpy(), format_order)
+
+                    ax.set_title(f"NB={nb}")
+                    ax.set_xlabel("Low precision format (MX)")
+                    ax.set_ylabel("kl_divergence")
+
+                mode_tag = re.sub(r"[^a-zA-Z0-9_]+", "_", str(mx_mode))
+                fig.suptitle(
+                    "Figure 9: KL divergence vs MX-FP32 bucket "
+                    f"(mode={mx_mode}, fp16_bucket={fp16_bucket}, size={fmt_size(data_size)})"
+                )
+                if fig_handles:
+                    fig.legend(fig_handles, fig_labels, loc="lower center", ncol=2,
+                               bbox_to_anchor=(0.5, -0.02), frameon=False)
+                for r in range(2):
+                    max_y = row_max[r]
+                    if max_y > 0:
+                        for c in range(2):
+                            ax = axes[r * 2 + c]
+                            if ax.get_visible():
+                                ax.set_ylim(0, max_y * 1.25)
+                fig.tight_layout(rect=[0, 0.1, 1, 0.95])
+                out_path = out_dir / f"fig9_kl_mxfp32_size{fmt_size(data_size)}_{mode_tag}_fp16bucket_{fp16_bucket}.pdf"
+                fig.savefig(out_path, dpi=200)
+                plt.close(fig)
+
+
+def plot_figure10(df: pd.DataFrame, out_dir: Path):
+    # Figure 10: KL divergence version of Figure 8 (tile vs block, FP16 vs MX-FP8 replacement)
+    if "kl_divergence" not in df.columns:
+        return
+    df_use = df.copy()
+    df_use = df_use[pd.to_numeric(df_use["kl_divergence"], errors="coerce").notna()].copy()
+
+    if "fp16_bucket_type" in df_use.columns:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket_type"].astype(str).str.lower()
+    else:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket"].astype(str).str.lower()
+    if "fp32_bucket" in df_use.columns:
+        df_use["fp32_bucket_norm"] = df_use["fp32_bucket"].astype(str).str.lower()
+
+    nb_order = [32, 64, 128, 256]
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+    mx_fp8_buckets = {"mx_e4m3", "mx_e5m2", "e4m3", "e5m2"}
+
+    for data_size, sub_all in df_use.groupby(["data_size"]):
+        fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
+        axes = axes.flatten()
+        fig_handles = None
+        fig_labels = None
+        row_max = [0.0, 0.0]
+
+        for idx, nb in enumerate(nb_order):
+            ax = axes[idx]
+            sub = sub_all[sub_all["nb"] == nb]
+            if sub.empty:
+                ax.set_visible(False)
+                continue
+
+            block_fp16_vals = []
+            block_mx_vals = []
+            tile_fp16_vals = []
+            tile_mx_vals = []
+            block_mx_fp32_vals = []
+            tile_mx_fp32_vals = []
+            block_fp16_missing = []
+            block_mx_missing = []
+            tile_fp16_missing = []
+            tile_mx_missing = []
+            block_mx_fp32_missing = []
+            tile_mx_fp32_missing = []
+            for fmt in format_order:
+                g = sub[sub["format"] == fmt]
+
+                fp16_rows = g[g["fp16_bucket_norm"] == "fp16"]
+                mx_rows = g[g["fp16_bucket_norm"].isin(mx_fp8_buckets)]
+                mx_fp32_rows = g[(g["fp16_bucket_norm"] == "e4m3") & (g["fp32_bucket_norm"] == "mx_fp32")]
+
+                fp16_block = fp16_rows[fp16_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                mx_block = mx_rows[mx_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                fp16_tile = fp16_rows[fp16_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                mx_tile = mx_rows[mx_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                mx_fp32_block = mx_fp32_rows[mx_fp32_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm", "fp32_bucket_norm"]
+                )
+                mx_fp32_tile = mx_fp32_rows[mx_fp32_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm", "fp32_bucket_norm"]
+                )
+
+                b_fp16 = fp16_block["kl_divergence"].iloc[0] if not fp16_block.empty else float("nan")
+                b_mx = mx_block["kl_divergence"].iloc[0] if not mx_block.empty else float("nan")
+                t_fp16 = fp16_tile["kl_divergence"].iloc[0] if not fp16_tile.empty else float("nan")
+                t_mx = mx_tile["kl_divergence"].iloc[0] if not mx_tile.empty else float("nan")
+                b_mx_fp32 = mx_fp32_block["kl_divergence"].iloc[0] if not mx_fp32_block.empty else float("nan")
+                t_mx_fp32 = mx_fp32_tile["kl_divergence"].iloc[0] if not mx_fp32_tile.empty else float("nan")
+
+                block_fp16_vals.append(b_fp16)
+                block_mx_vals.append(b_mx)
+                tile_fp16_vals.append(t_fp16)
+                tile_mx_vals.append(t_mx)
+                block_mx_fp32_vals.append(b_mx_fp32)
+                tile_mx_fp32_vals.append(t_mx_fp32)
+
+                block_fp16_missing.append(pd.isna(b_fp16))
+                block_mx_missing.append(pd.isna(b_mx))
+                tile_fp16_missing.append(pd.isna(t_fp16))
+                tile_mx_missing.append(pd.isna(t_mx))
+                block_mx_fp32_missing.append(pd.isna(b_mx_fp32))
+                tile_mx_fp32_missing.append(pd.isna(t_mx_fp32))
+
+            if any(pd.notna(v) for v in block_fp16_vals + block_mx_vals + tile_fp16_vals + tile_mx_vals
+                   + block_mx_fp32_vals + tile_mx_fp32_vals):
+                x = pd.Series(range(len(format_order))).to_numpy()
+                width = 0.13
+                b_fp16_plot = [0.0 if pd.isna(v) else v for v in block_fp16_vals]
+                b_mx_plot = [0.0 if pd.isna(v) else v for v in block_mx_vals]
+                t_fp16_plot = [0.0 if pd.isna(v) else v for v in tile_fp16_vals]
+                t_mx_plot = [0.0 if pd.isna(v) else v for v in tile_mx_vals]
+                b_mx_fp32_plot = [0.0 if pd.isna(v) else v for v in block_mx_fp32_vals]
+                t_mx_fp32_plot = [0.0 if pd.isna(v) else v for v in tile_mx_fp32_vals]
+
+                bars1 = ax.bar(x - 2.5 * width, t_fp16_plot, width=width, label="tile FP16", color="#4c78a8")
+                bars2 = ax.bar(x - 1.5 * width, t_mx_plot, width=width, label="tile MX FP8 (fp16 bucket)", color="#72b7b2")
+                bars3 = ax.bar(x - 0.5 * width, t_mx_fp32_plot, width=width, label="tile MX FP32 (fp16=e4m3)", color="#9ecae9")
+                bars4 = ax.bar(x + 0.5 * width, b_fp16_plot, width=width, label="block FP16", color="#1f77b4")
+                bars5 = ax.bar(x + 1.5 * width, b_mx_plot, width=width, label="block MX FP8 (fp16 bucket)", color="#ff7f0e")
+                bars6 = ax.bar(x + 2.5 * width, b_mx_fp32_plot, width=width, label="block MX FP32 (fp16=e4m3)", color="#f2a65a")
+                ax.set_xticks(x, format_order)
+                ax.tick_params(axis="x", rotation=45)
+                row_max[idx // 2] = max(row_max[idx // 2], pd.Series([
+                    *[b.get_height() for b in bars1],
+                    *[b.get_height() for b in bars2],
+                    *[b.get_height() for b in bars3],
+                    *[b.get_height() for b in bars4],
+                    *[b.get_height() for b in bars5],
+                    *[b.get_height() for b in bars6],
+                ]).max(skipna=True))
+                if fig_handles is None:
+                    fig_handles, fig_labels = ax.get_legend_handles_labels()
+
+                def annotate_missing(bars, missing, hatch):
+                    for i, b in enumerate(bars):
+                        if missing[i]:
+                            b.set_facecolor("#dddddd")
+                            b.set_edgecolor("#666666")
+                            b.set_hatch(hatch)
+                            ax.annotate("NA",
+                                        xy=(b.get_x() + b.get_width() / 2, 0),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+                        else:
+                            ax.annotate(f"{b.get_height():.2e}",
+                                        xy=(b.get_x() + b.get_width() / 2, b.get_height()),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+
+                annotate_missing(bars1, tile_fp16_missing, "//")
+                annotate_missing(bars2, tile_mx_missing, "\\")
+                annotate_missing(bars3, tile_mx_fp32_missing, "||")
+                annotate_missing(bars4, block_fp16_missing, "//")
+                annotate_missing(bars5, block_mx_missing, "\\")
+                annotate_missing(bars6, block_mx_fp32_missing, "||")
+            else:
+                ax.set_xticks(pd.Series(range(len(format_order))).to_numpy(), format_order)
+
+            ax.set_title(f"NB={nb}")
+            ax.set_xlabel("Low precision format (MX)")
+            ax.set_ylabel("kl_divergence")
+
+        fig.suptitle(f"Figure 10: KL divergence, tile vs block FP16 vs MX-FP8 (size={fmt_size(data_size)})")
+        if fig_handles:
+            fig.legend(fig_handles, fig_labels, loc="lower center", ncol=2,
+                       bbox_to_anchor=(0.5, -0.02), frameon=False)
+        for r in range(2):
+            max_y = row_max[r]
+            if max_y > 0:
+                for c in range(2):
+                    ax = axes[r * 2 + c]
+                    if ax.get_visible():
+                        ax.set_ylim(0, max_y * 1.25)
+        fig.tight_layout(rect=[0, 0.1, 1, 0.95])
+        out_path = out_dir / f"fig10_kl_tile_block_fp16_vs_mxfp8_size{fmt_size(data_size)}.pdf"
+        fig.savefig(out_path, dpi=200)
+        plt.close(fig)
+
+
+def plot_figure11(df: pd.DataFrame, out_dir: Path):
+    # Figure 11: FP16 bucket baseline vs FP16 bucket replaced by MX E4M3 (tile + block)
+    if "fp16_bucket" not in df.columns:
+        return
+
+    df_use = df.copy()
+    if "fp16_bucket_type" in df_use.columns:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket_type"].astype(str).str.lower()
+    else:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket"].astype(str).str.lower()
+
+    nb_order = [32, 64, 128, 256]
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+
+    for data_size, sub_all in df_use.groupby("data_size"):
+        fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
+        axes = axes.flatten()
+        fig_handles = None
+        fig_labels = None
+        row_max = [0.0, 0.0]
+
+        for idx, nb in enumerate(nb_order):
+            ax = axes[idx]
+            sub = sub_all[sub_all["nb"] == nb]
+            if sub.empty:
+                ax.set_visible(False)
+                continue
+
+            tile_fp16_vals = []
+            tile_mx_e4m3_vals = []
+            block_fp16_vals = []
+            block_mx_e4m3_vals = []
+            tile_fp16_missing = []
+            tile_mx_e4m3_missing = []
+            block_fp16_missing = []
+            block_mx_e4m3_missing = []
+
+            for fmt in format_order:
+                g = sub[sub["format"] == fmt]
+
+                fp16_rows = g[g["fp16_bucket_norm"] == "fp16"]
+                mx_e4m3_rows = g[g["fp16_bucket_norm"] == "e4m3"]
+
+                fp16_tile = fp16_rows[fp16_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                mx_e4m3_tile = mx_e4m3_rows[mx_e4m3_rows["mx_mode"] == "tile"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                fp16_block = fp16_rows[fp16_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+                mx_e4m3_block = mx_e4m3_rows[mx_e4m3_rows["mx_mode"] == "block"].sort_values("fp16_bucket_norm").drop_duplicates(
+                    subset=["format", "mx_mode", "fp16_bucket_norm"]
+                )
+
+                t_fp16 = fp16_tile["rel_factor_error"].iloc[0] if not fp16_tile.empty else float("nan")
+                t_mx_e4m3 = mx_e4m3_tile["rel_factor_error"].iloc[0] if not mx_e4m3_tile.empty else float("nan")
+                b_fp16 = fp16_block["rel_factor_error"].iloc[0] if not fp16_block.empty else float("nan")
+                b_mx_e4m3 = mx_e4m3_block["rel_factor_error"].iloc[0] if not mx_e4m3_block.empty else float("nan")
+
+                tile_fp16_vals.append(t_fp16)
+                tile_mx_e4m3_vals.append(t_mx_e4m3)
+                block_fp16_vals.append(b_fp16)
+                block_mx_e4m3_vals.append(b_mx_e4m3)
+
+                tile_fp16_missing.append(pd.isna(t_fp16))
+                tile_mx_e4m3_missing.append(pd.isna(t_mx_e4m3))
+                block_fp16_missing.append(pd.isna(b_fp16))
+                block_mx_e4m3_missing.append(pd.isna(b_mx_e4m3))
+
+            if any(pd.notna(v) for v in tile_fp16_vals + tile_mx_e4m3_vals + block_fp16_vals + block_mx_e4m3_vals):
+                x = pd.Series(range(len(format_order))).to_numpy()
+                width = 0.18
+                t_fp16_plot = [0.0 if pd.isna(v) else v for v in tile_fp16_vals]
+                t_mx_e4m3_plot = [0.0 if pd.isna(v) else v for v in tile_mx_e4m3_vals]
+                b_fp16_plot = [0.0 if pd.isna(v) else v for v in block_fp16_vals]
+                b_mx_e4m3_plot = [0.0 if pd.isna(v) else v for v in block_mx_e4m3_vals]
+
+                bars1 = ax.bar(x - 1.5 * width, t_fp16_plot, width=width, label="tile FP16 bucket", color="#4c78a8")
+                bars2 = ax.bar(x - 0.5 * width, t_mx_e4m3_plot, width=width, label="tile MX E4M3 bucket", color="#72b7b2")
+                bars3 = ax.bar(x + 0.5 * width, b_fp16_plot, width=width, label="block FP16 bucket", color="#1f77b4")
+                bars4 = ax.bar(x + 1.5 * width, b_mx_e4m3_plot, width=width, label="block MX E4M3 bucket", color="#f58518")
+                ax.set_xticks(x, format_order)
+                ax.tick_params(axis="x", rotation=45)
+                row_max[idx // 2] = max(row_max[idx // 2], pd.Series([
+                    *[b.get_height() for b in bars1],
+                    *[b.get_height() for b in bars2],
+                    *[b.get_height() for b in bars3],
+                    *[b.get_height() for b in bars4],
+                ]).max(skipna=True))
+                if fig_handles is None:
+                    fig_handles, fig_labels = ax.get_legend_handles_labels()
+
+                def annotate_missing(bars, missing, hatch):
+                    for i, b in enumerate(bars):
+                        if missing[i]:
+                            b.set_facecolor("#dddddd")
+                            b.set_edgecolor("#666666")
+                            b.set_hatch(hatch)
+                            ax.annotate("NA",
+                                        xy=(b.get_x() + b.get_width() / 2, 0),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+                        else:
+                            ax.annotate(f"{b.get_height():.2e}",
+                                        xy=(b.get_x() + b.get_width() / 2, b.get_height()),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+
+                annotate_missing(bars1, tile_fp16_missing, "//")
+                annotate_missing(bars2, tile_mx_e4m3_missing, "\\")
+                annotate_missing(bars3, block_fp16_missing, "//")
+                annotate_missing(bars4, block_mx_e4m3_missing, "\\")
+            else:
+                ax.set_xticks(pd.Series(range(len(format_order))).to_numpy(), format_order)
+
+            ax.set_title(f"NB={nb}")
+            ax.set_xlabel("Low precision format")
+            ax.set_ylabel("rel_factor_error")
+
+        fig.suptitle(f"Figure 11: FP16 bucket vs MX E4M3 bucket replacement (size={fmt_size(data_size)})")
+        if fig_handles:
+            fig.legend(fig_handles, fig_labels, loc="lower center", ncol=2,
+                       bbox_to_anchor=(0.5, -0.02), frameon=False)
+        for r in range(2):
+            max_y = row_max[r]
+            if max_y > 0:
+                for c in range(2):
+                    ax = axes[r * 2 + c]
+                    if ax.get_visible():
+                        ax.set_ylim(0, max_y * 1.25)
+        fig.tight_layout(rect=[0, 0.1, 1, 0.95])
+        out_path = out_dir / f"fig11_fp16_bucket_vs_mx_e4m3_size{fmt_size(data_size)}.pdf"
+        fig.savefig(out_path, dpi=200)
+        plt.close(fig)
+
+
+def plot_figure12(df: pd.DataFrame, out_dir: Path):
+    # Figure 12: tile vs block vs subtile comparison (rel_factor_error)
+    if "mx_mode" not in df.columns:
+        return
+
+    df_use = df.copy()
+    mode_vals = sorted(df_use["mx_mode"].dropna().astype(str).unique().tolist())
+    subtile_modes = [m for m in mode_vals if m.startswith("subtile")]
+    if not subtile_modes or "tile" not in mode_vals:
+        return
+    subtile_mode = subtile_modes[0]
+    has_block = "block" in mode_vals
+
+    fmt_map = {
+        "fp8e4m3": "fp8_e4m3",
+        "fp8_e4m3": "fp8_e4m3",
+        "fp8e5m2": "fp8_e5m2",
+        "fp8_e5m2": "fp8_e5m2",
+        "e4m3": "e4m3",
+        "e5m2": "e5m2",
+        "e3m2": "e3m2",
+        "e2m3": "e2m3",
+        "e2m1": "e2m1",
+    }
+    df_use["format_norm"] = df_use["format"].astype(str).str.lower().map(fmt_map)
+    df_use = df_use[df_use["format_norm"].notna()].copy()
+
+    nb_order = [32, 64, 128, 256]
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+
+    for data_size, sub_all in df_use.groupby("data_size"):
+        fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
+        axes = axes.flatten()
+        fig_handles = None
+        fig_labels = None
+        row_max = [0.0, 0.0]
+
+        for idx, nb in enumerate(nb_order):
+            ax = axes[idx]
+            sub = sub_all[sub_all["nb"] == nb]
+            if sub.empty:
+                ax.set_visible(False)
+                continue
+
+            tile = sub[sub["mx_mode"] == "tile"]
+            block = sub[sub["mx_mode"] == "block"] if has_block else pd.DataFrame(columns=sub.columns)
+            subtile = sub[sub["mx_mode"] == subtile_mode]
+
+            tile2 = tile.drop_duplicates(subset=["format_norm"]).set_index("format_norm")["rel_factor_error"]
+            block2 = block.drop_duplicates(subset=["format_norm"]).set_index("format_norm")["rel_factor_error"] if has_block else pd.Series(dtype=float)
+            subtile2 = subtile.drop_duplicates(subset=["format_norm"]).set_index("format_norm")["rel_factor_error"]
+
+            x = pd.Series(range(len(format_order))).to_numpy()
+            width = 0.25 if has_block else 0.4
+            bars1 = ax.bar(
+                x - width if has_block else x - width / 2,
+                [tile2.get(f, float("nan")) for f in format_order],
+                width=width,
+                label="tile",
+                color="#4c78a8",
+            )
+            bars2 = ax.bar(
+                x if has_block else x + width / 2,
+                [block2.get(f, float("nan")) for f in format_order] if has_block else [subtile2.get(f, float("nan")) for f in format_order],
+                width=width,
+                label="block" if has_block else subtile_mode,
+                color="#54a24b" if has_block else "#f58518",
+            )
+            bars3 = None
+            if has_block:
+                bars3 = ax.bar(
+                x + width,
+                [subtile2.get(f, float("nan")) for f in format_order],
+                width=width,
+                label=subtile_mode,
+                color="#f58518",
+            )
+
+            ax.set_title(f"NB={nb}")
+            ax.set_xlabel("Format")
+            ax.set_ylabel("rel_factor_error")
+            ax.set_xticks(x, format_order)
+            ax.tick_params(axis="x", rotation=45)
+            row_max[idx // 2] = max(
+                row_max[idx // 2],
+                pd.Series([b.get_height() for b in bars1] + [b.get_height() for b in bars2]
+                          + ([b.get_height() for b in bars3] if bars3 is not None else [])).max(skipna=True),
+            )
+
+            if fig_handles is None:
+                fig_handles, fig_labels = ax.get_legend_handles_labels()
+
+            bars_iter = (bars1, bars2) if bars3 is None else (bars1, bars2, bars3)
+            for bars in bars_iter:
+                for b in bars:
+                    if pd.isna(b.get_height()):
+                        continue
+                    ax.annotate(
+                        f"{b.get_height():.2e}",
+                        xy=(b.get_x() + b.get_width() / 2, b.get_height()),
+                        xytext=(0, 3),
+                        textcoords="offset points",
+                        ha="center",
+                        va="bottom",
+                        fontsize=7,
+                        rotation=45,
+                    )
+
+        if has_block:
+            fig.suptitle(f"Figure 12: Tile vs block vs {subtile_mode} (size={fmt_size(data_size)})")
+        else:
+            fig.suptitle(f"Figure 12: Tile vs {subtile_mode} (size={fmt_size(data_size)})")
+        if fig_handles:
+            fig.legend(fig_handles, fig_labels, loc="lower center", ncol=2,
+                       bbox_to_anchor=(0.5, -0.02), frameon=False)
+        for r in range(2):
+            max_y = row_max[r]
+            if max_y > 0:
+                for c in range(2):
+                    ax = axes[r * 2 + c]
+                    if ax.get_visible():
+                        ax.set_ylim(0, max_y * 1.2)
+        fig.tight_layout(rect=[0, 0.08, 1, 0.95])
+        if has_block:
+            out_path = out_dir / f"fig12_tile_vs_block_vs_{subtile_mode}_size{fmt_size(data_size)}.pdf"
+        else:
+            out_path = out_dir / f"fig12_tile_vs_{subtile_mode}_size{fmt_size(data_size)}.pdf"
+        fig.savefig(out_path, dpi=200)
+        plt.close(fig)
+
+
+def plot_figure13(df: pd.DataFrame, out_dir: Path):
+    # Figure 13: compare MX_FP32+MX_FP16 buckets vs FP32+FP16 baseline (block only)
+    if "fp32_bucket" not in df.columns or "fp16_bucket" not in df.columns:
+        return
+
+    df_use = df.copy()
+    df_use["fp32_bucket_norm"] = df_use["fp32_bucket"].astype(str).str.lower()
+    if "fp16_bucket_type" in df_use.columns:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket_type"].astype(str).str.lower()
+    else:
+        df_use["fp16_bucket_norm"] = df_use["fp16_bucket"].astype(str).str.lower()
+
+    nb_order = [32, 64, 128, 256]
+    format_order = ["fp8_e4m3", "fp8_e5m2", "e4m3", "e5m2", "e3m2", "e2m3", "e2m1"]
+
+    for data_size, sub_all in df_use.groupby("data_size"):
+        fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharey=False)
+        axes = axes.flatten()
+        fig_handles = None
+        fig_labels = None
+        row_max = [0.0, 0.0]
+
+        for idx, nb in enumerate(nb_order):
+            ax = axes[idx]
+            sub = sub_all[sub_all["nb"] == nb]
+            if sub.empty:
+                ax.set_visible(False)
+                continue
+
+            block_ref_vals = []
+            block_mx_vals = []
+            block_ref_missing = []
+            block_mx_missing = []
+
+            for fmt in format_order:
+                g = sub[sub["format"] == fmt]
+
+                ref_rows = g[(g["fp32_bucket_norm"] == "fp32") & (g["fp16_bucket_norm"] == "fp16")]
+                mx_rows = g[(g["fp32_bucket_norm"] == "mx_fp32") & (g["fp16_bucket_norm"] == "mx_fp16")]
+
+                ref_block = ref_rows[ref_rows["mx_mode"] == "block"].sort_values(["fp32_bucket_norm", "fp16_bucket_norm"]).drop_duplicates(
+                    subset=["format", "mx_mode", "fp32_bucket_norm", "fp16_bucket_norm"]
+                )
+                mx_block = mx_rows[mx_rows["mx_mode"] == "block"].sort_values(["fp32_bucket_norm", "fp16_bucket_norm"]).drop_duplicates(
+                    subset=["format", "mx_mode", "fp32_bucket_norm", "fp16_bucket_norm"]
+                )
+
+                b_ref = ref_block["rel_factor_error"].iloc[0] if not ref_block.empty else float("nan")
+                b_mx = mx_block["rel_factor_error"].iloc[0] if not mx_block.empty else float("nan")
+
+                block_ref_vals.append(b_ref)
+                block_mx_vals.append(b_mx)
+
+                block_ref_missing.append(pd.isna(b_ref))
+                block_mx_missing.append(pd.isna(b_mx))
+
+            if any(pd.notna(v) for v in block_ref_vals + block_mx_vals):
+                x = pd.Series(range(len(format_order))).to_numpy()
+                width = 0.35
+                b_ref_plot = [0.0 if pd.isna(v) else v for v in block_ref_vals]
+                b_mx_plot = [0.0 if pd.isna(v) else v for v in block_mx_vals]
+
+                max_local = pd.Series([*b_ref_plot, *b_mx_plot]).max(skipna=True)
+                if pd.isna(max_local) or max_local <= 0:
+                    max_local = 1.0
+
+                b_ref_norm = [v / max_local if pd.notna(v) else float("nan") for v in b_ref_plot]
+                b_mx_norm = [v / max_local if pd.notna(v) else float("nan") for v in b_mx_plot]
+
+                bars1 = ax.bar(x - width / 2, b_ref_norm, width=width, label="block FP32+FP16", color="#1f77b4")
+                bars2 = ax.bar(x + width / 2, b_mx_norm, width=width, label="block MX_FP32+MX_FP16", color="#f58518")
+                ax.set_xticks(x, format_order)
+                ax.tick_params(axis="x", rotation=45)
+                row_max[idx // 2] = max(row_max[idx // 2], pd.Series([
+                    *[b.get_height() for b in bars1],
+                    *[b.get_height() for b in bars2],
+                ]).max(skipna=True))
+                if fig_handles is None:
+                    fig_handles, fig_labels = ax.get_legend_handles_labels()
+
+                def annotate_missing(bars, missing, raw_vals, hatch):
+                    for i, b in enumerate(bars):
+                        if missing[i]:
+                            b.set_facecolor("#dddddd")
+                            b.set_edgecolor("#666666")
+                            b.set_hatch(hatch)
+                            ax.annotate("NA",
+                                        xy=(b.get_x() + b.get_width() / 2, 0),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+                        else:
+                            ax.annotate(f"{raw_vals[i]:.2e}",
+                                        xy=(b.get_x() + b.get_width() / 2, b.get_height()),
+                                        xytext=(0, 3), textcoords="offset points",
+                                        ha="center", va="bottom", fontsize=7, rotation=45)
+
+                annotate_missing(bars1, block_ref_missing, b_ref_plot, "//")
+                annotate_missing(bars2, block_mx_missing, b_mx_plot, "\\")
+            else:
+                ax.set_xticks(pd.Series(range(len(format_order))).to_numpy(), format_order)
+
+            ax.set_title(f"NB={nb}")
+            ax.set_xlabel("Low precision format")
+            ax.set_ylabel("rel_factor_error (normalized)")
+
+        fig.suptitle(f"Figure 13: block FP32+FP16 vs block MX_FP32+MX_FP16 buckets (size={fmt_size(data_size)})")
+        if fig_handles:
+            fig.legend(fig_handles, fig_labels, loc="lower center", ncol=2,
+                       bbox_to_anchor=(0.5, -0.02), frameon=False)
+        for r in range(2):
+            max_y = row_max[r]
+            if max_y > 0:
+                for c in range(2):
+                    ax = axes[r * 2 + c]
+                    if ax.get_visible():
+                        ax.set_ylim(0, max_y * 1.25)
+        fig.tight_layout(rect=[0, 0.1, 1, 0.95])
+        out_path = out_dir / f"fig13_fp32_fp16_vs_mxfp32_mxfp16_size{fmt_size(data_size)}.pdf"
+        fig.savefig(out_path, dpi=200)
+        plt.close(fig)
+
+
 def main():
     args = parse_args()
     summary_path = Path(args.summary)
@@ -965,6 +1701,11 @@ def main():
     plot_figure6(df, out_dir)
     plot_figure7(df, out_dir)
     plot_figure8(df, out_dir)
+    plot_figure9(df, out_dir)
+    plot_figure10(df, out_dir)
+    plot_figure11(df, out_dir)
+    plot_figure12(df, out_dir)
+    plot_figure13(df, out_dir)
 
     print(f"Plots saved to: {out_dir}")
 

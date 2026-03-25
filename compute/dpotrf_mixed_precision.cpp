@@ -67,7 +67,125 @@ static std::string bucket_format(const char *env_name) {
   return {};
 }
 
+static long double format_unit_roundoff(const std::string &fmt_in) {
+  std::string fmt = fmt_in;
+  std::transform(fmt.begin(), fmt.end(), fmt.begin(),
+                 [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  if (fmt == "fp32" || fmt == "mx_fp32" || fmt == "mx_f32") {
+    return static_cast<long double>(std::numeric_limits<float>::epsilon());
+  }
+  if (fmt == "fp16" || fmt == "mx_fp16" || fmt == "mx_f16") {
+    return static_cast<long double>(std::numeric_limits<Eigen::half>::epsilon());
+  }
+  if (fmt == "bf16") {
+    return 1.0L / 128.0L;
+  }
+  if (fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" || fmt == "e4m3" ||
+      fmt == "fp8_e4m3" || fmt == "fp8e4m3") {
+    return 1.0L / 16.0L;
+  }
+  if (fmt == "mx_e5m2" || fmt == "mx_fp8_e5m2" || fmt == "e5m2" ||
+      fmt == "fp8_e5m2" || fmt == "fp8e5m2" || fmt == "e3m2") {
+    return 1.0L / 8.0L;
+  }
+  if (fmt == "e2m3") {
+    return 1.0L / 16.0L;
+  }
+  if (fmt == "e2m1") {
+    return 1.0L / 4.0L;
+  }
+  return 1.0L / 16.0L;
+}
+
+static bool format_uses_shared_scale(const std::string &fmt_in) {
+  std::string fmt = fmt_in;
+  std::transform(fmt.begin(), fmt.end(), fmt.begin(),
+                 [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  return (fmt == "mx_fp16" || fmt == "mx_f16" || fmt == "mx_fp32" ||
+          fmt == "mx_f32" || fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" ||
+          fmt == "mx_e5m2" || fmt == "mx_fp8_e5m2" || fmt == "e3m2" ||
+          fmt == "e2m3" || fmt == "e2m1");
+}
+
+static long double format_fmin(const std::string &fmt_in) {
+  std::string fmt = fmt_in;
+  std::transform(fmt.begin(), fmt.end(), fmt.begin(),
+                 [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  if (fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" || fmt == "e4m3" ||
+      fmt == "fp8_e4m3" || fmt == "fp8e4m3") {
+    return std::ldexp(1.0L, -6);
+  }
+  if (fmt == "mx_e5m2" || fmt == "mx_fp8_e5m2" || fmt == "e5m2" ||
+      fmt == "fp8_e5m2" || fmt == "fp8e5m2") {
+    return std::ldexp(1.0L, -14);
+  }
+  if (fmt == "e3m2") {
+    return std::ldexp(1.0L, -2);
+  }
+  if (fmt == "e2m3") {
+    return std::ldexp(1.0L, 0);
+  }
+  if (fmt == "e2m1") {
+    return std::ldexp(1.0L, 0);
+  }
+  return 0.0L;
+}
+
+static long double format_fmax(const std::string &fmt_in) {
+  std::string fmt = fmt_in;
+  std::transform(fmt.begin(), fmt.end(), fmt.begin(),
+                 [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  if (fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" || fmt == "e4m3" ||
+      fmt == "fp8_e4m3" || fmt == "fp8e4m3") {
+    return 448.0L;
+  }
+  if (fmt == "mx_e5m2" || fmt == "mx_fp8_e5m2" || fmt == "e5m2" ||
+      fmt == "fp8_e5m2" || fmt == "fp8e5m2") {
+    return 57344.0L;
+  }
+  if (fmt == "e3m2") {
+    return 28.0L;
+  }
+  if (fmt == "e2m3") {
+    return 7.5L;
+  }
+  if (fmt == "e2m1") {
+    return 6.0L;
+  }
+  return 0.0L;
+}
+
+static long double format_scaled_underflow_term(const std::string &fmt_in) {
+  const long double fmin = format_fmin(fmt_in);
+  const long double fmax = format_fmax(fmt_in);
+  if (!(fmin > 0.0L) || !(fmax > 0.0L)) return 0.0L;
+
+  static int mode_init = 0;
+  static bool use_gu = false;
+  if (!mode_init) {
+    if (const char *env = getenv("MX_UNDERFLOW_MODE")) {
+      std::string m = env;
+      std::transform(m.begin(), m.end(), m.begin(),
+                     [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+      use_gu = (m == "gu" || m == "gradual");
+    }
+    mode_init = 1;
+  }
+
+  const long double u = format_unit_roundoff(fmt_in);
+  const long double gmin = use_gu ? (u * fmin) : (0.5L * fmin);
+  return gmin / fmax;
+}
+
 enum class MxMode { Tile, Block };
+
+static int8_t computeScaleFromMax(float max_val) {
+  if (max_val <= 0.0f) return 0;
+  int scale = static_cast<int>(std::floor(std::log2(max_val)));
+  if (scale > 127) scale = 127;
+  if (scale < -128) scale = -128;
+  return static_cast<int8_t>(scale);
+}
 
 static int8_t computeScale(const float *data, size_t n) {
   float max_val = 0.0f;
@@ -93,6 +211,21 @@ static int computeScaleBits(const float *data, size_t n, int scale_bits) {
   int scale = static_cast<int>(std::floor(std::log2(max_val)));
   const int max_scale = (1 << (scale_bits - 1)) - 1;
   const int min_scale = - (1 << (scale_bits - 1));
+  if (scale > max_scale) scale = max_scale;
+  if (scale < min_scale) scale = min_scale;
+  return scale;
+}
+
+static int computeScaleBitsFromMax(float max_val, int scale_bits) {
+  if (max_val <= 0.0f) return 0;
+  int scale = static_cast<int>(std::floor(std::log2(max_val)));
+  if (scale_bits <= 0) {
+    if (scale > 127) scale = 127;
+    if (scale < -128) scale = -128;
+    return scale;
+  }
+  const int max_scale = (1 << (scale_bits - 1)) - 1;
+  const int min_scale = -(1 << (scale_bits - 1));
   if (scale > max_scale) scale = max_scale;
   if (scale < min_scale) scale = min_scale;
   return scale;
@@ -266,6 +399,19 @@ static MxMode mx_mode() {
     init = 1;
   }
   return mode;
+}
+
+static int mx_block_subtile() {
+  static int init = 0;
+  static int subtile = 0;
+  if (!init) {
+    if (const char *env = getenv("MX_BLOCK_SUBTILE")) {
+      int v = atoi(env);
+      subtile = v > 0 ? v : 0;
+    }
+    init = 1;
+  }
+  return subtile;
 }
 
 #ifdef __CUDACC__
@@ -484,7 +630,22 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
           long double normTile = mappedBlock.norm();
           auto epsilonRatio = array->nt * normTile / normA;
 
-          const long double sourceEpsilon = std::numeric_limits<float>::epsilon();
+          const long double sourceEpsilon = []() {
+            const char *env = getenv("MX_SOURCE_EPSILON");
+            if (!env || !env[0]) {
+              return static_cast<long double>(
+                  std::numeric_limits<float>::epsilon());
+            }
+            char *end = nullptr;
+            const long double v = std::strtold(env, &end);
+            if (end == env || *end != '\0' || !(v > 0.0L)) {
+              std::cout << "[WARN] Invalid MX_SOURCE_EPSILON='" << env
+                        << "', using default float epsilon." << std::endl;
+              return static_cast<long double>(
+                  std::numeric_limits<float>::epsilon());
+            }
+            return v;
+          }();
           static const int plain_band = []() {
             const char *env = getenv("MX_PLAIN_BAND");
             if (!env) return 1;  // default: one super-/sub-diagonal stays plain FP32
@@ -534,6 +695,21 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             }
           }
           const bool allow_low = !target_low.empty() || hasFp8;
+          const std::string selected_low_format =
+              target_low.empty() ? std::string("mx_e4m3") : target_low;
+          static const int scale_aware_epsilon = []() {
+            const char *env = getenv("MX_SCALE_AWARE_EPSILON");
+            if (!env) return 1;
+            return (env[0] == '0') ? 0 : 1;
+          }();
+          long double lowUnitRoundoff = format_unit_roundoff(selected_low_format);
+          if (scale_aware_epsilon && format_uses_shared_scale(selected_low_format)) {
+            lowUnitRoundoff += format_scaled_underflow_term(selected_low_format);
+          }
+          if (!(lowUnitRoundoff > 0.0L)) {
+            lowUnitRoundoff = 1.0L / 16.0L;
+          }
+          const long double lowCutoff = sourceEpsilon / lowUnitRoundoff;
 
           auto apply_mx_quant = [&](const char *label, int ebits, int mbits,
                                     float max_norm) {
@@ -579,19 +755,58 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
               debug_dump_sample("pre-quant", h_output, tile_size);
             }
             if (block_mode) {
-              for (size_t r = 0; r < static_cast<size_t>(tile.m); ++r) {
-                float *row = h_output + r * static_cast<size_t>(tile.n);
-                const int8_t row_scale = computeScale(row, tile.n);
-                const float scale = pow2(static_cast<int>(row_scale));
-                const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
-                for (size_t c = 0; c < static_cast<size_t>(tile.n); ++c) {
-                  const float x = row[c] * inv_scale;
-                  if (mx_fp16) {
-                    Eigen::half h = static_cast<Eigen::half>(x);
-                    row[c] = static_cast<float>(h) * scale;
-                  } else {
-                    const float q = quantizeFp(x, ebits, mbits, max_norm);
-                    row[c] = q * scale;
+              const int subtile = mx_block_subtile();
+              if (subtile > 0) {
+                const size_t tile_m = static_cast<size_t>(tile.m);
+                const size_t tile_n = static_cast<size_t>(tile.n);
+                for (size_t r0 = 0; r0 < tile_m; r0 += static_cast<size_t>(subtile)) {
+                  const size_t r_max = (static_cast<size_t>(subtile) < (tile_m - r0))
+                                         ? static_cast<size_t>(subtile)
+                                         : (tile_m - r0);
+                  for (size_t c0 = 0; c0 < tile_n; c0 += static_cast<size_t>(subtile)) {
+                    const size_t c_max = (static_cast<size_t>(subtile) < (tile_n - c0))
+                                           ? static_cast<size_t>(subtile)
+                                           : (tile_n - c0);
+                    float max_val = 0.0f;
+                    for (size_t r = 0; r < r_max; ++r) {
+                      const float *row = h_output + (r0 + r) * tile_n + c0;
+                      for (size_t c = 0; c < c_max; ++c) {
+                        max_val = std::fmax(max_val, std::fabs(row[c]));
+                      }
+                    }
+                    const int8_t st_scale = computeScaleFromMax(max_val);
+                    const float scale = pow2(static_cast<int>(st_scale));
+                    const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                    for (size_t r = 0; r < r_max; ++r) {
+                      float *row = h_output + (r0 + r) * tile_n + c0;
+                      for (size_t c = 0; c < c_max; ++c) {
+                        const float x = row[c] * inv_scale;
+                        if (mx_fp16) {
+                          Eigen::half h = static_cast<Eigen::half>(x);
+                          row[c] = static_cast<float>(h) * scale;
+                        } else {
+                          const float q = quantizeFp(x, ebits, mbits, max_norm);
+                          row[c] = q * scale;
+                        }
+                      }
+                    }
+                  }
+                }
+              } else {
+                for (size_t r = 0; r < static_cast<size_t>(tile.m); ++r) {
+                  float *row = h_output + r * static_cast<size_t>(tile.n);
+                  const int8_t row_scale = computeScale(row, tile.n);
+                  const float scale = pow2(static_cast<int>(row_scale));
+                  const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                  for (size_t c = 0; c < static_cast<size_t>(tile.n); ++c) {
+                    const float x = row[c] * inv_scale;
+                    if (mx_fp16) {
+                      Eigen::half h = static_cast<Eigen::half>(x);
+                      row[c] = static_cast<float>(h) * scale;
+                    } else {
+                      const float q = quantizeFp(x, ebits, mbits, max_norm);
+                      row[c] = q * scale;
+                    }
                   }
                 }
               }
@@ -652,15 +867,49 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             }
 
             if (block_mode) {
-              for (size_t r = 0; r < static_cast<size_t>(tile.m); ++r) {
-                float *row = tmp.data() + r * static_cast<size_t>(tile.n);
-                const int row_scale = computeScaleBits(row, tile.n, scale_bits);
-                const float scale = pow2(row_scale);
-                const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
-                for (size_t c = 0; c < static_cast<size_t>(tile.n); ++c) {
-                  const float x = row[c] * inv_scale;
-                  const float q = quantizeFp(x, ebits, mbits, max_norm);
-                  row[c] = q * scale;
+              const int subtile = mx_block_subtile();
+              if (subtile > 0) {
+                const size_t tile_m = static_cast<size_t>(tile.m);
+                const size_t tile_n = static_cast<size_t>(tile.n);
+                for (size_t r0 = 0; r0 < tile_m; r0 += static_cast<size_t>(subtile)) {
+                  const size_t r_max = (static_cast<size_t>(subtile) < (tile_m - r0))
+                                         ? static_cast<size_t>(subtile)
+                                         : (tile_m - r0);
+                  for (size_t c0 = 0; c0 < tile_n; c0 += static_cast<size_t>(subtile)) {
+                    const size_t c_max = (static_cast<size_t>(subtile) < (tile_n - c0))
+                                           ? static_cast<size_t>(subtile)
+                                           : (tile_n - c0);
+                    float max_val = 0.0f;
+                    for (size_t r = 0; r < r_max; ++r) {
+                      const float *row = tmp.data() + (r0 + r) * tile_n + c0;
+                      for (size_t c = 0; c < c_max; ++c) {
+                        max_val = std::fmax(max_val, std::fabs(row[c]));
+                      }
+                    }
+                    const int st_scale = computeScaleBitsFromMax(max_val, scale_bits);
+                    const float scale = pow2(st_scale);
+                    const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                    for (size_t r = 0; r < r_max; ++r) {
+                      float *row = tmp.data() + (r0 + r) * tile_n + c0;
+                      for (size_t c = 0; c < c_max; ++c) {
+                        const float x = row[c] * inv_scale;
+                        const float q = quantizeFp(x, ebits, mbits, max_norm);
+                        row[c] = q * scale;
+                      }
+                    }
+                  }
+                }
+              } else {
+                for (size_t r = 0; r < static_cast<size_t>(tile.m); ++r) {
+                  float *row = tmp.data() + r * static_cast<size_t>(tile.n);
+                  const int row_scale = computeScaleBits(row, tile.n, scale_bits);
+                  const float scale = pow2(row_scale);
+                  const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                  for (size_t c = 0; c < static_cast<size_t>(tile.n); ++c) {
+                    const float x = row[c] * inv_scale;
+                    const float q = quantizeFp(x, ebits, mbits, max_norm);
+                    row[c] = q * scale;
+                  }
                 }
               }
             } else {
@@ -830,6 +1079,10 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
           if (row == col ) {
             std::cout << "\n[DEBUG] Epsilon Ratio for Tile (" << row << ", " << col << "): " << epsilonRatio << std::endl;
             std::cout << "[DEBUG] Source Epsilon / FP32 Epsilon: " << sourceEpsilon / std::numeric_limits<float>::epsilon() << std::endl;
+            std::cout << "[DEBUG] Low format cutoff (" << selected_low_format
+                      << "): " << lowCutoff
+                      << " (scale-aware=" << scale_aware_epsilon << ")"
+                      << std::endl;
             tile.dtype = CUDA_R_64F;
             cudaMallocHost(&tile.data, sizeof(uint64_t) * tile.m * tile.n);
             g_pinned_tiles++;
@@ -862,7 +1115,7 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                         << std::endl;
             apply_bucket_target(fp32_bucket, "fp32");
           } else if (!allow_low ||
-                     epsilonRatio > sourceEpsilon * 16 /* 1/16 is the epsilon of fp8 */) {
+                     epsilonRatio > lowCutoff) {
             apply_bucket_target(fp16_bucket, "fp16");
           } else {
             if (target_low == "fp16") {

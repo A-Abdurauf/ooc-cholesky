@@ -38,6 +38,13 @@
 #include <lapacke.h>
 #endif
 #include <core_blas.h>
+#ifdef PLASMA_WITH_CUDA
+#include <cublas_v2.h>
+#include <cuda_runtime.h>
+#endif
+#ifdef _OPENMP
+#include <omp.h>
+#endif
 
 int check_factorization(int, double *, double *, int, int);
 
@@ -61,6 +68,36 @@ static bool parse_int_arg(const std::string &name, const std::string &value,
     return false;
   }
 }
+
+#ifdef PLASMA_WITH_CUDA
+static bool use_gpu_error_calc() {
+  if (const char *env = std::getenv("MX_ERROR_GPU")) {
+    return env[0] == '1';
+  }
+  const char *vis = std::getenv("CUDA_VISIBLE_DEVICES");
+  if (!vis || vis[0] == '\0' || (vis[0] == '-' && vis[1] == '1')) {
+    return false;
+  }
+  int count = 0;
+  if (cudaGetDeviceCount(&count) != cudaSuccess) {
+    return false;
+  }
+  return count > 0;
+}
+#ifdef __CUDACC__
+__global__ void row_sum_abs_kernel(const double *A, const double *B,
+                                   double *row_sums, int N) {
+  int i = blockIdx.x * blockDim.x + threadIdx.x;
+  if (i >= N) return;
+  double sum = 0.0;
+  for (int j = 0; j < N; ++j) {
+    const size_t idx = static_cast<size_t>(i) + static_cast<size_t>(j) * N;
+    sum += fabs(A[idx] - B[idx]);
+  }
+  row_sums[i] = sum;
+}
+#endif
+#endif
 
 int main(int argc, char **argv) {
   int cores = 2;
@@ -105,6 +142,14 @@ int main(int argc, char **argv) {
   if (!fp16_bucket.empty()) {
     setenv("MX_BUCKET_FP16", fp16_bucket.c_str(), 1);
   }
+
+#ifdef _OPENMP
+  if (cores > 0) {
+    omp_set_num_threads(cores);
+  }
+  Eigen::setNbThreads(cores);
+  Eigen::initParallel();
+#endif
 
   std::ifstream in(bin_path, std::ios::binary | std::ios::ate);
   if (!in) {
@@ -154,35 +199,133 @@ int main(int argc, char **argv) {
   L.triangularView<Eigen::StrictlyUpper>().setZero();
   double error = 0;
   A_ref = A_ref.selfadjointView<Eigen::Lower>();
-  error = (A_ref - L * L.transpose()).array().abs().rowwise().sum().maxCoeff();
+  double a_inf = 0.0;
+#ifdef _OPENMP
+#pragma omp parallel for reduction(max:a_inf) schedule(static)
+#endif
+  for (int i = 0; i < N; ++i) {
+    double row_sum = 0.0;
+    for (int j = 0; j < N; ++j) {
+      const size_t idx = static_cast<size_t>(i) + static_cast<size_t>(j) * N;
+      row_sum += std::fabs(A_ref.data()[idx]);
+    }
+    if (row_sum > a_inf) a_inf = row_sum;
+  }
+  bool gpu_error_done = false;
+#ifdef PLASMA_WITH_CUDA
+  if (use_gpu_error_calc()) {
+    const size_t bytes = static_cast<size_t>(N) * N * sizeof(double);
+    double *dA = nullptr;
+    double *dL = nullptr;
+    double *dLLt = nullptr;
+    double *dRow = nullptr;
+    cublasHandle_t handle = nullptr;
+    if (cudaMalloc(reinterpret_cast<void **>(&dA), bytes) == cudaSuccess &&
+        cudaMalloc(reinterpret_cast<void **>(&dL), bytes) == cudaSuccess &&
+        cudaMalloc(reinterpret_cast<void **>(&dLLt), bytes) == cudaSuccess &&
+        cudaMalloc(reinterpret_cast<void **>(&dRow), static_cast<size_t>(N) * sizeof(double)) == cudaSuccess) {
+      if (cudaMemcpy(dA, A_ref.data(), bytes, cudaMemcpyHostToDevice) == cudaSuccess &&
+          cudaMemcpy(dL, L.data(), bytes, cudaMemcpyHostToDevice) == cudaSuccess &&
+          cublasCreate(&handle) == CUBLAS_STATUS_SUCCESS) {
+        const double alpha = 1.0;
+        const double beta = 0.0;
+        if (cublasDgemm(handle, CUBLAS_OP_N, CUBLAS_OP_T,
+                        N, N, N,
+                        &alpha, dL, N,
+                        dL, N,
+                        &beta, dLLt, N) == CUBLAS_STATUS_SUCCESS) {
+#ifdef __CUDACC__
+          const int block = 256;
+          const int grid = (N + block - 1) / block;
+          row_sum_abs_kernel<<<grid, block>>>(dA, dLLt, dRow, N);
+          if (cudaDeviceSynchronize() == cudaSuccess) {
+            std::vector<double> row_sums(static_cast<size_t>(N));
+            if (cudaMemcpy(row_sums.data(), dRow,
+                           static_cast<size_t>(N) * sizeof(double),
+                           cudaMemcpyDeviceToHost) == cudaSuccess) {
+              double max_err = 0.0;
+              for (int i = 0; i < N; ++i) {
+                if (row_sums[static_cast<size_t>(i)] > max_err) {
+                  max_err = row_sums[static_cast<size_t>(i)];
+                }
+              }
+              error = max_err;
+              gpu_error_done = true;
+            }
+          }
+#endif
+        }
+      }
+    }
+    if (handle) cublasDestroy(handle);
+    if (dA) cudaFree(dA);
+    if (dL) cudaFree(dL);
+    if (dLLt) cudaFree(dLLt);
+    if (dRow) cudaFree(dRow);
+  }
+#endif
+  if (!gpu_error_done) {
+    std::vector<double> LLt(static_cast<size_t>(N) * N);
+    cblas_dgemm(CblasColMajor, CblasNoTrans, CblasTrans,
+               N, N, N,
+               1.0, L.data(), N,
+               L.data(), N,
+               0.0, LLt.data(), N);
 
+    double max_err = 0.0;
+#ifdef _OPENMP
+#pragma omp parallel for reduction(max:max_err) schedule(static)
+#endif
+    for (int i = 0; i < N; ++i) {
+      double row_sum = 0.0;
+      for (int j = 0; j < N; ++j) {
+        const size_t idx = static_cast<size_t>(i) + static_cast<size_t>(j) * N;
+        row_sum += std::fabs(A_ref.data()[idx] - LLt[idx]);
+      }
+      if (row_sum > max_err) max_err = row_sum;
+    }
+    error = max_err;
+  }
+  const double relative_error =
+      (a_inf > 0.0) ? (error / a_inf) : std::numeric_limits<double>::quiet_NaN();
   std::cout << "error: " << error << std::endl;
+  std::cout << "relative_error: " << relative_error << std::endl;
+
+  if (const char *legacy = std::getenv("MX_ERROR_LEGACY")) {
+    if (legacy[0] == '1') {
+      double error_legacy = (A_ref - L * L.transpose()).array().abs().rowwise().sum().maxCoeff();
+      std::cout << "error_legacy: " << error_legacy << std::endl;
+    }
+  }
 
   // KL divergence between N(0, Σ0) and N(0, Σ1)
   // Σ0 = A_ref, Σ1 = L * L^T
   double kl_divergence = std::numeric_limits<double>::quiet_NaN();
   const int n = N;
-  if (n > 0) {
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Y =
-        L.triangularView<Eigen::Lower>().solve(A_ref);
-    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> X =
-        L.transpose().triangularView<Eigen::Upper>().solve(Y);
+  const char *skip_kl = std::getenv("MX_SKIP_KL");
+  if (!(skip_kl && skip_kl[0] == '1')) {
+    if (n > 0) {
+      Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> Y =
+          L.triangularView<Eigen::Lower>().solve(A_ref);
+      Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> X =
+          L.transpose().triangularView<Eigen::Upper>().solve(Y);
 
-    const double trace = X.trace();
-    Eigen::LLT<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> llt(X);
-    if (llt.info() == Eigen::Success) {
-      const auto &Lx = llt.matrixL();
-      double logdet = 0.0;
-      for (int i = 0; i < n; ++i) {
-        const double d = Lx(i, i);
-        if (d <= 0.0) {
-          logdet = std::numeric_limits<double>::quiet_NaN();
-          break;
+      const double trace = X.trace();
+      Eigen::LLT<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>> llt(X);
+      if (llt.info() == Eigen::Success) {
+        const auto &Lx = llt.matrixL();
+        double logdet = 0.0;
+        for (int i = 0; i < n; ++i) {
+          const double d = Lx(i, i);
+          if (d <= 0.0) {
+            logdet = std::numeric_limits<double>::quiet_NaN();
+            break;
+          }
+          logdet += 2.0 * std::log(d);
         }
-        logdet += 2.0 * std::log(d);
-      }
-      if (std::isfinite(logdet)) {
-        kl_divergence = 0.5 * (trace - logdet - static_cast<double>(n));
+        if (std::isfinite(logdet)) {
+          kl_divergence = 0.5 * (trace - logdet - static_cast<double>(n));
+        }
       }
     }
   }
