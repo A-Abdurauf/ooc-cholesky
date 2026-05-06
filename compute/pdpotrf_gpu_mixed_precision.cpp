@@ -736,6 +736,7 @@ void plasma_pdpotrf_gpu_reuse_data_table_mixed_precision(
                                    plasma->cuda_stream[rank]));
         volumeGPU2CPU += sizeof(int);
         CHECK_CUDA(cudaStreamSynchronize(plasma->cuda_stream[rank]));
+        requantizeTileHost(&getTile(A, k, k));
         std::unique_lock<std::mutex> lock{dataTable->mutex};
         std::swap(localDestination, dataTable->diagonal);
         dataTable->diagIdx = k;
@@ -915,6 +916,7 @@ void plasma_pdpotrf_gpu_reuse_data_table_mixed_precision(
           plasma->cuda_stream[rank]));
         volumeGPU2CPU += ldak * sizeofTileElementLocalDestination * A.nb;
         CHECK_CUDA(cudaStreamSynchronize(plasma->cuda_stream[rank]));
+        requantizeTileHost(&getTile(A, m, k));
         end = get_current_time();
         log_event(rank, 0, EVENT_G2C, start, end);
         ss_cond_set(m, k, 1);
@@ -1231,6 +1233,7 @@ void plasma_pdpotrf_gpu_reuse_data_table_all_managed_mixed_precision(
           kindOut, plasma->cuda_stream[rank]));
         volumeGPU2CPU += ldak * sizeofTileElement * tempkn;
         CHECK_CUDA(cudaStreamSynchronize(plasma->cuda_stream[rank]));
+        requantizeTileHost(&getTile(A, k, k));
         CHECK_CUDA(cudaMemcpyAsync(&info, infoDevice, sizeof(int),
                                    cudaMemcpyDeviceToHost,
                                    plasma->cuda_stream[rank]));
@@ -1423,6 +1426,7 @@ void plasma_pdpotrf_gpu_reuse_data_table_all_managed_mixed_precision(
           plasma->cuda_stream[rank]));
         volumeGPU2CPU += ldak * sizeofTileElementLocalDestination * A.nb;
         CHECK_CUDA(cudaStreamSynchronize(plasma->cuda_stream[rank]));
+        requantizeTileHost(&getTile(A, m, k));
         end = get_current_time();
         log_event(rank, 0, EVENT_G2C, start, end);
         lock.lock();

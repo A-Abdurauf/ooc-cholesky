@@ -1,131 +1,4 @@
---- 1. Cleaning and Setting up Build Directory ---
---- 2. Running CMake Configuration ---
--- The C compiler identification is GNU 11.4.0
--- The CXX compiler identification is GNU 11.4.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/gcc-11 - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/g++-11 - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- MKL NOT ENABLED
--- Found BLAS: /usr/lib/x86_64-linux-gnu/libopenblas.so
--- Found LAPACK: /usr/lib/x86_64-linux-gnu/libopenblas.so
--- Found OpenMP_C: -fopenmp (found version "4.5")
--- Found OpenMP_CXX: -fopenmp (found version "4.5")
--- Found OpenMP: TRUE (found version "4.5")
--- 
--- Configured Eigen 5.0.0-dev+08c1040d
--- 
--- Found CUDAToolkit: /usr/local/cuda-12.5/targets/x86_64-linux/include (found version "12.5.82")
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD
--- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
--- Looking for pthread_create in pthreads
--- Looking for pthread_create in pthreads - not found
--- Looking for pthread_create in pthread
--- Looking for pthread_create in pthread - found
--- Found Threads: TRUE
--- The CUDA compiler identification is NVIDIA 12.5.82
--- Detecting CUDA compiler ABI info
--- Detecting CUDA compiler ABI info - done
--- Check for working CUDA compiler: /usr/local/cuda-12.5/bin/nvcc - skipped
--- Detecting CUDA compile features
--- Detecting CUDA compile features - done
--- Configuring done (3.9s)
--- Generating done (0.1s)
--- Build files have been written to: /home/abduraa/MX_project/ooc-cholesky/build
---- 3. Building Libraries (Plasma and mixed_kernels) ---
-[  2%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/gemm.cpp.o
-[  2%] Building CUDA object mixed_kernels/CMakeFiles/mixed_kernels.dir/casting.cu.o
-[  3%] Building CXX object mixed_kernels/CMakeFiles/mixed_kernels.dir/syrk.cpp.o
-[  4%] Linking CXX static library libmixed_kernels.a
-[  4%] Built target mixed_kernels
-[  7%] Building C object CMakeFiles/plasma.dir/control/auxiliary.c.o
-[  7%] Building CXX object CMakeFiles/plasma.dir/control/control.cpp.o
-[ 14%] Building C object CMakeFiles/plasma.dir/control/plasmaos.c.o
-[ 14%] Building C object CMakeFiles/plasma.dir/control/allocate.c.o
-[ 14%] Building C object CMakeFiles/plasma.dir/control/context.c.o
-[ 14%] Building C object CMakeFiles/plasma.dir/control/descriptor.c.o
-[ 22%] Building C object CMakeFiles/plasma.dir/quark/quark.c.o
-[ 22%] Building C object CMakeFiles/plasma.dir/core_blas/global.c.o
-[ 22%] Building C object CMakeFiles/plasma.dir/control/async.c.o
-[ 22%] Building C object CMakeFiles/plasma.dir/control/plasma_threadsetting.c.o
-[ 22%] Building C object CMakeFiles/plasma.dir/quark/icl_list.c.o
-[ 22%] Building C object CMakeFiles/plasma.dir/quark/icl_hash.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_alloc.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/core_blas/gkkleader.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/core_blas/descriptor.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/core_blas/core_dtrsm.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpotrf.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/control/pdtile.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/core_blas/primes.c.o
-[ 33%] Building CXX object CMakeFiles/plasma.dir/control/pdtile_dist.cpp.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgetrip.c.o
-[ 33%] Building C object CMakeFiles/plasma.dir/quark/quarkos.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dlacpy.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplgsy.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dsyrk.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dsyrk.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dswpab.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dlacpy.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrsm.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgetrip.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dshift.c.o
-[ 45%] Building C object CMakeFiles/plasma.dir/core_blas/core_dgemm.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdgetmi2.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdshift.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/compute/pdpack.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpotrf.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/compute/dpotrf.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dshift.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dtrmm.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dplgsy.c.o
-[ 58%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dgemm.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dplgsy.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dtrsm.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dpltmg.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dgecfi.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/pdplgsy.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dgemm.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/core_blas-qwrapper/qwrapper_dtrmm.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/core_blas/core_dpltmg.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dgecfi2.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/core_blas/core_dplrnt.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dplrnt.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/dlacpy.c.o
-[ 72%] Building C object CMakeFiles/plasma.dir/compute/pdlacpy.c.o
-[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdtrsm.c.o
-[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_mixed_precision.cpp.o
-[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdpotrf_gpu.c.o
-[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist_mixed_precision.cpp.o
-[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdtrmm.c.o
-[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_hpcasia24.cpp.o
-[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist.cpp.o
-[ 90%] Building C object CMakeFiles/plasma.dir/compute/dpotrf_gpu.c.o
-[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_mixed_precision.cpp.o
-[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_gpu_dist.cpp.o
-[ 93%] Building CXX object CMakeFiles/plasma.dir/compute/pdpotrf_gpu_dist_mixed_precision.cpp.o
-[ 90%] Building C object CMakeFiles/plasma.dir/compute/pdpltmg.c.o
-[ 90%] Building C object CMakeFiles/plasma.dir/compute/dpltmg.c.o
-[ 93%] Building CUDA object CMakeFiles/plasma.dir/compute/castType.cu.o
-[ 90%] Building CXX object CMakeFiles/plasma.dir/control/event.cpp.o
-[ 90%] Building CXX object CMakeFiles/plasma.dir/compute/dpotrf_hpcasia24.cpp.o
-[ 93%] Building CUDA object CMakeFiles/plasma.dir/mx_quant/mx_wrapper.cu.o
-[ 95%] Linking CXX static library libplasma.a
-[ 95%] Built target plasma
-[ 96%] Building C object CMakeFiles/example_dpotrf.dir/examples/example_dpotrf.c.o
-[ 97%] Building CXX object CMakeFiles/example_dpotrf_gpu.dir/examples/example_dpotrf_gpu.cpp.o
-[ 98%] Linking CXX executable example_dpotrf
-[ 98%] Built target example_dpotrf
-[100%] Linking CXX executable example_dpotrf_gpu
-[100%] Built target example_dpotrf_gpu
---- 4. Moving to Examples and Compiling Custom CUDA Object (mx_wrapper.o) ---
---- 5. Linking Final Executable (example_tiled_SPD) ---
+--- Skipping build (BUILD=0). Using existing executable ---
 --- 6. Running the Mixed-Precision Executable ---
 [DEBUG] using NB=512 (autotune=0)
 
@@ -1596,8 +1469,19 @@
 [DEBUG] Low format cutoff (mx_e4m3): 1.90682e-06 (scale-aware=1)
 [TILE_TARGET] (15, 15) fp64
 [TILE_DTYPE] (15, 15) fp64
-FLOPS: 0.757023
-[TIMES] tile+quant(us): 34202617, factor(us): 242092, uncompress(us): 0
-Runtime: 36051764897 microseconds
+FLOPS: 0.397801
+[TIMES] tile+quant(us): 34927697, factor(us): 460696, uncompress(us): 0
+Runtime: 36958714650 microseconds
 error: 9.86572e-06
 relative_error: 2.66826e-07
+kl_divergence: nan
+[FINAL_TILE_COUNTS] total	fp64	fp32	fp16	bf16	mx_fp16	low
+[FINAL_TILE_COUNTS] 136	16	60	0	0	36	24
+[FINAL_TILE_COUNTS_LOWER] fp64=16,fp32=60,mx_fp16=36,mx_e4m3=3,e3m2=1,e2m3=2,e2m1=18
+[FINAL_TILE_COUNTS_FULL] fp64=16,fp32=120,mx_fp16=72,mx_e4m3=6,e3m2=2,e2m3=4,e2m1=36
+Log: /home/abduraa/MX_project/logs/mx_ooc_data/run_20260328_190304.log
+Tiling CSV: /home/abduraa/MX_project/logs/mx_ooc_data/plots/tiling_20260328_190304.csv
+Tiling PNG: /home/abduraa/MX_project/logs/mx_ooc_data/plots/tiling_20260328_190304.png
+Tiling counts: /home/abduraa/MX_project/logs/mx_ooc_data/plots/tiling_counts_20260328_190304.txt
+Summary: /home/abduraa/MX_project/logs/mx_ooc_data/8k_summary_auto.txt
+--- Script Execution Complete ---

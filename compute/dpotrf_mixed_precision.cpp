@@ -111,6 +111,15 @@ static long double format_fmin(const std::string &fmt_in) {
   std::string fmt = fmt_in;
   std::transform(fmt.begin(), fmt.end(), fmt.begin(),
                  [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  if (fmt == "fp32" || fmt == "mx_fp32" || fmt == "mx_f32") {
+    return std::ldexp(1.0L, -126);
+  }
+  if (fmt == "fp16" || fmt == "mx_fp16" || fmt == "mx_f16") {
+    return std::ldexp(1.0L, -14);
+  }
+  if (fmt == "bf16") {
+    return std::ldexp(1.0L, -126);
+  }
   if (fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" || fmt == "e4m3" ||
       fmt == "fp8_e4m3" || fmt == "fp8e4m3") {
     return std::ldexp(1.0L, -6);
@@ -135,6 +144,15 @@ static long double format_fmax(const std::string &fmt_in) {
   std::string fmt = fmt_in;
   std::transform(fmt.begin(), fmt.end(), fmt.begin(),
                  [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+  if (fmt == "fp32" || fmt == "mx_fp32" || fmt == "mx_f32") {
+    return (std::numeric_limits<float>::max)();
+  }
+  if (fmt == "fp16" || fmt == "mx_fp16" || fmt == "mx_f16") {
+    return 65504.0L;
+  }
+  if (fmt == "bf16") {
+    return std::ldexp(1.0L, 127) * (2.0L - std::ldexp(1.0L, -7));
+  }
   if (fmt == "mx_e4m3" || fmt == "mx_fp8_e4m3" || fmt == "e4m3" ||
       fmt == "fp8_e4m3" || fmt == "fp8e4m3") {
     return 448.0L;
@@ -177,7 +195,42 @@ static long double format_scaled_underflow_term(const std::string &fmt_in) {
   return gmin / fmax;
 }
 
-enum class MxMode { Tile, Block };
+static long double format_gmin(const std::string &fmt_in) {
+  const long double fmin = format_fmin(fmt_in);
+  if (!(fmin > 0.0L)) return 0.0L;
+
+  static int mode_init = 0;
+  static bool use_gu = false;
+  if (!mode_init) {
+    if (const char *env = getenv("MX_UNDERFLOW_MODE")) {
+      std::string m = env;
+      std::transform(m.begin(), m.end(), m.begin(),
+                     [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+      use_gu = (m == "gu" || m == "gradual");
+    }
+    mode_init = 1;
+  }
+
+  const long double u = format_unit_roundoff(fmt_in);
+  return use_gu ? (u * fmin) : (0.5L * fmin);
+}
+
+static bool use_explicit_tile_bound_selection() {
+  static int init = 0;
+  static bool enabled = false;
+  if (!init) {
+    if (const char *env = getenv("MX_SELECTION_CRITERIA")) {
+      std::string v = env;
+      std::transform(v.begin(), v.end(), v.begin(),
+                     [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+      enabled = (v == "bound" || v == "explicit_bound" || v == "nf");
+    }
+    init = 1;
+  }
+  return enabled;
+}
+
+enum class MxMode { Tile, Block, Vec1D };
 
 static int8_t computeScaleFromMax(float max_val) {
   if (max_val <= 0.0f) return 0;
@@ -394,6 +447,8 @@ static MxMode mx_mode() {
                      [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
       if (v == "block" || v == "blocked") {
         mode = MxMode::Block;
+      } else if (v == "vec1d" || v == "vector" || v == "vec") {
+        mode = MxMode::Vec1D;
       }
     }
     init = 1;
@@ -560,7 +615,7 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
     array->m = array->n = n;
     array->nt = ((long)n - 1) / nb + 1;
   std::cout << "[DEBUG] nb used: " << nb << ", nt: " << array->nt << std::endl;
-    array->tiles = new MixedPrecisionTile[array->nt * array->nt];
+    array->tiles = new MixedPrecisionTile[array->nt * array->nt]();
     
     // Assuming Eigen headers are included:
     // If GPU tiling is requested, build tiles directly on GPU and skip
@@ -718,6 +773,15 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                       << " Quantization) ---" << std::endl;
 
             tile.dtype = CUDA_R_32F;
+            tile.mx_ebits = ebits;
+            tile.mx_mbits = mbits;
+            tile.mx_max_norm = max_norm;
+            tile.mx_scale_bits = 0;
+            const MxMode cur_mode = mx_mode();
+            const bool block_mode  = (cur_mode == MxMode::Block);
+            const bool vec1d_mode  = (cur_mode == MxMode::Vec1D);
+            tile.mx_mode_block = block_mode ? 1 : (vec1d_mode ? 2 : 0);
+            tile.mx_block_subtile = (block_mode || vec1d_mode) ? mx_block_subtile() : 0;
 
             size_t tile_size = tile.m * tile.n;
             float *h_output = nullptr;
@@ -727,32 +791,30 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             g_pinned_tiles++;
             g_pinned_bytes += sizeof(uint32_t) * tile_size;
 
+            std::vector<float> tmp(tile_size);
             Eigen::Map<Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic,
                          Eigen::RowMajor>>{
-              h_output,
+              tmp.data(),
               static_cast<Eigen::Index>(tile.m),
               static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<float>();
 
             const long total_elements = static_cast<long>(tile_size);
-            const bool block_mode = (mx_mode() == MxMode::Block);
             float global_max = 0.0f;
             for (long i = 0; i < total_elements; ++i) {
-              global_max = std::fmax(global_max, std::fabs(h_output[i]));
+              global_max = std::fmax(global_max, std::fabs(tmp[i]));
             }
 
             std::cout << "  Tile Size: " << total_elements
                       << ", MaxVals: " << global_max
                       << ", Mode: "
-                      << (block_mode ? "block" : "tile") << std::endl;
+                      << (block_mode ? "block" : (vec1d_mode ? "vec1d" : "tile")) << std::endl;
 
             const bool mx_fp16 = (ebits == 5 && mbits == 10);
             const bool debug_tile = debug_tile_enabled() && debug_tile_match(row, col);
             std::vector<float> pre_tile;
             if (debug_tile) {
-              pre_tile.assign(h_output, h_output + tile_size);
-            }
-            if (debug_tile) {
-              debug_dump_sample("pre-quant", h_output, tile_size);
+              pre_tile.assign(tmp.begin(), tmp.end());
+              debug_dump_sample("pre-quant", tmp.data(), tile_size);
             }
             if (block_mode) {
               const int subtile = mx_block_subtile();
@@ -769,24 +831,21 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                                            : (tile_n - c0);
                     float max_val = 0.0f;
                     for (size_t r = 0; r < r_max; ++r) {
-                      const float *row = h_output + (r0 + r) * tile_n + c0;
-                      for (size_t c = 0; c < c_max; ++c) {
-                        max_val = std::fmax(max_val, std::fabs(row[c]));
-                      }
+                      const float *rp = tmp.data() + (r0 + r) * tile_n + c0;
+                      for (size_t c = 0; c < c_max; ++c)
+                        max_val = std::fmax(max_val, std::fabs(rp[c]));
                     }
                     const int8_t st_scale = computeScaleFromMax(max_val);
                     const float scale = pow2(static_cast<int>(st_scale));
                     const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
                     for (size_t r = 0; r < r_max; ++r) {
-                      float *row = h_output + (r0 + r) * tile_n + c0;
+                      float *rp = tmp.data() + (r0 + r) * tile_n + c0;
                       for (size_t c = 0; c < c_max; ++c) {
-                        const float x = row[c] * inv_scale;
+                        const float x = rp[c] * inv_scale;
                         if (mx_fp16) {
-                          Eigen::half h = static_cast<Eigen::half>(x);
-                          row[c] = static_cast<float>(h) * scale;
+                          rp[c] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
                         } else {
-                          const float q = quantizeFp(x, ebits, mbits, max_norm);
-                          row[c] = q * scale;
+                          rp[c] = quantizeFp(x, ebits, mbits, max_norm) * scale;
                         }
                       }
                     }
@@ -794,41 +853,65 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                 }
               } else {
                 for (size_t r = 0; r < static_cast<size_t>(tile.m); ++r) {
-                  float *row = h_output + r * static_cast<size_t>(tile.n);
-                  const int8_t row_scale = computeScale(row, tile.n);
+                  float *rp = tmp.data() + r * static_cast<size_t>(tile.n);
+                  const int8_t row_scale = computeScale(rp, tile.n);
                   const float scale = pow2(static_cast<int>(row_scale));
                   const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
                   for (size_t c = 0; c < static_cast<size_t>(tile.n); ++c) {
-                    const float x = row[c] * inv_scale;
+                    const float x = rp[c] * inv_scale;
                     if (mx_fp16) {
-                      Eigen::half h = static_cast<Eigen::half>(x);
-                      row[c] = static_cast<float>(h) * scale;
+                      rp[c] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
                     } else {
-                      const float q = quantizeFp(x, ebits, mbits, max_norm);
-                      row[c] = q * scale;
+                      rp[c] = quantizeFp(x, ebits, mbits, max_norm) * scale;
                     }
                   }
                 }
               }
+            } else if (vec1d_mode) {
+              // 1D row-vector: each row split into vectors of `vec_sz` elements, each with own scale
+              const size_t vec_sz = (mx_block_subtile() > 0)
+                                      ? static_cast<size_t>(mx_block_subtile())
+                                      : 32;
+              const size_t tile_m = static_cast<size_t>(tile.m);
+              const size_t tile_n = static_cast<size_t>(tile.n);
+              for (size_t r = 0; r < tile_m; ++r) {
+                float *rp = tmp.data() + r * tile_n;
+                for (size_t c0 = 0; c0 < tile_n; c0 += vec_sz) {
+                  const size_t c_end = (c0 + vec_sz < tile_n) ? c0 + vec_sz : tile_n;
+                  float max_val = 0.0f;
+                  for (size_t c = c0; c < c_end; ++c)
+                    max_val = std::fmax(max_val, std::fabs(rp[c]));
+                  const int8_t vec_scale = computeScaleFromMax(max_val);
+                  const float scale = pow2(static_cast<int>(vec_scale));
+                  const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                  for (size_t c = c0; c < c_end; ++c) {
+                    const float x = rp[c] * inv_scale;
+                    if (mx_fp16)
+                      rp[c] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
+                    else
+                      rp[c] = quantizeFp(x, ebits, mbits, max_norm) * scale;
+                  }
+                }
+              }
             } else {
-              const int8_t tile_scale = computeScale(h_output, tile_size);
+              const int8_t tile_scale = computeScale(tmp.data(), tile_size);
               const float scale = pow2(static_cast<int>(tile_scale));
               const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
               for (size_t i = 0; i < tile_size; ++i) {
-                const float x = h_output[i] * inv_scale;
+                const float x = tmp[i] * inv_scale;
                 if (mx_fp16) {
-                  Eigen::half h = static_cast<Eigen::half>(x);
-                  h_output[i] = static_cast<float>(h) * scale;
+                  tmp[i] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
                 } else {
-                  const float q = quantizeFp(x, ebits, mbits, max_norm);
-                  h_output[i] = q * scale;
+                  tmp[i] = quantizeFp(x, ebits, mbits, max_norm) * scale;
                 }
               }
             }
+            for (size_t i = 0; i < tile_size; ++i)
+              h_output[i] = tmp[i];
             if (debug_tile) {
-              debug_dump_sample("post-quant", h_output, tile_size);
+              debug_dump_sample("post-quant", tmp.data(), tile_size);
               debug_dump_tile_to_file(label, row, col,
-                                       pre_tile.data(), h_output,
+                                       pre_tile.data(), tmp.data(),
                                        static_cast<size_t>(tile.m),
                                        static_cast<size_t>(tile.n));
             }
@@ -840,6 +923,13 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                       << " Quantization) ---" << std::endl;
 
             tile.dtype = CUDA_R_64F;
+            tile.mx_ebits = ebits;
+            tile.mx_mbits = mbits;
+            tile.mx_max_norm = max_norm;
+            tile.mx_scale_bits = scale_bits;
+            const bool block_mode_fp64 = (mx_mode() == MxMode::Block);
+            tile.mx_mode_block = block_mode_fp64 ? 1 : 0;
+            tile.mx_block_subtile = block_mode_fp64 ? mx_block_subtile() : 0;
 
             size_t tile_size = tile.m * tile.n;
             double *h_output = nullptr;
@@ -942,6 +1032,13 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                       << " Quantization) ---" << std::endl;
 
             tile.dtype = CUDA_R_32F;
+            // mx_scale_bits = -1 signals plain FP8 (no MX block scale) to requantizeTileHost
+            tile.mx_ebits = ebits;
+            tile.mx_mbits = mbits;
+            tile.mx_max_norm = max_norm;
+            tile.mx_scale_bits = -1;
+            tile.mx_mode_block = 0;
+            tile.mx_block_subtile = 0;
 
             size_t tile_size = tile.m * tile.n;
             float *h_output = nullptr;
@@ -1076,6 +1173,258 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             }
           };
 
+          auto canonical_format_name = [&](const std::string &raw,
+                                           const char *fallback) {
+            std::string v = raw.empty() ? std::string(fallback) : raw;
+            std::transform(v.begin(), v.end(), v.begin(),
+                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+            if (v == "mx_f32") v = "mx_fp32";
+            if (v == "mx_f16") v = "mx_fp16";
+            if (v == "mx_fp8_e4m3") v = "mx_e4m3";
+            if (v == "mx_fp8_e5m2") v = "mx_e5m2";
+            if (v == "fp8e4m3") v = "fp8_e4m3";
+            if (v == "fp8e5m2") v = "fp8_e5m2";
+            if (v == "fp6_e3m2" || v == "fp6e3m2") v = "e3m2";
+            if (v == "fp6_e2m3" || v == "fp6e2m3") v = "e2m3";
+            if (v == "fp4_e2m1" || v == "fp4e2m1") v = "e2m1";
+
+            if (v == "fp32" || v == "fp16" || v == "bf16" ||
+                v == "mx_fp16" || v == "mx_fp32" ||
+                v == "mx_e4m3" || v == "mx_e5m2" ||
+                v == "fp8_e4m3" || v == "fp8_e5m2" ||
+                v == "e3m2" || v == "e2m3" || v == "e2m1") {
+              return v;
+            }
+            return std::string(fallback);
+          };
+
+          static const int bound_debug = []() {
+            const char *env = getenv("MX_BOUND_DEBUG");
+            if (!env) return 0;
+            return (env[0] == '1') ? 1 : 0;
+          }();
+          static const int bound_cheap_first = []() {
+            const char *env = getenv("MX_BOUND_RANKING");
+            if (!env) return 0;  // default keeps legacy fp32->fp16->low behavior
+            std::string v = env;
+            std::transform(v.begin(), v.end(), v.begin(),
+                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+            return (v == "cheap" || v == "cheap_first" || v == "ascending_cost") ? 1 : 0;
+          }();
+          enum class BoundLadderMode { Legacy, Full, IeeeOnly };
+
+          static const BoundLadderMode bound_ladder_mode = []() {
+            const char *env = getenv("MX_BOUND_LADDER");
+            if (!env) {
+              // default: enable full low->high ladder in bound mode
+              return BoundLadderMode::Full;
+            }
+            std::string v = env;
+            std::transform(v.begin(), v.end(), v.begin(),
+                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+            if (v == "full" || v == "all" || v == "1" || v == "on") {
+              return BoundLadderMode::Full;
+            }
+            if (v == "ieee" || v == "ieee_only" || v == "plain_ieee" ||
+                v == "ieee_fp" || v == "ieee_fp_only") {
+              return BoundLadderMode::IeeeOnly;
+            }
+            return BoundLadderMode::Legacy;
+          }();
+          static const int bound_e5m2_first = []() {
+            const char *env = getenv("MX_BOUND_LOW_ORDER");
+            if (!env) return 0;  // default keeps mx_e4m3 before mx_e5m2
+            std::string v = env;
+            std::transform(v.begin(), v.end(), v.begin(),
+                           [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+            return (v == "e5m2_first" || v == "mx_e5m2_first" || v == "reverse") ? 1 : 0;
+          }();
+
+          struct BoundEvalResult {
+            bool fits = false;
+            bool overflow = false;
+            bool uses_scale = false;
+            long double u = 0.0L;
+            long double fmin = 0.0L;
+            long double fmax = 0.0L;
+            long double gmin = 0.0L;
+            long double tol = 0.0L;
+            long double nrmE = 0.0L;
+            long double nrmF = 0.0L;
+            long double min_scale = 1.0L;
+            long double max_scale = 1.0L;
+            long double avg_scale = 1.0L;
+            long long scale_groups = 0;
+            long long underflows = 0;
+          };
+
+          auto evaluate_format_tile_bound = [&](const std::string &fmt_name) {
+            BoundEvalResult out;
+            const long double u = format_unit_roundoff(fmt_name);
+            const long double fmin = format_fmin(fmt_name);
+            const long double fmax = format_fmax(fmt_name);
+            const long double gmin = format_gmin(fmt_name);
+            out.u = u;
+            out.fmin = fmin;
+            out.fmax = fmax;
+            out.gmin = gmin;
+            if (!(u > 0.0L)) return out;
+
+            const long double tol_tile =
+                sourceEpsilon * normA / static_cast<long double>(array->nt);
+            const long double nrmE = u * normTile;
+            long double nrmF2 = 0.0L;
+            bool overflow = false;
+            out.tol = tol_tile;
+            out.nrmE = nrmE;
+
+            const bool uses_scale = format_uses_shared_scale(fmt_name);
+            const bool use_fp32_bits = (fmt_name == "mx_fp32");
+            const bool block_mode = (mx_mode() == MxMode::Block);
+            const int subtile = mx_block_subtile();
+            const size_t tile_m = static_cast<size_t>(tile.m);
+            const size_t tile_n = static_cast<size_t>(tile.n);
+            out.uses_scale = uses_scale;
+
+            long double sum_scale = 0.0L;
+            long double min_scale = (std::numeric_limits<long double>::max)();
+            long double max_scale = 0.0L;
+            long long scale_groups = 0;
+            long long underflows = 0;
+
+            auto note_scale = [&](long double pre_scale) {
+              sum_scale += pre_scale;
+              if (pre_scale < min_scale) min_scale = pre_scale;
+              if (pre_scale > max_scale) max_scale = pre_scale;
+              ++scale_groups;
+            };
+
+            // pre_scale is the multiplier used before quantization (x_qin = pre_scale * x).
+            // This matches the implementation path where x_qin = x * inv_scale.
+            auto consume_val = [&](long double ax, long double pre_scale) {
+              const long double scaled = pre_scale * ax;
+              if (fmax > 0.0L && scaled > fmax) {
+                overflow = true;
+                return;
+              }
+              if (fmin > 0.0L && gmin > 0.0L && scaled < fmin) {
+                long double eta = (pre_scale > 0.0L) ? (gmin / pre_scale) : gmin;
+                if (eta > ax) eta = ax;
+                nrmF2 += eta * eta;
+                ++underflows;
+              }
+            };
+
+            if (!uses_scale) {
+              for (size_t r = 0; r < tile_m && !overflow; ++r) {
+                for (size_t c = 0; c < tile_n; ++c) {
+                  const long double ax = std::fabs(static_cast<long double>(
+                      mappedBlock(static_cast<Eigen::Index>(r),
+                                  static_cast<Eigen::Index>(c))));
+                  consume_val(ax, 1.0L);
+                  if (overflow) break;
+                }
+              }
+            } else if (block_mode && subtile > 0) {
+              const size_t bs = static_cast<size_t>(subtile);
+              for (size_t r0 = 0; r0 < tile_m && !overflow; r0 += bs) {
+                const size_t r_max = (bs < (tile_m - r0)) ? bs : (tile_m - r0);
+                for (size_t c0 = 0; c0 < tile_n && !overflow; c0 += bs) {
+                  const size_t c_max = (bs < (tile_n - c0)) ? bs : (tile_n - c0);
+                  float max_val = 0.0f;
+                  for (size_t r = 0; r < r_max; ++r) {
+                    for (size_t c = 0; c < c_max; ++c) {
+                      const float v = static_cast<float>(std::fabs(
+                          mappedBlock(static_cast<Eigen::Index>(r0 + r),
+                                      static_cast<Eigen::Index>(c0 + c))));
+                      max_val = std::fmax(max_val, v);
+                    }
+                  }
+                  const int st_scale = use_fp32_bits
+                                           ? computeScaleBitsFromMax(max_val,
+                                                                     fp32_scale_bits)
+                                           : static_cast<int>(
+                                                 computeScaleFromMax(max_val));
+                  const long double pre_scale = std::ldexp(1.0L, -st_scale);
+                  note_scale(pre_scale);
+                  for (size_t r = 0; r < r_max; ++r) {
+                    for (size_t c = 0; c < c_max; ++c) {
+                      const long double ax = std::fabs(static_cast<long double>(
+                          mappedBlock(static_cast<Eigen::Index>(r0 + r),
+                                      static_cast<Eigen::Index>(c0 + c))));
+                      consume_val(ax, pre_scale);
+                      if (overflow) break;
+                    }
+                    if (overflow) break;
+                  }
+                }
+              }
+            } else if (block_mode) {
+              for (size_t r = 0; r < tile_m && !overflow; ++r) {
+                float max_val = 0.0f;
+                for (size_t c = 0; c < tile_n; ++c) {
+                  const float v = static_cast<float>(std::fabs(
+                      mappedBlock(static_cast<Eigen::Index>(r),
+                                  static_cast<Eigen::Index>(c))));
+                  max_val = std::fmax(max_val, v);
+                }
+                const int row_scale = use_fp32_bits
+                                          ? computeScaleBitsFromMax(max_val,
+                                                                    fp32_scale_bits)
+                                          : static_cast<int>(
+                                                computeScaleFromMax(max_val));
+                const long double pre_scale = std::ldexp(1.0L, -row_scale);
+                note_scale(pre_scale);
+                for (size_t c = 0; c < tile_n; ++c) {
+                  const long double ax = std::fabs(static_cast<long double>(
+                      mappedBlock(static_cast<Eigen::Index>(r),
+                                  static_cast<Eigen::Index>(c))));
+                  consume_val(ax, pre_scale);
+                  if (overflow) break;
+                }
+              }
+            } else {
+              float max_val = 0.0f;
+              for (size_t r = 0; r < tile_m; ++r) {
+                for (size_t c = 0; c < tile_n; ++c) {
+                  const float v = static_cast<float>(std::fabs(
+                      mappedBlock(static_cast<Eigen::Index>(r),
+                                  static_cast<Eigen::Index>(c))));
+                  max_val = std::fmax(max_val, v);
+                }
+              }
+              const int tile_scale = use_fp32_bits
+                                         ? computeScaleBitsFromMax(max_val,
+                                                                   fp32_scale_bits)
+                                         : static_cast<int>(
+                                               computeScaleFromMax(max_val));
+              const long double pre_scale = std::ldexp(1.0L, -tile_scale);
+              note_scale(pre_scale);
+              for (size_t r = 0; r < tile_m && !overflow; ++r) {
+                for (size_t c = 0; c < tile_n; ++c) {
+                  const long double ax = std::fabs(static_cast<long double>(
+                      mappedBlock(static_cast<Eigen::Index>(r),
+                                  static_cast<Eigen::Index>(c))));
+                  consume_val(ax, pre_scale);
+                  if (overflow) break;
+                }
+              }
+            }
+
+            out.overflow = overflow;
+            const long double nrmF = std::sqrt(nrmF2);
+            out.nrmF = nrmF;
+            out.underflows = underflows;
+            out.scale_groups = scale_groups;
+            if (scale_groups > 0) {
+              out.min_scale = min_scale;
+              out.max_scale = max_scale;
+              out.avg_scale = sum_scale / static_cast<long double>(scale_groups);
+            }
+            out.fits = (!overflow) && ((nrmE + nrmF) <= tol_tile);
+            return out;
+          };
+
           if (row == col ) {
             std::cout << "\n[DEBUG] Epsilon Ratio for Tile (" << row << ", " << col << "): " << epsilonRatio << std::endl;
             std::cout << "[DEBUG] Source Epsilon / FP32 Epsilon: " << sourceEpsilon / std::numeric_limits<float>::epsilon() << std::endl;
@@ -1100,6 +1449,236 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
 
           if (force_fp32_all) {
             apply_bucket_target("fp32", "fp32");
+          } else if (use_explicit_tile_bound_selection()) {
+            const std::string fp32_choice =
+                canonical_format_name(fp32_bucket, "fp32");
+            const std::string fp16_choice =
+                canonical_format_name(fp16_bucket, "fp16");
+            const std::string low_choice =
+                canonical_format_name(selected_low_format, "mx_e4m3");
+
+            if (bound_debug) {
+              std::cout << "[BOUND_SELECT] tile(" << row << "," << col << ")"
+                        << " fp32_bucket=" << fp32_choice
+                        << " fp16_bucket=" << fp16_choice
+                        << " low_bucket=" << low_choice
+                        << " ladder="
+                        << (bound_ladder_mode == BoundLadderMode::Full
+                          ? "full"
+                          : (bound_ladder_mode == BoundLadderMode::IeeeOnly
+                                 ? "ieee_only"
+                                 : "legacy"))
+                        << " low_order=" << (bound_e5m2_first ? "e5m2_first" : "e4m3_first")
+                        << " ranking=" << (bound_cheap_first ? "cheap_first" : "legacy")
+                        << " mode=" << (mx_mode() == MxMode::Block ? "block" : "tile")
+                        << " subtile=" << mx_block_subtile() << std::endl;
+            }
+
+            std::vector<std::pair<std::string, BoundEvalResult>> evals;
+
+            auto eval_one = [&](const std::string &fmt) {
+              const auto ev = evaluate_format_tile_bound(fmt);
+              evals.push_back({fmt, ev});
+              return ev;
+            };
+
+            auto print_eval = [&](const std::string &name,
+                                  const BoundEvalResult &ev) {
+              if (!bound_debug) return;
+              std::cout << "[BOUND_EVAL] tile(" << row << "," << col << ")"
+                        << " fmt=" << name
+                        << " fits=" << (ev.fits ? 1 : 0)
+                        << " overflow=" << (ev.overflow ? 1 : 0)
+                        << " uses_scale=" << (ev.uses_scale ? 1 : 0)
+                        << " u=" << ev.u
+                        << " fmin=" << ev.fmin
+                        << " fmax=" << ev.fmax
+                        << " gmin=" << ev.gmin
+                        << " tol=" << ev.tol
+                        << " nrmE=" << ev.nrmE
+                        << " nrmF=" << ev.nrmF
+                        << " nrmE+nrmF=" << (ev.nrmE + ev.nrmF)
+                        << " underflows=" << ev.underflows
+                        << " scale_groups=" << ev.scale_groups
+                        << " s_min=" << ev.min_scale
+                        << " s_avg=" << ev.avg_scale
+                        << " s_max=" << ev.max_scale
+                        << std::endl;
+            };
+
+            auto get_eval = [&](const std::string &fmt) {
+              for (const auto &p : evals) {
+                if (p.first == fmt) return p.second;
+              }
+              return BoundEvalResult{};
+            };
+
+            std::string decision_fmt;
+            std::string decision_reason;
+            int decision_step = -1;
+
+            if (bound_ladder_mode == BoundLadderMode::Full) {
+              // Full ascending-cost ladder requested by user:
+              // FP4/FP6/FP8 -> FP16/MXFP16 -> FP32/MXFP32 -> FP64 fallback.
+              const char *ladder_raw_default[] = {
+                  "e2m1", "e2m3", "e3m2", "mx_e4m3", "mx_e5m2",
+                  "fp16", "mx_fp16", "fp32", "mx_fp32"};
+              const char *ladder_raw_e5m2_first[] = {
+                "e2m1", "e2m3", "e3m2", "mx_e5m2", "mx_e4m3",
+                "fp16", "mx_fp16", "fp32", "mx_fp32"};
+              const char **ladder_raw =
+                bound_e5m2_first ? ladder_raw_e5m2_first : ladder_raw_default;
+              const int ladder_len = 9;
+
+              int step = 0;
+              bool placed = false;
+              for (int idx = 0; idx < ladder_len; ++idx) {
+              const char *cand_raw = ladder_raw[idx];
+                std::string cand = canonical_format_name(cand_raw, cand_raw);
+                const auto ev = eval_one(cand);
+                print_eval(cand, ev);
+                if (ev.fits) {
+                  apply_bucket_target(cand, cand.c_str());
+                  decision_fmt = cand;
+                  decision_reason = "ladder_accept";
+                  decision_step = step;
+                  placed = true;
+                  break;
+                }
+                ++step;
+              }
+              if (!placed) {
+                log_tile_target("fp64");
+                tile.dtype = CUDA_R_64F;
+                cudaMallocHost(&tile.data, sizeof(uint64_t) * tile.m * tile.n);
+                Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                                        Eigen::RowMajor>>{
+                    static_cast<double *>(tile.data),
+                    static_cast<Eigen::Index>(tile.m),
+                    static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<double>();
+                decision_fmt = "fp64";
+                decision_reason = "ladder_reject_all";
+              }
+            } else if (bound_ladder_mode == BoundLadderMode::IeeeOnly) {
+              // IEEE-only ladder (no shared-scale MX formats):
+              // FP8_E4M3 -> FP16 -> FP32 -> FP64 fallback.
+              const char *ladder_raw[] = {"fp8_e4m3", "fp16", "fp32"};
+              const int ladder_len = 3;
+
+              int step = 0;
+              bool placed = false;
+              for (int idx = 0; idx < ladder_len; ++idx) {
+                const char *cand_raw = ladder_raw[idx];
+                std::string cand = canonical_format_name(cand_raw, cand_raw);
+                const auto ev = eval_one(cand);
+                print_eval(cand, ev);
+                if (ev.fits) {
+                  apply_bucket_target(cand, cand.c_str());
+                  decision_fmt = cand;
+                  decision_reason = "ieee_ladder_accept";
+                  decision_step = step;
+                  placed = true;
+                  break;
+                }
+                ++step;
+              }
+              if (!placed) {
+                log_tile_target("fp64");
+                tile.dtype = CUDA_R_64F;
+                cudaMallocHost(&tile.data, sizeof(uint64_t) * tile.m * tile.n);
+                Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                                        Eigen::RowMajor>>{
+                    static_cast<double *>(tile.data),
+                    static_cast<Eigen::Index>(tile.m),
+                    static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<double>();
+                decision_fmt = "fp64";
+                decision_reason = "ieee_ladder_reject_all";
+              }
+            } else {
+              const auto fp32_eval = eval_one(fp32_choice);
+              const auto fp16_eval = eval_one(fp16_choice);
+              const auto low_eval = allow_low
+                                        ? eval_one(low_choice)
+                                        : BoundEvalResult{};
+              print_eval(fp32_choice, fp32_eval);
+              print_eval(fp16_choice, fp16_eval);
+              if (allow_low) {
+                print_eval(low_choice, low_eval);
+              } else if (bound_debug) {
+                std::cout << "[BOUND_EVAL] tile(" << row << "," << col
+                          << ") fmt=" << low_choice
+                          << " skipped=1 reason=allow_low_false" << std::endl;
+              }
+
+              if (bound_cheap_first) {
+                if (allow_low && low_eval.fits) {
+                  apply_bucket_target(low_choice, "mx_e4m3");
+                  decision_fmt = low_choice;
+                  decision_reason = "cheap_first_accept_low";
+                } else if (fp16_eval.fits) {
+                  apply_bucket_target(fp16_choice, "fp16");
+                  decision_fmt = fp16_choice;
+                  decision_reason = allow_low ? "cheap_first_accept_fp16_reject_low"
+                                              : "cheap_first_accept_fp16_low_not_allowed";
+                } else if (fp32_eval.fits) {
+                  apply_bucket_target(fp32_choice, "fp32");
+                  decision_fmt = fp32_choice;
+                  decision_reason = "cheap_first_accept_fp32";
+                } else {
+                  log_tile_target("fp64");
+                  tile.dtype = CUDA_R_64F;
+                  cudaMallocHost(&tile.data, sizeof(uint64_t) * tile.m * tile.n);
+                  Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                                          Eigen::RowMajor>>{
+                      static_cast<double *>(tile.data),
+                      static_cast<Eigen::Index>(tile.m),
+                      static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<double>();
+                  decision_fmt = "fp64";
+                  decision_reason = "cheap_first_reject_all";
+                }
+              } else if (!fp32_eval.fits) {
+                log_tile_target("fp64");
+                tile.dtype = CUDA_R_64F;
+                cudaMallocHost(&tile.data, sizeof(uint64_t) * tile.m * tile.n);
+                Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                                        Eigen::RowMajor>>{
+                    static_cast<double *>(tile.data),
+                    static_cast<Eigen::Index>(tile.m),
+                    static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<double>();
+                decision_fmt = "fp64";
+                decision_reason = "reject_fp32_bound";
+              } else if (!fp16_eval.fits) {
+                apply_bucket_target(fp32_choice, "fp32");
+                decision_fmt = fp32_choice;
+                decision_reason = "accept_fp32_reject_fp16";
+              } else if (!allow_low || !low_eval.fits) {
+                apply_bucket_target(fp16_choice, "fp16");
+                decision_fmt = fp16_choice;
+                decision_reason = allow_low ? "accept_fp16_reject_low"
+                                            : "accept_fp16_low_not_allowed";
+              } else {
+                apply_bucket_target(low_choice, "mx_e4m3");
+                decision_fmt = low_choice;
+                decision_reason = "accept_low";
+              }
+            }
+
+            if (bound_debug) {
+              const auto fp32_eval = get_eval("fp32");
+              const auto fp16_eval = get_eval("fp16");
+              const auto low_eval = get_eval("mx_e4m3");
+              std::cout << "[BOUND_DECISION] tile(" << row << "," << col << ")"
+                        << " selected=" << decision_fmt
+                        << " reason=" << decision_reason
+                        << " step=" << decision_step
+                        << " fp32_fit=" << (fp32_eval.fits ? 1 : 0)
+                        << " fp16_fit=" << (fp16_eval.fits ? 1 : 0)
+                        << " low_fit=" << (low_eval.fits ? 1 : 0)
+                        << " fp32_overflow=" << (fp32_eval.overflow ? 1 : 0)
+                        << " fp16_overflow=" << (fp16_eval.overflow ? 1 : 0)
+                        << " low_overflow=" << (low_eval.overflow ? 1 : 0)
+                        << std::endl;
+            }
           } else if (epsilonRatio > sourceEpsilon / std::numeric_limits<float>::epsilon()) {
             log_tile_target("fp64");
             tile.dtype = CUDA_R_64F;
@@ -1356,6 +1935,103 @@ void freeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array) {
     cudaFree(g_quant_ws.d_out);
     cudaFree(g_quant_ws.d_max);
     g_quant_ws = {};
+  }
+}
+
+void requantizeTileHost(const MixedPrecisionTile *tile) {
+  if (tile->mx_ebits == 0) return;
+  if (tile->dtype != CUDA_R_32F) return;
+
+  float *data = static_cast<float *>(tile->data);
+  const size_t tile_size = tile->m * tile->n;
+  const int ebits = tile->mx_ebits;
+  const int mbits = tile->mx_mbits;
+  const float max_norm = tile->mx_max_norm;
+  const int scale_bits = tile->mx_scale_bits;
+  const bool mx_fp16 = (ebits == 5 && mbits == 10);
+
+  // Plain FP8: no MX block scaling, just clamp/round each element
+  if (scale_bits < 0) {
+    for (size_t i = 0; i < tile_size; ++i)
+      data[i] = quantizeFp(data[i], ebits, mbits, max_norm);
+    return;
+  }
+
+  if (tile->mx_mode_block == 2) {
+    // 1D row-vector mode: each row split into groups of mx_block_subtile elements
+    const size_t vec_sz = (tile->mx_block_subtile > 0)
+                            ? static_cast<size_t>(tile->mx_block_subtile)
+                            : 32;
+    for (size_t r = 0; r < tile->m; ++r) {
+      float *rp = data + r * tile->n;
+      for (size_t c0 = 0; c0 < tile->n; c0 += vec_sz) {
+        const size_t c_end = (c0 + vec_sz < tile->n) ? c0 + vec_sz : tile->n;
+        float max_val = 0.0f;
+        for (size_t c = c0; c < c_end; ++c)
+          max_val = std::fmax(max_val, std::fabs(rp[c]));
+        const int sc = computeScaleBitsFromMax(max_val, scale_bits);
+        const float scale = pow2(sc);
+        const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+        for (size_t c = c0; c < c_end; ++c) {
+          const float x = rp[c] * inv_scale;
+          if (mx_fp16)
+            rp[c] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
+          else
+            rp[c] = quantizeFp(x, ebits, mbits, max_norm) * scale;
+        }
+      }
+    }
+  } else if (tile->mx_mode_block == 1 && tile->mx_block_subtile > 0) {
+    const size_t tile_m = tile->m;
+    const size_t tile_n = tile->n;
+    const size_t st = static_cast<size_t>(tile->mx_block_subtile);
+    for (size_t r0 = 0; r0 < tile_m; r0 += st) {
+      const size_t r_end = (r0 + st < tile_m) ? r0 + st : tile_m;
+      for (size_t c0 = 0; c0 < tile_n; c0 += st) {
+        const size_t c_end = (c0 + st < tile_n) ? c0 + st : tile_n;
+        float max_val = 0.0f;
+        for (size_t r = r0; r < r_end; ++r)
+          for (size_t c = c0; c < c_end; ++c)
+            max_val = std::fmax(max_val, std::fabs(data[r * tile_n + c]));
+        const int sc = computeScaleBitsFromMax(max_val, scale_bits);
+        const float scale = pow2(sc);
+        const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+        for (size_t r = r0; r < r_end; ++r)
+          for (size_t c = c0; c < c_end; ++c) {
+            float &v = data[r * tile_n + c];
+            const float x = v * inv_scale;
+            if (mx_fp16)
+              v = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
+            else
+              v = quantizeFp(x, ebits, mbits, max_norm) * scale;
+          }
+      }
+    }
+  } else if (tile->mx_mode_block) {
+    for (size_t r = 0; r < tile->m; ++r) {
+      float *rp = data + r * tile->n;
+      const int sc = computeScaleBits(rp, tile->n, scale_bits);
+      const float scale = pow2(sc);
+      const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+      for (size_t c = 0; c < tile->n; ++c) {
+        const float x = rp[c] * inv_scale;
+        if (mx_fp16)
+          rp[c] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
+        else
+          rp[c] = quantizeFp(x, ebits, mbits, max_norm) * scale;
+      }
+    }
+  } else {
+    const int sc = computeScaleBits(data, tile_size, scale_bits);
+    const float scale = pow2(sc);
+    const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+    for (size_t i = 0; i < tile_size; ++i) {
+      const float x = data[i] * inv_scale;
+      if (mx_fp16)
+        data[i] = static_cast<float>(static_cast<Eigen::half>(x)) * scale;
+      else
+        data[i] = quantizeFp(x, ebits, mbits, max_norm) * scale;
+    }
   }
 }
 
