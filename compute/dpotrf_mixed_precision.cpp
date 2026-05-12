@@ -286,6 +286,22 @@ static int computeScaleBitsFromMax(float max_val, int scale_bits) {
 
 static float pow2(int exp) { return std::ldexp(1.0f, exp); }
 
+// Underflow policy for the host-side reference FP8 (E4M3 / E5M2) emulator.
+// Default: flush-to-zero (matches legacy behaviour and the pre-OCP MX kernel).
+// Set MX_FP8_SUBNORMAL=1 to switch to OCP-spec gradual underflow (subnormals).
+static bool fp8_use_subnormals() {
+  static int init = 0;
+  static bool enabled = false;
+  if (!init) {
+    if (const char *env = getenv("MX_FP8_SUBNORMAL")) {
+      enabled = (env[0] == '1' || env[0] == 'y' || env[0] == 'Y' ||
+                 env[0] == 't' || env[0] == 'T');
+    }
+    init = 1;
+  }
+  return enabled;
+}
+
 static float quantizeFp(float x, int ebits, int mbits, float max_norm) {
   if (x == 0.0f) return 0.0f;
   const float sign = std::signbit(x) ? -1.0f : 1.0f;
@@ -295,7 +311,22 @@ static float quantizeFp(float x, int ebits, int mbits, float max_norm) {
   const int bias = (1 << (ebits - 1)) - 1;
   const int exp_enc = exp + bias;
   if (exp_enc <= 0) {
-    return 0.0f;
+    if (!fp8_use_subnormals()) {
+      return 0.0f;  // FTZ (default)
+    }
+    // OCP subnormal: encode as mant_int * 2^(1 - bias - mbits).
+    // Smallest representable subnormal:
+    //   E4M3 (bias=7, mbits=3) -> 2^-9 ≈ 1.95e-3
+    //   E5M2 (bias=15, mbits=2) -> 2^-16 ≈ 1.53e-5
+    // Round-to-nearest-even via std::lrint (with FE_TONEAREST default).
+    // mant_int = 0 -> underflow to zero.
+    // mant_int = 2^mbits -> "rounded up to smallest normal" — keep the natural
+    // value (mi * subn_step = 2^(1-bias) = smallest normal). No cap needed; ax
+    // is bounded above by 2^(1-bias) when exp_enc <= 0, so mi <= 2^mbits.
+    const float subn_step = std::ldexp(1.0f, 1 - bias - mbits);
+    int mi = static_cast<int>(std::lrint(ax / subn_step));
+    if (mi <= 0) return 0.0f;
+    return sign * static_cast<float>(mi) * subn_step;
   }
   const int exp_max = (1 << ebits) - 1;
   if (exp_enc >= exp_max) {
@@ -454,6 +485,35 @@ static MxMode mx_mode() {
     init = 1;
   }
   return mode;
+}
+
+// Optional per-format override of MxMode for "wider" formats (mx_fp16 / mx_fp32).
+// Set MX_MODE_FP16={tile|block|vec1d} to force a different mode just for those
+// tiles, while leaving the smaller MX formats (e2m1/e4m3/e5m2/...) on the
+// globally-selected MX_MX_MODE. Returns true and writes *out if an override
+// applies for (ebits, mbits); otherwise returns false.
+static bool mx_mode_override_for_format(int ebits, int mbits, MxMode *out) {
+  static int init = 0;
+  static bool have_override = false;
+  static MxMode override_mode = MxMode::Tile;
+  if (!init) {
+    if (const char *env = getenv("MX_MODE_FP16")) {
+      std::string v = env;
+      std::transform(v.begin(), v.end(), v.begin(),
+                     [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
+      if (v == "tile") { override_mode = MxMode::Tile; have_override = true; }
+      else if (v == "block" || v == "blocked") { override_mode = MxMode::Block; have_override = true; }
+      else if (v == "vec1d" || v == "vector" || v == "vec") { override_mode = MxMode::Vec1D; have_override = true; }
+    }
+    init = 1;
+  }
+  if (!have_override) return false;
+  // Apply to mx_fp16 (ebits=5, mbits=10) and mx_fp32 (ebits=8, mbits=23).
+  const bool is_fp16 = (ebits == 5 && mbits == 10);
+  const bool is_fp32 = (ebits == 8 && mbits == 23);
+  if (!(is_fp16 || is_fp32)) return false;
+  if (out) *out = override_mode;
+  return true;
 }
 
 static int mx_block_subtile() {
@@ -777,7 +837,10 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             tile.mx_mbits = mbits;
             tile.mx_max_norm = max_norm;
             tile.mx_scale_bits = 0;
-            const MxMode cur_mode = mx_mode();
+            MxMode cur_mode = mx_mode();
+            // Per-format override: e.g. MX_MODE_FP16=tile keeps mx_fp16/mx_fp32
+            // tiles on a single shared scale even when the global mode is vec1d.
+            mx_mode_override_for_format(ebits, mbits, &cur_mode);
             const bool block_mode  = (cur_mode == MxMode::Block);
             const bool vec1d_mode  = (cur_mode == MxMode::Vec1D);
             tile.mx_mode_block = block_mode ? 1 : (vec1d_mode ? 2 : 0);
@@ -928,8 +991,9 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             tile.mx_max_norm = max_norm;
             tile.mx_scale_bits = scale_bits;
             const bool block_mode_fp64 = (mx_mode() == MxMode::Block);
-            tile.mx_mode_block = block_mode_fp64 ? 1 : 0;
-            tile.mx_block_subtile = block_mode_fp64 ? mx_block_subtile() : 0;
+            const bool vec1d_mode_fp64 = (mx_mode() == MxMode::Vec1D);
+            tile.mx_mode_block = block_mode_fp64 ? 1 : (vec1d_mode_fp64 ? 2 : 0);
+            tile.mx_block_subtile = (block_mode_fp64 || vec1d_mode_fp64) ? mx_block_subtile() : 0;
 
             size_t tile_size = tile.m * tile.n;
             double *h_output = nullptr;
@@ -948,6 +1012,7 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
 
             const long total_elements = static_cast<long>(tile_size);
             const bool block_mode = (mx_mode() == MxMode::Block);
+            const bool vec1d_mode = (mx_mode() == MxMode::Vec1D);
 
             const bool debug_tile = debug_tile_enabled() && debug_tile_match(row, col);
             std::vector<float> pre_tile;
@@ -999,6 +1064,32 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                     const float x = row[c] * inv_scale;
                     const float q = quantizeFp(x, ebits, mbits, max_norm);
                     row[c] = q * scale;
+                  }
+                }
+              }
+            } else if (vec1d_mode) {
+              // 1D row-vector mode for FP32-emulated MX: each row split into
+              // groups of `vec_sz` elements, each with its own scale_bits-wide
+              // shared scale (default vec_sz=32, matching canonical MX).
+              const size_t vec_sz = (mx_block_subtile() > 0)
+                                      ? static_cast<size_t>(mx_block_subtile())
+                                      : 32;
+              const size_t tile_m_ = static_cast<size_t>(tile.m);
+              const size_t tile_n_ = static_cast<size_t>(tile.n);
+              for (size_t r = 0; r < tile_m_; ++r) {
+                float *rp = tmp.data() + r * tile_n_;
+                for (size_t c0 = 0; c0 < tile_n_; c0 += vec_sz) {
+                  const size_t c_end = (c0 + vec_sz < tile_n_) ? c0 + vec_sz : tile_n_;
+                  float max_val = 0.0f;
+                  for (size_t c = c0; c < c_end; ++c)
+                    max_val = std::fmax(max_val, std::fabs(rp[c]));
+                  const int vec_scale = computeScaleBitsFromMax(max_val, scale_bits);
+                  const float scale = pow2(vec_scale);
+                  const float inv_scale = (scale == 0.0f) ? 1.0f : 1.0f / scale;
+                  for (size_t c = c0; c < c_end; ++c) {
+                    const float x = rp[c] * inv_scale;
+                    const float q = quantizeFp(x, ebits, mbits, max_norm);
+                    rp[c] = q * scale;
                   }
                 }
               }
@@ -1521,14 +1612,12 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
               // Full ascending-cost ladder requested by user:
               // FP4/FP6/FP8 -> FP16/MXFP16 -> FP32/MXFP32 -> FP64 fallback.
               const char *ladder_raw_default[] = {
-                  "e2m1", "e2m3", "e3m2", "mx_e4m3", "mx_e5m2",
-                  "fp16", "mx_fp16", "fp32", "mx_fp32"};
+                  "e2m1", "mx_e4m3", "mx_fp16", "fp32"};
               const char *ladder_raw_e5m2_first[] = {
-                "e2m1", "e2m3", "e3m2", "mx_e5m2", "mx_e4m3",
-                "fp16", "mx_fp16", "fp32", "mx_fp32"};
+                  "e2m1", "mx_e4m3", "mx_fp16", "fp32"};
               const char **ladder_raw =
                 bound_e5m2_first ? ladder_raw_e5m2_first : ladder_raw_default;
-              const int ladder_len = 9;
+              const int ladder_len = 4;
 
               int step = 0;
               bool placed = false;

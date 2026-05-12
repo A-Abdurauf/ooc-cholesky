@@ -27,11 +27,14 @@
 #include <string.h>
 #undef max
 #undef min
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <limits>
+#include <random>
+#include <vector>
 #ifdef PLASMA_WITH_MKL
 #include <mkl_lapacke.h>
 #else
@@ -47,6 +50,69 @@
 #endif
 
 int check_factorization(int, double *, double *, int, int);
+
+#ifdef PLASMA_WITH_CUDA
+// Probe-based estimate of ||A - L L^T|| / ||A|| using random Gaussian probes.
+// Matches chol_bench: n_probes=8, seed=0xdeadbeef, max_t err_t/||A x_t||,
+// FP64 cuBLAS (Dgemv + 2 Dtrmv + Dnrm2/Daxpy). A column-major symmetric,
+// L column-major lower-triangular (upper triangle assumed zero).
+static double compute_relative_residual_probe(cublasHandle_t handle,
+                                              const double *hA,
+                                              const double *hL, int N,
+                                              int n_probes, unsigned seed) {
+  const size_t bytes = static_cast<size_t>(N) * N * sizeof(double);
+  double *dA = nullptr, *dL = nullptr;
+  double *dx = nullptr, *dAx = nullptr, *dLLtx = nullptr;
+  if (cudaMalloc(reinterpret_cast<void **>(&dA), bytes) != cudaSuccess ||
+      cudaMalloc(reinterpret_cast<void **>(&dL), bytes) != cudaSuccess ||
+      cudaMalloc(reinterpret_cast<void **>(&dx), N * sizeof(double)) != cudaSuccess ||
+      cudaMalloc(reinterpret_cast<void **>(&dAx), N * sizeof(double)) != cudaSuccess ||
+      cudaMalloc(reinterpret_cast<void **>(&dLLtx), N * sizeof(double)) != cudaSuccess) {
+    if (dA) cudaFree(dA);
+    if (dL) cudaFree(dL);
+    if (dx) cudaFree(dx);
+    if (dAx) cudaFree(dAx);
+    if (dLLtx) cudaFree(dLLtx);
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+  if (cudaMemcpy(dA, hA, bytes, cudaMemcpyHostToDevice) != cudaSuccess ||
+      cudaMemcpy(dL, hL, bytes, cudaMemcpyHostToDevice) != cudaSuccess) {
+    cudaFree(dA); cudaFree(dL); cudaFree(dx); cudaFree(dAx); cudaFree(dLLtx);
+    return std::numeric_limits<double>::quiet_NaN();
+  }
+
+  std::mt19937_64 rng(seed);
+  std::normal_distribution<double> dist(0.0, 1.0);
+  std::vector<double> hx(static_cast<size_t>(N));
+  const double one = 1.0, zero = 0.0, neg_one = -1.0;
+  double max_rel = 0.0;
+
+  for (int t = 0; t < n_probes; ++t) {
+    for (int i = 0; i < N; ++i) hx[i] = dist(rng);
+    if (cudaMemcpy(dx, hx.data(), N * sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess) break;
+    if (cudaMemcpy(dLLtx, hx.data(), N * sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess) break;
+
+    // Ax = A * x   (A symmetric, stored as full column-major)
+    cublasDgemv(handle, CUBLAS_OP_N, N, N, &one, dA, N, dx, 1, &zero, dAx, 1);
+    // y <- L^T y
+    cublasDtrmv(handle, CUBLAS_FILL_MODE_LOWER, CUBLAS_OP_T,
+                CUBLAS_DIAG_NON_UNIT, N, dL, N, dLLtx, 1);
+    // y <- L y    (now dLLtx = L L^T x)
+    cublasDtrmv(handle, CUBLAS_FILL_MODE_LOWER, CUBLAS_OP_N,
+                CUBLAS_DIAG_NON_UNIT, N, dL, N, dLLtx, 1);
+
+    double ax_norm = 0.0, err_norm = 0.0;
+    cublasDnrm2(handle, N, dAx, 1, &ax_norm);
+    // dAx <- dAx - dLLtx
+    cublasDaxpy(handle, N, &neg_one, dLLtx, 1, dAx, 1);
+    cublasDnrm2(handle, N, dAx, 1, &err_norm);
+    if (ax_norm > 0.0) max_rel = std::max(max_rel, err_norm / ax_norm);
+  }
+
+  cudaFree(dA); cudaFree(dL); cudaFree(dx); cudaFree(dAx); cudaFree(dLLtx);
+  return max_rel;
+}
+#endif
 
 int IONE = 1;
 int ISEED[4] = {0, 0, 0, 1}; /* initial seed for dlarnv() */
@@ -290,6 +356,28 @@ int main(int argc, char **argv) {
       (a_inf > 0.0) ? (error / a_inf) : std::numeric_limits<double>::quiet_NaN();
   std::cout << "error: " << error << std::endl;
   std::cout << "relative_error: " << relative_error << std::endl;
+
+  // Probe-based relative residual estimate (matches chol_bench's metric).
+  double relative_residual = std::numeric_limits<double>::quiet_NaN();
+#ifdef PLASMA_WITH_CUDA
+  {
+    int n_probes = 8;
+    unsigned probe_seed = 0xdeadbeefu;
+    if (const char *env = std::getenv("MX_PROBE_COUNT")) {
+      try { n_probes = std::max(1, std::stoi(env)); } catch (...) {}
+    }
+    if (const char *env = std::getenv("MX_PROBE_SEED")) {
+      try { probe_seed = static_cast<unsigned>(std::stoul(env)); } catch (...) {}
+    }
+    cublasHandle_t probe_handle = nullptr;
+    if (cublasCreate(&probe_handle) == CUBLAS_STATUS_SUCCESS) {
+      relative_residual = compute_relative_residual_probe(
+          probe_handle, A_ref.data(), L.data(), N, n_probes, probe_seed);
+      cublasDestroy(probe_handle);
+    }
+  }
+#endif
+  std::cout << "relative_residual: " << relative_residual << std::endl;
 
   if (const char *legacy = std::getenv("MX_ERROR_LEGACY")) {
     if (legacy[0] == '1') {

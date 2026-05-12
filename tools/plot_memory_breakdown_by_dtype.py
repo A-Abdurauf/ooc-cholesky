@@ -63,9 +63,38 @@ def infer_subtile_from_mode(mode: str) -> int:
     return 0
 
 
-def scale_groups_per_tile(nb: int, granularity: str, mode: str, subtile_override: int) -> int:
+def is_vec1d_mode(mode: str) -> bool:
+    m = (mode or "").strip().lower()
+    return m == "vec1d" or m.startswith("vec1d_") or m.startswith("vec1d-")
+
+
+def infer_vec1d_size_from_mode(mode: str) -> int:
+    m = (mode or "").strip().lower()
+    for sep in ("_", "-"):
+        if sep in m:
+            tail = m.split(sep, 1)[1]
+            try:
+                return int(tail)
+            except Exception:
+                continue
+    return 0
+
+
+def scale_groups_per_tile(nb: int, granularity: str, mode: str,
+                          subtile_override: int, vec1d_size: int = 0) -> int:
+    """Number of shared-scale groups per NB-by-NB tile.
+       tile mode      -> 1
+       subtile N (2D) -> (NB/N)^2
+       vec1d size V   -> NB * ceil(NB/V)
+    """
     if granularity == "tile":
         return 1
+    if granularity == "vec1d" or (granularity == "auto" and is_vec1d_mode(mode)):
+        vsz = vec1d_size if vec1d_size > 0 else infer_vec1d_size_from_mode(mode)
+        if vsz <= 0:
+            vsz = 32  # canonical MX vec1D default
+        nvecs = int(math.ceil(float(nb) / float(vsz)))
+        return nb * nvecs
     subtile = subtile_override if subtile_override > 0 else infer_subtile_from_mode(mode)
     if granularity == "subtile" and subtile <= 0:
         raise ValueError("--scale-granularity=subtile requires mode=subtile_* or --subtile-size")
@@ -153,8 +182,10 @@ def main():
     ap.add_argument("--use-full", action="store_true")
     ap.add_argument("--mx-scale-bits", type=int, default=8)
     ap.add_argument("--mx-fp32-scale-bits", type=int, default=11)
-    ap.add_argument("--scale-granularity", choices=["auto", "tile", "subtile"], default="auto")
+    ap.add_argument("--scale-granularity", choices=["auto", "tile", "subtile", "vec1d"], default="auto")
     ap.add_argument("--subtile-size", type=int, default=0)
+    ap.add_argument("--vec1d-size", type=int, default=0,
+                    help="vec1D group size (default 32 if auto-detecting vec1d mode)")
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
 
@@ -194,7 +225,7 @@ def main():
             counts = parse_counts(r.get(count_col, ""))
             gpt = scale_groups_per_tile(args.nb, args.scale_granularity,
                                         (r.get("mx_mode") or "").strip(),
-                                        args.subtile_size)
+                                        args.subtile_size, args.vec1d_size)
             for fmt, cnt in counts.items():
                 bits = bits_from_fmt(fmt)
                 gb = (cnt * tile_elements * bits / 8.0) / 1e9
