@@ -8,7 +8,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WAIT_PID=${WAIT_PID:-3714005}
+WAIT_PID=${WAIT_PID:-3822778}
 OUT_DIR=${OUT_DIR:-"/home/abduraa/MX_project/logs/mx_ooc_data"}
 CHAIN_LOG="$OUT_DIR/requant_gt20k_tile_chain.log"
 

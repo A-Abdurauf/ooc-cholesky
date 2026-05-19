@@ -143,7 +143,7 @@ def main():
     for ax in axes[2:]:
         ax.set_xlabel(r"Source epsilon $\varepsilon$  (log)")
     for ax in axes[::2]:
-        ax.set_ylabel(r"$\|LL^\top - A\|_F / \|A\|_F$  (log)")
+        ax.set_ylabel(r"$\|LL^\top - A\|_\infty / \|A\|_\infty$  (log)")
 
     # Single legend at top
     handles, labels = axes[0].get_legend_handles_labels()

@@ -1372,6 +1372,7 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             const bool uses_scale = format_uses_shared_scale(fmt_name);
             const bool use_fp32_bits = (fmt_name == "mx_fp32");
             const bool block_mode = (mx_mode() == MxMode::Block);
+            const bool vec1d_mode = (mx_mode() == MxMode::Vec1D);
             const int subtile = mx_block_subtile();
             const size_t tile_m = static_cast<size_t>(tile.m);
             const size_t tile_n = static_cast<size_t>(tile.n);
@@ -1474,6 +1475,39 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                   if (overflow) break;
                 }
               }
+            } else if (vec1d_mode) {
+              // Mirror the actual vec1d quant path: each row split into groups
+              // of `vec_sz` columns, one shared scale per group. Default to 32
+              // when MX_BLOCK_SUBTILE is unset (matches quantizeTileMxFp).
+              const size_t vec_sz =
+                  (subtile > 0) ? static_cast<size_t>(subtile) : 32;
+              for (size_t r = 0; r < tile_m && !overflow; ++r) {
+                for (size_t c0 = 0; c0 < tile_n && !overflow; c0 += vec_sz) {
+                  const size_t c_max =
+                      (vec_sz < (tile_n - c0)) ? vec_sz : (tile_n - c0);
+                  float max_val = 0.0f;
+                  for (size_t c = 0; c < c_max; ++c) {
+                    const float v = static_cast<float>(std::fabs(
+                        mappedBlock(static_cast<Eigen::Index>(r),
+                                    static_cast<Eigen::Index>(c0 + c))));
+                    max_val = std::fmax(max_val, v);
+                  }
+                  const int grp_scale = use_fp32_bits
+                                            ? computeScaleBitsFromMax(
+                                                  max_val, fp32_scale_bits)
+                                            : static_cast<int>(
+                                                  computeScaleFromMax(max_val));
+                  const long double pre_scale = std::ldexp(1.0L, -grp_scale);
+                  note_scale(pre_scale);
+                  for (size_t c = 0; c < c_max; ++c) {
+                    const long double ax = std::fabs(static_cast<long double>(
+                        mappedBlock(static_cast<Eigen::Index>(r),
+                                    static_cast<Eigen::Index>(c0 + c))));
+                    consume_val(ax, pre_scale);
+                    if (overflow) break;
+                  }
+                }
+              }
             } else {
               float max_val = 0.0f;
               for (size_t r = 0; r < tile_m; ++r) {
@@ -1561,7 +1595,11 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                                  : "legacy"))
                         << " low_order=" << (bound_e5m2_first ? "e5m2_first" : "e4m3_first")
                         << " ranking=" << (bound_cheap_first ? "cheap_first" : "legacy")
-                        << " mode=" << (mx_mode() == MxMode::Block ? "block" : "tile")
+                        << " mode="
+                        << (mx_mode() == MxMode::Block
+                                ? "block"
+                                : (mx_mode() == MxMode::Vec1D ? "vec1d"
+                                                              : "tile"))
                         << " subtile=" << mx_block_subtile() << std::endl;
             }
 

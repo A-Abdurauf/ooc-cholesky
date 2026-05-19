@@ -129,7 +129,7 @@ def main():
                               edgecolor="#888888", alpha=0.94, linewidth=0.5))
     ax.set_yscale("log")
     ax.set_xlabel("Memory footprint of Cholesky factor  (GB)")
-    ax.set_ylabel(r"Relative factorisation error  $\|LL^\top - A\|_F\,/\,\|A\|_F$")
+    ax.set_ylabel(r"Relative factorisation error  $\|LL^\top - A\|_\infty\,/\,\|A\|_\infty$")
     # X-axis: a touch of headroom so labels don't clip
     if xs:
         xlo = min(xs) * 0.95

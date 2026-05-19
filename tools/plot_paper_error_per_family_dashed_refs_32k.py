@@ -172,7 +172,7 @@ def main():
 
     # Y-axis labels on left column only.
     for ax in axes[::2]:
-        ax.set_ylabel(r"$\|LL^\top - A\|_F\,/\,\|A\|_F$  (log)", fontsize=9)
+        ax.set_ylabel(r"$\|LL^\top - A\|_\infty\,/\,\|A\|_\infty$  (log)", fontsize=9)
 
     # Bottom legends — granularity hatches (3) and IEEE references (2 lines, stacked).
     gran_handles = [
