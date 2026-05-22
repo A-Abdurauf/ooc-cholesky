@@ -1,0 +1,16 @@
+[START] 2026-05-23T00:22:07+03:00
+[CFG] ladder=mx_staircase (e2m1 -> mx_e4m3 -> fp16(plain) -> fp32 -> fp64)
+[CFG] mx_mode=vec1d subtile=32
+[CFG] N=40960  nb=4096  underflow=gu
+[CFG] eps=1e-5 1e-6 1e-7 1e-8
+[CFG] csv=/home/abduraa/MX_project/ooc-cholesky/mx_staircase_40k_nb4096_gu/results.csv
+[RUN] eps=1e-5 nb=4096 log=mx_staircase_vec1d32_gu_my_cov_weak_40k_nb4096_eps1e-5_20260523_002207.log
+[OK] eps=1e-5 rel=1.89884e-05 abs=0.00341355 res=1.11958e-06 tiles=fp32=21;fp64=10;fp16=9;e2m1=9;mx_e4m3=6;
+[RUN] eps=1e-6 nb=4096 log=mx_staircase_vec1d32_gu_my_cov_weak_40k_nb4096_eps1e-6_20260523_003953.log
+[OK] eps=1e-6 rel=1.64421e-06 abs=0.00029558 res=3.57516e-07 tiles=fp32=30;fp64=10;e2m1=8;fp16=7;
+[RUN] eps=1e-7 nb=4096 log=mx_staircase_vec1d32_gu_my_cov_weak_40k_nb4096_eps1e-7_20260523_005743.log
+[OK] eps=1e-7 rel=1.04697e-06 abs=0.000188214 res=3.26589e-07 tiles=fp32=37;fp64=10;e2m1=5;mx_e4m3=3;
+[RUN] eps=1e-8 nb=4096 log=mx_staircase_vec1d32_gu_my_cov_weak_40k_nb4096_eps1e-8_20260523_011526.log
+[OK] eps=1e-8 rel=1.19978e-08 abs=2.15685e-06 res=8.96628e-10 tiles=fp64=31;fp32=19;e2m1=3;mx_e4m3=2;
+[END] 2026-05-23T01:33:41+03:00
+CSV: /home/abduraa/MX_project/ooc-cholesky/mx_staircase_40k_nb4096_gu/results.csv

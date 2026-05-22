@@ -41,10 +41,17 @@ EPS_ORDER = ["1e-5", "1e-6", "1e-7", "1e-8"]
 
 # Progression of bars per eps cluster. (short label, sweep name)
 BAR_ORDER = [
-    ("Baseline IEEE",  "requant_baseline_fp8_subnormal_gt20k"),
-    ("Ladder IEEE",    "requant_ladder_ieee_gt20k"),
-    ("Full ladder",    "requant_ladder_scaled_vec1d32_gt20k"),
+    ("Baseline IEEE",      "requant_baseline_fp8_subnormal_gt20k"),
+    ("Ladder IEEE",        "requant_ladder_ieee_gt20k"),
+    ("Full ladder",        "requant_ladder_scaled_vec1d32_gt20k"),
+    ("Full ladder FTZ",    "requant_ladder_scaled_vec1d32_FTZ_gt20k"),
 ]
+
+# Sweeps to flag with a Δ annotation listing per-format differences vs a
+# reference sweep. Used to highlight where FTZ flips tile-format decisions.
+DIFF_VS = {
+    "requant_ladder_scaled_vec1d32_FTZ_gt20k": "requant_ladder_scaled_vec1d32_gt20k",
+}
 
 # Format stack order: highest precision on top (deep blue) → lowest on bottom.
 FORMAT_STACK = [
@@ -110,14 +117,44 @@ def main():
     ap.add_argument("--csv",
                     default="/home/abduraa/MX_project/logs/mx_ooc_data/requant_gt20k_memory.csv")
     ap.add_argument("--n", type=int, default=32768)
+    ap.add_argument("--nb", type=int, default=2048,
+                    help="Tile size (only used for --triangular).")
     ap.add_argument("--out", required=True)
     ap.add_argument("--normalize", action="store_true",
                     help="Plot fractions [0,1] instead of raw counts.")
+    ap.add_argument("--triangular", action="store_true",
+                    help="Plot lower-triangular tile counts only "
+                         "(Cholesky stores half the matrix). Assumes diagonal "
+                         "tiles are FP64; off-diagonal counts are halved.")
     args = ap.parse_args()
 
     counts_by = load_counts(args.csv, args.n)
 
-    fig, ax = plt.subplots(figsize=(13, 5.8))
+    if args.triangular:
+        # Lower-triangular layout: nb_diag FP64 diagonal tiles + (off/2) for
+        # every format. tile_counts_full is the full square; diagonal is FP64
+        # in every sweep we plot (Cholesky's POTRF requires it).
+        if args.n % args.nb != 0:
+            ap.error(f"--triangular requires n % nb == 0 (n={args.n}, nb={args.nb})")
+        nb_diag = args.n // args.nb
+        tri_by = {}
+        for key, counts in counts_by.items():
+            new = {}
+            for fmt, v in counts.items():
+                if fmt == "fp64":
+                    off = v - nb_diag
+                    if off < 0:
+                        # Defensive: not enough FP64 for the diagonal — fall
+                        # back to a plain halving so we never go negative.
+                        new[fmt] = v / 2
+                    else:
+                        new[fmt] = nb_diag + off // 2
+                else:
+                    new[fmt] = v // 2
+            tri_by[key] = new
+        counts_by = tri_by
+
+    fig, ax = plt.subplots(figsize=(14.5, 5.8))
 
     n_eps  = len(EPS_ORDER)
     n_bars = len(BAR_ORDER)
@@ -148,13 +185,6 @@ def main():
             ax.bar(xs, vals, bar_w * 0.90, bottom=bottoms,
                    color=color, edgecolor="black", linewidth=0.25)
             bottoms += vals
-        # Total tile count above each bar.
-        for x, total in zip(xs, bottoms):
-            if total > 0:
-                ax.text(x, total * 1.01,
-                        f"{int(round(total))}" if not args.normalize else f"{total:.2f}",
-                        ha="center", va="bottom",
-                        fontsize=7.0, rotation=90, color="#222")
         max_y = max(max_y, bottoms.max())
 
     # Group centre tick labels for eps, plus per-bar sub-labels rotated 45°.
@@ -177,10 +207,18 @@ def main():
     ax.yaxis.grid(True, alpha=0.25, linewidth=0.5)
     ax.set_xlim(-0.5, n_eps - 0.5)
     # Y headroom for the rotated value labels on top of each bar.
-    ax.set_ylim(0, max_y * 1.18)
-    ax.set_ylabel("Tile fraction" if args.normalize else "Tile count (full matrix)")
+    ax.set_ylim(0, max_y * 1.05)
+    if args.normalize:
+        ylab = "Tile fraction"
+    elif args.triangular:
+        ylab = "Tile count (lower triangle, incl. diagonal)"
+    else:
+        ylab = "Tile count (full matrix)"
+    ax.set_ylabel(ylab)
     ax.set_xlabel("")
-    ax.set_title(f"Per-tile format mix under progressive MX scaling  (N={args.n}, MX-native storage, 1×32 row groups)")
+    tri_note = "lower triangle" if args.triangular else "full matrix"
+    ax.set_title(f"Per-tile format mix under progressive MX scaling  "
+                 f"(N={args.n}, nb={args.nb}, {tri_note}, MX-native storage, 1×32 row groups)")
 
     # Build legend from drawn formats only.
     legend_entries = [(lbl, color) for lbl, key, color in FORMAT_STACK if used[key]]
@@ -191,9 +229,9 @@ def main():
                ncol=min(len(handles), 5),
                frameon=True, framealpha=0.95,
                title=(f"Storage format  ·  bar order: "
-                      f"Baseline IEEE → +MXFP8 → +MXFP16 → +MXFP32 → "
-                      f"Ladder IEEE (FP8→FP16→FP32→FP64) → "
-                      f"Full ladder (MXFP4→MXFP8→MXFP16→FP32→FP64)"),
+                      f"Baseline IEEE → Ladder IEEE (FP8→FP16→FP32→FP64) → "
+                      f"Full ladder (MXFP4→MXFP8→MXFP16→FP32→FP64) → "
+                      f"Full ladder FTZ (subnormals→0)"),
                handletextpad=0.4, columnspacing=1.6, labelspacing=0.3,
                borderpad=0.35)
 

@@ -38,20 +38,23 @@ mpl.rcParams.update({
 EPS_ORDER = ["1e-5", "1e-6", "1e-7", "1e-8"]
 
 # Progression of bars per eps cluster: each step "MX-scales one more tier".
-# (label, sweep_name, hatch, color)
+# (label, source, sweep_name, hatch, color)
+#   source ∈ {"main", "dropin"} — see load_main / load_dropin in main().
 BAR_ORDER = [
     ("Baseline IEEE  (no MX; static format per matrix)",
-     "requant_baseline_fp8_subnormal_gt20k",  "..",  "#4e79a7"),  # blue
+     "main",   "requant_baseline_fp8_subnormal_gt20k",  "..",  "#4e79a7"),  # blue
     ("+ MXFP8 scaled  (MX_E4M3 low; FP32/FP16 plain)",
-     "requant_lowscale_vec1d32_gt20k",        "",    "#f1c40f"),  # yellow
+     "main",   "requant_lowscale_vec1d32_gt20k",        "",    "#f1c40f"),  # yellow
     ("+ MXFP8 + MXFP16 scaled  (MX_FP16 mid added)",
-     "requant_lowmidscale_vec1d32_gt20k",     "//",  "#f28e2b"),  # orange
+     "main",   "requant_lowmidscale_vec1d32_gt20k",     "//",  "#f28e2b"),  # orange
     ("+ MXFP8 + MXFP16 + MXFP32 scaled  (all upper tiers MX)",
-     "requant_legacy_scaled_vec1d32_gt20k",   "\\\\","#59a14f"),  # green
+     "main",   "requant_legacy_scaled_vec1d32_gt20k",   "\\\\","#59a14f"),  # green
     ("Ladder IEEE  (FP8 E4M3 → FP16 → FP32 → FP64)",
-     "requant_ladder_ieee_gt20k",             "||",  "#a0a0a0"),  # grey
+     "main",   "requant_ladder_ieee_gt20k",             "||",  "#a0a0a0"),  # grey
     ("Full ladder  (MXFP4 → MXFP8 E4M3 → MXFP16 → FP32 → FP64)",
-     "requant_ladder_scaled_vec1d32_gt20k",   "xx",  "#b07aa1"),  # purple
+     "main",   "requant_ladder_scaled_vec1d32_gt20k",   "xx",  "#b07aa1"),  # purple
+    ("Drop-in MXFP4  (legacy FP8 bound, MXFP4 storage)",
+     "dropin", "true_mxfp4_dropin_fz",                  "++",  "#F0E442"),  # yellow drop-in
 ]
 
 
@@ -67,14 +70,34 @@ def load(csv_path, n_target):
     return rows
 
 
+def load_dropin(csv_path, n_target):
+    """Read the small drop-in CSV (n,nb,underflow,source_epsilon,rel_factor_error,...)."""
+    rows = {}
+    if not Path(csv_path).exists():
+        return rows
+    with Path(csv_path).open() as f:
+        for r in csv.DictReader(f):
+            try:
+                if int(r["n"]) != n_target: continue
+            except: continue
+            rows[(r["sweep"], r["source_epsilon"])] = r
+    return rows
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", default="/home/abduraa/MX_project/logs/mx_ooc_data/requant_gt20k_memory.csv")
+    ap.add_argument("--dropin-csv",
+                    default="/home/abduraa/MX_project/ooc-cholesky/true_dropin_mxfp4_32k/results.csv")
     ap.add_argument("--n", type=int, default=32768)
     ap.add_argument("--out", required=True)
     args = ap.parse_args()
 
-    data = load(args.csv, args.n)
+    data        = load(args.csv, args.n)
+    data_dropin = load_dropin(args.dropin_csv, args.n)
+
+    def pick(src, sweep, eps):
+        return (data_dropin if src == "dropin" else data).get((sweep, eps))
 
     fig, ax = plt.subplots(figsize=(11, 5.5))
 
@@ -86,10 +109,10 @@ def main():
 
     y_min, y_max = float("inf"), 0.0
 
-    for bi, (label, sweep, hatch, color) in enumerate(BAR_ORDER):
+    for bi, (label, src, sweep, hatch, color) in enumerate(BAR_ORDER):
         xs, ys = [], []
         for ci, eps in zip(x_centres, EPS_ORDER):
-            r = data.get((sweep, eps))
+            r = pick(src, sweep, eps)
             try:
                 v = float(r["rel_factor_error"]) if r else 0.0
             except (ValueError, TypeError):
@@ -127,7 +150,7 @@ def main():
 
     # Bar-order legend reflecting the cumulative-tier story.
     handles = [Patch(facecolor=color, edgecolor="black", hatch=hatch, label=label)
-               for label, _, hatch, color in BAR_ORDER]
+               for label, _, _, hatch, color in BAR_ORDER]
     fig.legend(handles=handles,
                loc="lower center", bbox_to_anchor=(0.5, -0.18),
                ncol=2, frameon=True, framealpha=0.95,

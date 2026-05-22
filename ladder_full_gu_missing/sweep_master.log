@@ -1,0 +1,6 @@
+[OK] granularity=tile bin=my_cov_weak_40k eps=1e-5 rel= abs= res= tiles=
+[RUN] granularity=tile bin=my_cov_weak_40k eps=1e-6 nb=2048 log=ladder_full_tile_gu_my_cov_weak_40k_eps1e-6_20260522_233553.log
+[OK] granularity=tile bin=my_cov_weak_40k eps=1e-6 rel=2.60908e-06 abs=0.000469035 res=3.94361e-07 tiles=fp32=86;e2m1=50;mx_fp16=41;fp64=20;mx_e4m3=13;
+[RUN] granularity=tile bin=my_cov_weak_40k eps=1e-7 nb=2048 log=ladder_full_tile_gu_my_cov_weak_40k_eps1e-7_20260522_235419.log
+[OK] granularity=tile bin=my_cov_weak_40k eps=1e-7 rel=4.53446e-07 abs=8.15162e-05 res=9.4424e-08 tiles=fp32=78;mx_fp16=43;fp64=39;e2m1=33;mx_e4m3=17;
+[RUN] granularity=tile bin=my_cov_weak_40k eps=1e-8 nb=2048 log=ladder_full_tile_gu_my_cov_weak_40k_eps1e-8_20260523_001247.log

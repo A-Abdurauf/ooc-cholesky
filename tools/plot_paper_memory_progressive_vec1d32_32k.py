@@ -52,6 +52,19 @@ BAR_ORDER = [
      "requant_ladder_ieee_gt20k",                 "||"),
     ("Full ladder  (MXFP4 → MXFP8 E4M3 → MXFP16 → FP32 → FP64)",
      "requant_ladder_scaled_vec1d32_gt20k",       "xx"),
+    ("Full ladder FTZ  (subnormals → 0)",
+     "requant_ladder_scaled_vec1d32_FTZ_gt20k",   "++"),
+]
+
+# Columns that scale linearly with off-diagonal tile count (no diagonal tiles
+# for these formats — Cholesky's diagonal is always FP64). When converting
+# full→lower-triangular, divide them by 2.
+HALVE_COLS = [
+    "fp32_gb", "fp16_gb", "bf16_gb",
+    "mx_fp32_gb", "mx_fp16_gb", "mx_e4m3_gb", "mx_e5m2_gb",
+    "fp8_e4m3_gb", "fp8_e5m2_gb",
+    "e3m2_gb", "e2m3_gb", "e2m1_gb",
+    "scale_meta_gb",
 ]
 
 # Datatypes stacked bottom→top in the bar; legend shows top→bottom.
@@ -85,17 +98,75 @@ def bucket_value(r, keys):
     return sum(float(r.get(k, 0) or 0) for k in keys)
 
 
+def parse_tile_counts(s):
+    out = {}
+    for part in (s or "").split(","):
+        if "=" not in part:
+            continue
+        k, v = part.split("=", 1)
+        try:
+            out[k.strip()] = int(v.strip())
+        except ValueError:
+            pass
+    return out
+
+
+def to_lower_triangular(r, n, nb):
+    """Rewrite the per-format GB columns to lower-triangular storage.
+
+    - Off-diagonal tiles are mirrored in a symmetric matrix → halve them.
+    - Diagonal tiles are FP64 (POTRF), and the lower half of each diagonal
+      tile (nb*(nb+1)/2 elements) is enough — drop the strictly-upper part.
+    """
+    if r is None:
+        return None
+    M = n // nb
+    counts = parse_tile_counts(r.get("tile_counts_full", ""))
+    diag_count = M  # one diagonal tile per block row
+
+    new = dict(r)
+
+    # FP64 split: diagonal (stored as lower-tri within the tile) + off-diag.
+    full_fp64_tiles = counts.get("fp64", 0)
+    diag_used = min(diag_count, full_fp64_tiles)
+    off_fp64_tiles = (full_fp64_tiles - diag_used) // 2
+    fp64_bytes = (off_fp64_tiles * nb * nb * 8
+                  + diag_used * (nb * (nb + 1) // 2) * 8)
+    new["fp64_gb"] = f"{fp64_bytes / 1e9:.9f}"
+
+    # All other formats: off-diagonal-only, so they simply halve.
+    for col in HALVE_COLS:
+        try:
+            v = float(r.get(col) or 0)
+        except ValueError:
+            v = 0.0
+        new[col] = f"{v / 2:.9f}"
+
+    return new
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv",
                     default="/home/abduraa/MX_project/logs/mx_ooc_data/requant_gt20k_memory.csv")
     ap.add_argument("--n", type=int, default=32768)
+    ap.add_argument("--nb", type=int, default=2048,
+                    help="Tile size (only used for --triangular).")
     ap.add_argument("--out", required=True)
+    ap.add_argument("--triangular", action="store_true",
+                    help="Account for Cholesky's lower-triangular storage: "
+                         "off-diagonal tiles counted once, diagonal FP64 tiles "
+                         "stored as nb*(nb+1)/2 lower-triangular halves.")
     args = ap.parse_args()
 
     data = load(args.csv, args.n)
 
-    fig, ax = plt.subplots(figsize=(13, 6.0))
+    if args.triangular:
+        if args.n % args.nb != 0:
+            ap.error(f"--triangular requires n % nb == 0 (n={args.n}, nb={args.nb})")
+        data = {k: to_lower_triangular(r, args.n, args.nb) for k, r in data.items()}
+
+    fig, ax = plt.subplots(figsize=(14.5, 6.0))
 
     n_eps = len(EPS_ORDER)
     n_bars = len(BAR_ORDER)
@@ -106,7 +177,8 @@ def main():
     drawn = {lbl: False for lbl, _, _ in DTYPE_BUCKETS}
     max_y = 0.0
 
-    for bi, (bar_label, sweep, hatch) in enumerate(BAR_ORDER):
+    for bi, bar in enumerate(BAR_ORDER):
+        sweep, hatch = bar[1], bar[2]
         xs = [c - group_width / 2 + (bi + 0.5) * bar_w for c in x_centres]
         bottoms = [0.0] * n_eps
         for dt_lbl, keys, color in DTYPE_BUCKETS:
@@ -135,9 +207,14 @@ def main():
     ax.set_xlim(-0.5, n_eps - 0.5)
     # Extra headroom for the rotated value labels above each bar.
     ax.set_ylim(0, max_y * 1.22)
-    ax.set_ylabel("Memory per Cholesky factor (GB)")
+    if args.triangular:
+        ax.set_ylabel("Memory per Cholesky L factor — lower triangle (GB)")
+    else:
+        ax.set_ylabel("Memory per Cholesky factor (GB)")
     ax.set_xlabel("")
-    ax.set_title(f"Progressive MX scaling: memory at N={args.n} (MX-native storage, 1×32 row groups)")
+    tri_note = "lower triangle" if args.triangular else "full matrix"
+    ax.set_title(f"Progressive MX scaling: memory at N={args.n}, nb={args.nb} "
+                 f"({tri_note}, MX-native storage, 1×32 row groups)")
     ax.set_axisbelow(True)
     ax.xaxis.grid(False)
     ax.yaxis.grid(True, alpha=0.3, linewidth=0.5)

@@ -817,9 +817,18 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             if (!env) return 1;
             return (env[0] == '0') ? 0 : 1;
           }();
-          long double lowUnitRoundoff = format_unit_roundoff(selected_low_format);
-          if (scale_aware_epsilon && format_uses_shared_scale(selected_low_format)) {
-            lowUnitRoundoff += format_scaled_underflow_term(selected_low_format);
+          // Optional override: use a different format's unit roundoff for the
+          // tile-eligibility cutoff while keeping the actual storage format.
+          // Useful for "use the FP8 baseline's selection criteria on a MXFP4 run".
+          std::string cutoff_format = selected_low_format;
+          if (const char *cf_env = getenv("MX_LOW_CUTOFF_FORMAT")) {
+            if (cf_env[0] != '\0') {
+              cutoff_format = cf_env;
+            }
+          }
+          long double lowUnitRoundoff = format_unit_roundoff(cutoff_format);
+          if (scale_aware_epsilon && format_uses_shared_scale(cutoff_format)) {
+            lowUnitRoundoff += format_scaled_underflow_term(cutoff_format);
           }
           if (!(lowUnitRoundoff > 0.0L)) {
             lowUnitRoundoff = 1.0L / 16.0L;
@@ -1302,7 +1311,7 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                            [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
             return (v == "cheap" || v == "cheap_first" || v == "ascending_cost") ? 1 : 0;
           }();
-          enum class BoundLadderMode { Legacy, Full, IeeeOnly };
+          enum class BoundLadderMode { Legacy, Full, IeeeOnly, MxStaircase };
 
           static const BoundLadderMode bound_ladder_mode = []() {
             const char *env = getenv("MX_BOUND_LADDER");
@@ -1319,6 +1328,10 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             if (v == "ieee" || v == "ieee_only" || v == "plain_ieee" ||
                 v == "ieee_fp" || v == "ieee_fp_only") {
               return BoundLadderMode::IeeeOnly;
+            }
+            if (v == "mx_staircase" || v == "staircase" ||
+                v == "mx_staircase_fp16" || v == "staircase_fp16") {
+              return BoundLadderMode::MxStaircase;
             }
             return BoundLadderMode::Legacy;
           }();
@@ -1581,18 +1594,31 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                 canonical_format_name(fp16_bucket, "fp16");
             const std::string low_choice =
                 canonical_format_name(selected_low_format, "mx_e4m3");
+            // MX_BOUND_LOW_AS lets the bound evaluate one format while keeping
+            // a different storage format. Use case: "true MXFP4 drop-in" where
+            // the legacy FP8 bound chooses tiles, but storage is e2m1. Only
+            // applies to the legacy/cheap-first bound paths.
+            std::string low_bound_choice = low_choice;
+            if (const char *bla = getenv("MX_BOUND_LOW_AS")) {
+              if (bla[0] != '\0') {
+                low_bound_choice = canonical_format_name(bla, "mx_e4m3");
+              }
+            }
 
             if (bound_debug) {
               std::cout << "[BOUND_SELECT] tile(" << row << "," << col << ")"
                         << " fp32_bucket=" << fp32_choice
                         << " fp16_bucket=" << fp16_choice
                         << " low_bucket=" << low_choice
+                        << " low_bound=" << low_bound_choice
                         << " ladder="
                         << (bound_ladder_mode == BoundLadderMode::Full
                           ? "full"
                           : (bound_ladder_mode == BoundLadderMode::IeeeOnly
                                  ? "ieee_only"
-                                 : "legacy"))
+                                 : (bound_ladder_mode == BoundLadderMode::MxStaircase
+                                        ? "mx_staircase"
+                                        : "legacy")))
                         << " low_order=" << (bound_e5m2_first ? "e5m2_first" : "e4m3_first")
                         << " ranking=" << (bound_cheap_first ? "cheap_first" : "legacy")
                         << " mode="
@@ -1686,6 +1712,42 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
                 decision_fmt = "fp64";
                 decision_reason = "ladder_reject_all";
               }
+            } else if (bound_ladder_mode == BoundLadderMode::MxStaircase) {
+              // MX staircase ladder: same as Full but the FP16 rung is
+              // plain IEEE FP16 (no shared scale) instead of MXFP16.
+              // MXFP4 -> MXFP8 (E4M3) -> FP16 -> FP32 -> FP64 fallback.
+              const char *ladder_raw[] = {"e2m1", "mx_e4m3", "fp16", "fp32"};
+              const int ladder_len = 4;
+
+              int step = 0;
+              bool placed = false;
+              for (int idx = 0; idx < ladder_len; ++idx) {
+                const char *cand_raw = ladder_raw[idx];
+                std::string cand = canonical_format_name(cand_raw, cand_raw);
+                const auto ev = eval_one(cand);
+                print_eval(cand, ev);
+                if (ev.fits) {
+                  apply_bucket_target(cand, cand.c_str());
+                  decision_fmt = cand;
+                  decision_reason = "mx_staircase_accept";
+                  decision_step = step;
+                  placed = true;
+                  break;
+                }
+                ++step;
+              }
+              if (!placed) {
+                log_tile_target("fp64");
+                tile.dtype = CUDA_R_64F;
+                cudaMallocHost(&tile.data, sizeof(uint64_t) * tile.m * tile.n);
+                Eigen::Map<Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic,
+                                        Eigen::RowMajor>>{
+                    static_cast<double *>(tile.data),
+                    static_cast<Eigen::Index>(tile.m),
+                    static_cast<Eigen::Index>(tile.n)} = mappedBlock.cast<double>();
+                decision_fmt = "fp64";
+                decision_reason = "mx_staircase_reject_all";
+              }
             } else if (bound_ladder_mode == BoundLadderMode::IeeeOnly) {
               // IEEE-only ladder (no shared-scale MX formats):
               // FP8_E4M3 -> FP16 -> FP32 -> FP64 fallback.
@@ -1725,15 +1787,15 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
               const auto fp32_eval = eval_one(fp32_choice);
               const auto fp16_eval = eval_one(fp16_choice);
               const auto low_eval = allow_low
-                                        ? eval_one(low_choice)
+                                        ? eval_one(low_bound_choice)
                                         : BoundEvalResult{};
               print_eval(fp32_choice, fp32_eval);
               print_eval(fp16_choice, fp16_eval);
               if (allow_low) {
-                print_eval(low_choice, low_eval);
+                print_eval(low_bound_choice, low_eval);
               } else if (bound_debug) {
                 std::cout << "[BOUND_EVAL] tile(" << row << "," << col
-                          << ") fmt=" << low_choice
+                          << ") fmt=" << low_bound_choice
                           << " skipped=1 reason=allow_low_false" << std::endl;
               }
 
@@ -1793,7 +1855,7 @@ void makeMixedPrecisionTiledArray(MixedPrecisionTiledArray *array,
             if (bound_debug) {
               const auto fp32_eval = get_eval("fp32");
               const auto fp16_eval = get_eval("fp16");
-              const auto low_eval = get_eval("mx_e4m3");
+              const auto low_eval = get_eval(low_bound_choice);
               std::cout << "[BOUND_DECISION] tile(" << row << "," << col << ")"
                         << " selected=" << decision_fmt
                         << " reason=" << decision_reason

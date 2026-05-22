@@ -1,0 +1,5 @@
+sweep,bin,n,nb,mx_mode,underflow,source_epsilon,rel_factor_error,abs_factor_error,relative_residual,tile_breakdown
+mx_staircase_vec1d32_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,vec1d,gu,1e-5,1.89884e-05,0.00341355,1.11958e-06,"fp32=21;fp64=10;fp16=9;e2m1=9;mx_e4m3=6;"
+mx_staircase_vec1d32_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,vec1d,gu,1e-6,1.64421e-06,0.00029558,3.57516e-07,"fp32=30;fp64=10;e2m1=8;fp16=7;"
+mx_staircase_vec1d32_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,vec1d,gu,1e-7,1.04697e-06,0.000188214,3.26589e-07,"fp32=37;fp64=10;e2m1=5;mx_e4m3=3;"
+mx_staircase_vec1d32_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,vec1d,gu,1e-8,1.19978e-08,2.15685e-06,8.96628e-10,"fp64=31;fp32=19;e2m1=3;mx_e4m3=2;"

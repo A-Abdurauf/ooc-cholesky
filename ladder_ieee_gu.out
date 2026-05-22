@@ -1,0 +1,2 @@
+[2026-05-23T01:34:38+03:00] staircase 40k/nb=4096 gu finished, launching ladder_ieee_gu
+bash: line 5: ./run_ladder_ieee_gu.sh: No such file or directory
