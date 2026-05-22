@@ -1,0 +1,108 @@
+[RUN] N=20480 nb=4096 nt=5 need=15 eps=1e-5  bin=my_cov_weak_20k.bin
+[KILL] N=20480 eps=1e-5 got 15/15 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N20480_nb4096_eps1e-5.tilemap  FP64=5  FP32=7  MXFP16=1  MXFP8=1  MXFP4=1
+[RUN] N=20480 nb=4096 nt=5 need=15 eps=1e-6  bin=my_cov_weak_20k.bin
+[KILL] N=20480 eps=1e-6 got 15/15 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N20480_nb4096_eps1e-6.tilemap  FP64=5  FP32=7  MXFP16=2  MXFP4=1
+[RUN] N=20480 nb=4096 nt=5 need=15 eps=1e-7  bin=my_cov_weak_20k.bin
+[KILL] N=20480 eps=1e-7 got 15/15 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N20480_nb4096_eps1e-7.tilemap  FP64=5  FP32=9  MXFP4=1
+[RUN] N=20480 nb=4096 nt=5 need=15 eps=1e-8  bin=my_cov_weak_20k.bin
+[KILL] N=20480 eps=1e-8 got 15/15 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N20480_nb4096_eps1e-8.tilemap  FP64=11  FP32=3  MXFP8=1
+[RUN] N=32768 nb=4096 nt=8 need=36 eps=1e-5  bin=my_cov_weak_32k.bin
+[KILL] N=32768 eps=1e-5 got 36/36 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N32768_nb4096_eps1e-5.tilemap  FP64=8  FP32=18  MXFP8=5  MXFP4=5
+[RUN] N=32768 nb=4096 nt=8 need=36 eps=1e-6  bin=my_cov_weak_32k.bin
+[KILL] N=32768 eps=1e-6 got 36/36 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N32768_nb4096_eps1e-6.tilemap  FP64=8  FP32=18  MXFP16=5  MXFP8=3  MXFP4=2
+[RUN] N=32768 nb=4096 nt=8 need=36 eps=1e-7  bin=my_cov_weak_32k.bin
+[KILL] N=32768 eps=1e-7 got 36/36 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N32768_nb4096_eps1e-7.tilemap  FP64=8  FP32=18  MXFP16=8  MXFP4=2
+[RUN] N=32768 nb=4096 nt=8 need=36 eps=1e-8  bin=my_cov_weak_32k.bin
+[KILL] N=32768 eps=1e-8 got 36/36 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N32768_nb4096_eps1e-8.tilemap  FP64=22  FP32=10  MXFP16=2  MXFP4=2
+[RUN] N=40960 nb=4096 nt=10 need=55 eps=1e-5  bin=my_cov_weak_40k.bin
+[KILL] N=40960 eps=1e-5 got 55/55 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N40960_nb4096_eps1e-5.tilemap  FP64=10  FP32=21  MXFP16=9  MXFP8=7  MXFP4=8
+[RUN] N=40960 nb=4096 nt=10 need=55 eps=1e-6  bin=my_cov_weak_40k.bin
+[KILL] N=40960 eps=1e-6 got 55/55 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N40960_nb4096_eps1e-6.tilemap  FP64=10  FP32=28  MXFP16=9  MXFP4=8
+[RUN] N=40960 nb=4096 nt=10 need=55 eps=1e-7  bin=my_cov_weak_40k.bin
+[KILL] N=40960 eps=1e-7 got 55/55 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N40960_nb4096_eps1e-7.tilemap  FP64=10  FP32=30  MXFP16=7  MXFP8=3  MXFP4=5
+[RUN] N=40960 nb=4096 nt=10 need=55 eps=1e-8  bin=my_cov_weak_40k.bin
+[KILL] N=40960 eps=1e-8 got 55/55 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N40960_nb4096_eps1e-8.tilemap  FP64=31  FP32=16  MXFP16=3  MXFP8=2  MXFP4=3
+[RUN] N=65536 nb=4096 nt=16 need=136 eps=1e-5  bin=my_cov_weak_65k.bin
+[KILL] N=65536 eps=1e-5 got 136/136 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N65536_nb4096_eps1e-5.tilemap  FP64=16  FP32=42  MXFP8=40  MXFP4=38
+[RUN] N=65536 nb=4096 nt=16 need=136 eps=1e-6  bin=my_cov_weak_65k.bin
+[KILL] N=65536 eps=1e-6 got 136/136 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N65536_nb4096_eps1e-6.tilemap  FP64=16  FP32=42  MXFP16=40  MXFP4=38
+[RUN] N=65536 nb=4096 nt=16 need=136 eps=1e-7  bin=my_cov_weak_65k.bin
+[KILL] N=65536 eps=1e-7 got 136/136 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N65536_nb4096_eps1e-7.tilemap  FP64=16  FP32=42  MXFP16=40  MXFP8=8  MXFP4=30
+[RUN] N=65536 nb=4096 nt=16 need=136 eps=1e-8  bin=my_cov_weak_65k.bin
+[KILL] N=65536 eps=1e-8 got 136/136 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N65536_nb4096_eps1e-8.tilemap  FP64=58  FP32=40  MXFP16=8  MXFP4=30
+[RUN] N=81920 nb=4096 nt=20 need=210 eps=1e-5  bin=my_cov_weak_80k.bin
+[KILL] N=81920 eps=1e-5 got 210/210 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N81920_nb4096_eps1e-5.tilemap  FP64=20  FP32=62  MXFP16=34  MXFP8=31  MXFP4=63
+[RUN] N=81920 nb=4096 nt=20 need=210 eps=1e-6  bin=my_cov_weak_80k.bin
+[TIMEOUT] N=81920 eps=1e-6 after 3600s (130/210); killing
+[FAIL] N=81920 eps=1e-6 got 130 TILE_TARGET lines (need 210); skipping tilemap
+[RUN] N=81920 nb=4096 nt=20 need=210 eps=1e-7  bin=my_cov_weak_80k.bin
+[SKIP] N=20480 eps=1e-5 tilemap exists: ladder_ftz_N20480_nb4096_eps1e-5.tilemap
+[SKIP] N=20480 eps=1e-6 tilemap exists: ladder_ftz_N20480_nb4096_eps1e-6.tilemap
+[SKIP] N=20480 eps=1e-7 tilemap exists: ladder_ftz_N20480_nb4096_eps1e-7.tilemap
+[SKIP] N=20480 eps=1e-8 tilemap exists: ladder_ftz_N20480_nb4096_eps1e-8.tilemap
+[SKIP] N=32768 eps=1e-5 tilemap exists: ladder_ftz_N32768_nb4096_eps1e-5.tilemap
+[SKIP] N=32768 eps=1e-6 tilemap exists: ladder_ftz_N32768_nb4096_eps1e-6.tilemap
+[SKIP] N=32768 eps=1e-7 tilemap exists: ladder_ftz_N32768_nb4096_eps1e-7.tilemap
+[SKIP] N=32768 eps=1e-8 tilemap exists: ladder_ftz_N32768_nb4096_eps1e-8.tilemap
+[SKIP] N=40960 eps=1e-5 tilemap exists: ladder_ftz_N40960_nb4096_eps1e-5.tilemap
+[SKIP] N=40960 eps=1e-6 tilemap exists: ladder_ftz_N40960_nb4096_eps1e-6.tilemap
+[SKIP] N=40960 eps=1e-7 tilemap exists: ladder_ftz_N40960_nb4096_eps1e-7.tilemap
+[SKIP] N=40960 eps=1e-8 tilemap exists: ladder_ftz_N40960_nb4096_eps1e-8.tilemap
+[SKIP] N=65536 eps=1e-5 tilemap exists: ladder_ftz_N65536_nb4096_eps1e-5.tilemap
+[SKIP] N=65536 eps=1e-6 tilemap exists: ladder_ftz_N65536_nb4096_eps1e-6.tilemap
+[SKIP] N=65536 eps=1e-7 tilemap exists: ladder_ftz_N65536_nb4096_eps1e-7.tilemap
+[SKIP] N=65536 eps=1e-8 tilemap exists: ladder_ftz_N65536_nb4096_eps1e-8.tilemap
+[SKIP] N=81920 eps=1e-5 tilemap exists: ladder_ftz_N81920_nb4096_eps1e-5.tilemap
+[RUN] N=81920 nb=4096 nt=20 need=210 eps=1e-6  bin=my_cov_weak_80k.bin
+[KILL] N=81920 eps=1e-6 got 210/210 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N81920_nb4096_eps1e-6.tilemap  FP64=20  FP32=86  MXFP16=41  MXFP8=14  MXFP4=49
+[RUN] N=81920 nb=4096 nt=20 need=210 eps=1e-7  bin=my_cov_weak_80k.bin
+[KILL] N=81920 eps=1e-7 got 210/210 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N81920_nb4096_eps1e-7.tilemap  FP64=39  FP32=79  MXFP16=42  MXFP8=14  MXFP4=36
+[RUN] N=81920 nb=4096 nt=20 need=210 eps=1e-8  bin=my_cov_weak_80k.bin
+[KILL] N=81920 eps=1e-8 got 210/210 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N81920_nb4096_eps1e-8.tilemap  FP64=76  FP32=72  MXFP16=26  MXFP8=8  MXFP4=28
+[RUN] N=98304 nb=4096 nt=24 need=300 eps=1e-5  bin=my_cov_weak_100k.bin
+[KILL] N=98304 eps=1e-5 got 300/300 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N98304_nb4096_eps1e-5.tilemap  FP64=24  FP32=101  MXFP16=24  MXFP8=55  MXFP4=96
+[RUN] N=98304 nb=4096 nt=24 need=300 eps=1e-6  bin=my_cov_weak_100k.bin
+[KILL] N=98304 eps=1e-6 got 300/300 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N98304_nb4096_eps1e-6.tilemap  FP64=24  FP32=111  MXFP16=69  MXFP8=22  MXFP4=74
+[RUN] N=98304 nb=4096 nt=24 need=300 eps=1e-7  bin=my_cov_weak_100k.bin
+[KILL] N=98304 eps=1e-7 got 300/300 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N98304_nb4096_eps1e-7.tilemap  FP64=56  FP32=101  MXFP16=69  MXFP8=20  MXFP4=54
+[RUN] N=98304 nb=4096 nt=24 need=300 eps=1e-8  bin=my_cov_weak_100k.bin
+[KILL] N=98304 eps=1e-8 got 300/300 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N98304_nb4096_eps1e-8.tilemap  FP64=117  FP32=92  MXFP16=36  MXFP8=9  MXFP4=46
+[RUN] N=122880 nb=4096 nt=30 need=465 eps=1e-5  bin=my_cov_weak_120k.bin
+[KILL] N=122880 eps=1e-5 got 465/465 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N122880_nb4096_eps1e-5.tilemap  FP64=30  FP32=128  MXFP16=59  MXFP8=68  MXFP4=180
+[RUN] N=122880 nb=4096 nt=30 need=465 eps=1e-6  bin=my_cov_weak_120k.bin
+[KILL] N=122880 eps=1e-6 got 465/465 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N122880_nb4096_eps1e-6.tilemap  FP64=30  FP32=171  MXFP16=84  MXFP8=35  MXFP4=145
+[RUN] N=122880 nb=4096 nt=30 need=465 eps=1e-7  bin=my_cov_weak_120k.bin
+[KILL] N=122880 eps=1e-7 got 465/465 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N122880_nb4096_eps1e-7.tilemap  FP64=86  FP32=140  MXFP16=92  MXFP8=40  MXFP4=107
+[RUN] N=122880 nb=4096 nt=30 need=465 eps=1e-8  bin=my_cov_weak_120k.bin
+[KILL] N=122880 eps=1e-8 got 465/465 TILE_TARGET lines; SIGTERM
+[OK]   /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/ladder_ftz_N122880_nb4096_eps1e-8.tilemap  FP64=130  FP32=155  MXFP16=75  MXFP8=18  MXFP4=87
+
+Done. Tilemaps in: /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096
+Index:             /home/abduraa/MX_project/ooc-cholesky/tile_maps_ladder_ftz_nb4096/index.tsv

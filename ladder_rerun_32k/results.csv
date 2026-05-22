@@ -1,0 +1,9 @@
+sweep,bin,n,nb,mx_mode,underflow,source_epsilon,rel_factor_error,abs_factor_error,relative_residual,tile_breakdown
+ladder_full_fz,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,fz,1e-5,5.7099e-05,0.00826907,1.8541e-06,"fp32=50;mx_e4m3=33;e2m1=27;fp64=16;mx_fp16=10;"
+ladder_full_fz,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,fz,1e-6,2.24669e-06,0.000325365,1.73593e-07,"fp32=50;mx_fp16=40;e2m1=24;fp64=16;mx_e4m3=6;"
+ladder_full_fz,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,fz,1e-7,6.05634e-07,8.77078e-05,1.54112e-07,"fp32=61;mx_fp16=35;e2m1=19;fp64=16;mx_e4m3=5;"
+ladder_full_fz,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,fz,1e-8,4.07898e-08,5.90717e-06,1.79086e-09,"fp64=57;fp32=53;e2m1=15;mx_fp16=6;mx_e4m3=5;"
+ladder_full_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,gu,1e-5,5.7099e-05,0.00826907,2.40058e-06,"fp32=50;e2m1=31;mx_e4m3=29;fp64=16;mx_fp16=10;"
+ladder_full_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,gu,1e-6,2.24669e-06,0.000325365,1.73593e-07,"fp32=50;mx_fp16=40;e2m1=24;fp64=16;mx_e4m3=6;"
+ladder_full_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,gu,1e-7,6.67057e-07,9.66031e-05,1.49102e-07,"fp32=61;mx_fp16=35;e2m1=21;fp64=16;mx_e4m3=3;"
+ladder_full_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,vec1d,gu,1e-8,4.07898e-08,5.90717e-06,1.79086e-09,"fp64=57;fp32=53;e2m1=15;mx_fp16=6;mx_e4m3=5;"

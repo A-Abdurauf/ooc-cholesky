@@ -1,0 +1,32 @@
+[2026-05-22T18:12:43+03:00] both staircase sweeps finished, launching ladder_full_gu_missing
+[START] 2026-05-22T18:12:43+03:00
+[CFG] ladder=full (e2m1 -> mx_e4m3 -> mx_fp16 -> fp32 -> fp64)
+[CFG] underflow=gu only (denorm)
+[CFG] cells: vec1d:/home/abduraa/MX_project/logs/my_cov_weak_40k.bin vec1d:/home/abduraa/MX_project/logs/my_cov_weak_65k.bin tile:/home/abduraa/MX_project/logs/my_cov_weak_32k.bin tile:/home/abduraa/MX_project/logs/my_cov_weak_40k.bin tile:/home/abduraa/MX_project/logs/my_cov_weak_65k.bin
+[CFG] eps=1e-5 1e-6 1e-7 1e-8
+[CFG] csv=/home/abduraa/MX_project/ooc-cholesky/ladder_full_gu_missing/results.csv
+[RUN] granularity=vec1d bin=my_cov_weak_40k eps=1e-5 nb=2048 log=ladder_full_vec1d_gu_my_cov_weak_40k_eps1e-5_20260522_181243.log
+[OK] granularity=vec1d bin=my_cov_weak_40k eps=1e-5 rel=3.02361e-05 abs=0.00543556 res=1.47591e-06 tiles=e2m1=64;fp32=62;mx_fp16=32;mx_e4m3=32;fp64=20;
+[RUN] granularity=vec1d bin=my_cov_weak_40k eps=1e-6 nb=2048 log=ladder_full_vec1d_gu_my_cov_weak_40k_eps1e-6_20260522_182803.log
+[OK] granularity=vec1d bin=my_cov_weak_40k eps=1e-6 rel=1.62999e-06 abs=0.000293024 res=3.19093e-07 tiles=fp32=86;e2m1=51;mx_fp16=41;fp64=20;mx_e4m3=12;
+[RUN] granularity=vec1d bin=my_cov_weak_40k eps=1e-7 nb=2048 log=ladder_full_vec1d_gu_my_cov_weak_40k_eps1e-7_20260522_184308.log
+[OK] granularity=vec1d bin=my_cov_weak_40k eps=1e-7 rel=4.04958e-07 abs=7.27995e-05 res=9.48587e-08 tiles=fp32=78;mx_fp16=43;fp64=39;e2m1=37;mx_e4m3=13;
+[RUN] granularity=vec1d bin=my_cov_weak_40k eps=1e-8 nb=2048 log=ladder_full_vec1d_gu_my_cov_weak_40k_eps1e-8_20260522_185828.log
+[OK] granularity=vec1d bin=my_cov_weak_40k eps=1e-8 rel=2.28733e-08 abs=4.11194e-06 res=2.29261e-09 tiles=fp64=76;fp32=72;e2m1=29;mx_fp16=27;mx_e4m3=6;
+[RUN] granularity=vec1d bin=my_cov_weak_65k eps=1e-5 nb=4096 log=ladder_full_vec1d_gu_my_cov_weak_65k_eps1e-5_20260522_191455.log
+[OK] granularity=vec1d bin=my_cov_weak_65k eps=1e-5 rel=4.46628e-06 abs=0.00127298 res=9.67666e-07 tiles=fp32=42;mx_e4m3=40;e2m1=38;fp64=16;
+[RUN] granularity=vec1d bin=my_cov_weak_65k eps=1e-6 nb=4096 log=ladder_full_vec1d_gu_my_cov_weak_65k_eps1e-6_20260522_195908.log
+[OK] granularity=vec1d bin=my_cov_weak_65k eps=1e-6 rel=7.81969e-07 abs=0.000222877 res=2.46421e-07 tiles=fp32=42;mx_fp16=40;e2m1=38;fp64=16;
+[RUN] granularity=vec1d bin=my_cov_weak_65k eps=1e-7 nb=4096 log=ladder_full_vec1d_gu_my_cov_weak_65k_eps1e-7_20260522_204225.log
+[OK] granularity=vec1d bin=my_cov_weak_65k eps=1e-7 rel=7.8015e-07 abs=0.000222359 res=2.45848e-07 tiles=fp32=42;mx_fp16=40;e2m1=30;fp64=16;mx_e4m3=8;
+[RUN] granularity=vec1d bin=my_cov_weak_65k eps=1e-8 nb=4096 log=ladder_full_vec1d_gu_my_cov_weak_65k_eps1e-8_20260522_213722.log
+[OK] granularity=vec1d bin=my_cov_weak_65k eps=1e-8 rel=8.56168e-09 abs=2.44025e-06 res=1.13054e-09 tiles=fp64=58;fp32=40;e2m1=30;mx_fp16=8;
+[RUN] granularity=tile bin=my_cov_weak_32k eps=1e-5 nb=2048 log=ladder_full_tile_gu_my_cov_weak_32k_eps1e-5_20260522_223310.log
+[OK] granularity=tile bin=my_cov_weak_32k eps=1e-5 rel=8.08059e-05 abs=0.0117023 res=2.86216e-06 tiles=fp32=50;mx_e4m3=33;e2m1=27;fp64=16;mx_fp16=10;
+[RUN] granularity=tile bin=my_cov_weak_32k eps=1e-6 nb=2048 log=ladder_full_tile_gu_my_cov_weak_32k_eps1e-6_20260522_224404.log
+[OK] granularity=tile bin=my_cov_weak_32k eps=1e-6 rel=6.12366e-06 abs=0.000886828 res=1.66463e-07 tiles=fp32=50;mx_fp16=43;e2m1=22;fp64=16;mx_e4m3=5;
+[RUN] granularity=tile bin=my_cov_weak_32k eps=1e-7 nb=2048 log=ladder_full_tile_gu_my_cov_weak_32k_eps1e-7_20260522_225521.log
+[OK] granularity=tile bin=my_cov_weak_32k eps=1e-7 rel=6.68064e-07 abs=9.67489e-05 res=1.53563e-07 tiles=fp32=61;mx_fp16=35;e2m1=17;fp64=16;mx_e4m3=7;
+[RUN] granularity=tile bin=my_cov_weak_32k eps=1e-8 nb=2048 log=ladder_full_tile_gu_my_cov_weak_32k_eps1e-8_20260522_230642.log
+[OK] granularity=tile bin=my_cov_weak_32k eps=1e-8 rel=4.07897e-08 abs=5.90717e-06 res=2.86115e-09 tiles=fp64=57;fp32=53;e2m1=15;mx_fp16=7;mx_e4m3=4;
+[RUN] granularity=tile bin=my_cov_weak_40k eps=1e-5 nb=2048 log=ladder_full_tile_gu_my_cov_weak_40k_eps1e-5_20260522_231812.log

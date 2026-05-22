@@ -1,0 +1,56 @@
+[START] 2026-05-22T02:58:00+03:00
+[CFG] ladder=mx_staircase (e2m1 -> mx_e4m3 -> fp16(plain) -> fp32 -> fp64)
+[CFG] mx_mode=tile  (one shared E8M0 scale per nb x nb tile)
+[CFG] bins=/home/abduraa/MX_project/logs/my_cov_weak_32k.bin /home/abduraa/MX_project/logs/my_cov_weak_40k.bin /home/abduraa/MX_project/logs/my_cov_weak_65k.bin
+[CFG] eps=1e-5 1e-6 1e-7 1e-8
+[CFG] underflow_modes=fz gu
+[CFG] csv=/home/abduraa/MX_project/ooc-cholesky/mx_staircase_tile_gt20k/results.csv
+[RUN] bin=my_cov_weak_32k underflow=fz eps=1e-5 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_32k_eps1e-5_20260522_025800.log
+[OK] bin=my_cov_weak_32k eps=1e-5 rel=1.45229e-05 abs=0.0021032 res=1.93966e-06 tiles=fp32=63;mx_e4m3=32;e2m1=25;fp64=16;
+[RUN] bin=my_cov_weak_32k underflow=fz eps=1e-6 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_32k_eps1e-6_20260522_031242.log
+[OK] bin=my_cov_weak_32k eps=1e-6 rel=2.57456e-06 abs=0.000372847 res=1.49567e-07 tiles=fp32=94;e2m1=22;fp64=16;mx_e4m3=4;
+[RUN] bin=my_cov_weak_32k underflow=fz eps=1e-7 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_32k_eps1e-7_20260522_033154.log
+[OK] bin=my_cov_weak_32k eps=1e-7 rel=6.43986e-07 abs=9.3262e-05 res=1.53442e-07 tiles=fp32=98;e2m1=17;fp64=16;mx_e4m3=5;
+[RUN] bin=my_cov_weak_32k underflow=fz eps=1e-8 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_32k_eps1e-8_20260522_034803.log
+[OK] bin=my_cov_weak_32k eps=1e-8 rel=3.13612e-08 abs=4.54172e-06 res=2.28094e-09 tiles=fp32=62;fp64=57;e2m1=15;mx_e4m3=2;
+[RUN] bin=my_cov_weak_40k underflow=fz eps=1e-5 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_40k_eps1e-5_20260522_040324.log
+[OK] bin=my_cov_weak_40k eps=1e-5 rel=1.34141e-05 abs=0.00241145 res=2.24614e-06 tiles=fp32=100;e2m1=62;mx_e4m3=28;fp64=20;
+[RUN] bin=my_cov_weak_40k underflow=fz eps=1e-6 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_40k_eps1e-6_20260522_042850.log
+[OK] bin=my_cov_weak_40k eps=1e-6 rel=2.51323e-06 abs=0.000451804 res=3.23474e-07 tiles=fp32=133;e2m1=50;fp64=20;mx_e4m3=7;
+[RUN] bin=my_cov_weak_40k underflow=fz eps=1e-7 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_40k_eps1e-7_20260522_045959.log
+[OK] bin=my_cov_weak_40k eps=1e-7 rel=4.1223e-07 abs=7.41067e-05 res=9.40329e-08 tiles=fp32=121;fp64=39;e2m1=31;mx_e4m3=19;
+[RUN] bin=my_cov_weak_40k underflow=fz eps=1e-8 nb=2048 log=mx_staircase_tile_fz_my_cov_weak_40k_eps1e-8_20260522_052554.log
+[OK] bin=my_cov_weak_40k eps=1e-8 rel=1.30616e-08 abs=2.34808e-06 res=1.5724e-09 tiles=fp32=104;fp64=76;e2m1=23;mx_e4m3=7;
+[RUN] bin=my_cov_weak_65k underflow=fz eps=1e-5 nb=4096 log=mx_staircase_tile_fz_my_cov_weak_65k_eps1e-5_20260522_055252.log
+[OK] bin=my_cov_weak_65k eps=1e-5 rel=1.56446e-05 abs=0.00445904 res=2.62667e-06 tiles=fp32=42;mx_e4m3=40;e2m1=38;fp64=16;
+[RUN] bin=my_cov_weak_65k underflow=fz eps=1e-6 nb=4096 log=mx_staircase_tile_fz_my_cov_weak_65k_eps1e-6_20260522_070525.log
+[OK] bin=my_cov_weak_65k eps=1e-6 rel=7.64317e-07 abs=0.000217846 res=2.45925e-07 tiles=fp32=82;e2m1=38;fp64=16;
+[RUN] bin=my_cov_weak_65k underflow=fz eps=1e-7 nb=4096 log=mx_staircase_tile_fz_my_cov_weak_65k_eps1e-7_20260522_082314.log
+[OK] bin=my_cov_weak_65k eps=1e-7 rel=7.68806e-07 abs=0.000219125 res=2.45599e-07 tiles=fp32=82;e2m1=30;fp64=16;mx_e4m3=8;
+[RUN] bin=my_cov_weak_65k underflow=fz eps=1e-8 nb=4096 log=mx_staircase_tile_fz_my_cov_weak_65k_eps1e-8_20260522_094650.log
+[OK] bin=my_cov_weak_65k eps=1e-8 rel=1.7486e-08 abs=4.98388e-06 res=2.34089e-09 tiles=fp64=58;fp32=48;e2m1=30;
+[RUN] bin=my_cov_weak_32k underflow=gu eps=1e-5 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_32k_eps1e-5_20260522_110346.log
+[OK] bin=my_cov_weak_32k eps=1e-5 rel=8.09104e-05 abs=0.0117174 res=2.86155e-06 tiles=fp32=50;mx_e4m3=33;e2m1=27;fp64=16;fp16=10;
+[RUN] bin=my_cov_weak_32k underflow=gu eps=1e-6 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_32k_eps1e-6_20260522_111818.log
+[OK] bin=my_cov_weak_32k eps=1e-6 rel=6.56498e-06 abs=0.00095074 res=2.41578e-07 tiles=fp32=63;fp16=30;e2m1=22;fp64=16;mx_e4m3=5;
+[RUN] bin=my_cov_weak_32k underflow=gu eps=1e-7 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_32k_eps1e-7_20260522_113714.log
+[OK] bin=my_cov_weak_32k eps=1e-7 rel=6.76343e-07 abs=9.79479e-05 res=1.53637e-07 tiles=fp32=94;e2m1=17;fp64=16;mx_e4m3=7;fp16=2;
+[RUN] bin=my_cov_weak_32k underflow=gu eps=1e-8 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_32k_eps1e-8_20260522_115408.log
+[OK] bin=my_cov_weak_32k eps=1e-8 rel=3.13612e-08 abs=4.54172e-06 res=2.84425e-09 tiles=fp32=60;fp64=57;e2m1=15;mx_e4m3=4;
+[RUN] bin=my_cov_weak_40k underflow=gu eps=1e-5 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_40k_eps1e-5_20260522_120841.log
+[OK] bin=my_cov_weak_40k eps=1e-5 rel=3.25854e-05 abs=0.0058579 res=2.61809e-06 tiles=fp32=62;e2m1=62;mx_e4m3=33;fp16=33;fp64=20;
+[RUN] bin=my_cov_weak_40k underflow=gu eps=1e-6 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_40k_eps1e-6_20260522_123410.log
+[OK] bin=my_cov_weak_40k eps=1e-6 rel=3.37257e-06 abs=0.000606288 res=4.23474e-07 tiles=fp32=105;e2m1=50;fp16=22;fp64=20;mx_e4m3=13;
+[RUN] bin=my_cov_weak_40k underflow=gu eps=1e-7 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_40k_eps1e-7_20260522_130819.log
+[OK] bin=my_cov_weak_40k eps=1e-7 rel=4.38438e-07 abs=7.88181e-05 res=9.43503e-08 tiles=fp32=121;fp64=39;e2m1=33;mx_e4m3=17;
+[RUN] bin=my_cov_weak_40k underflow=gu eps=1e-8 nb=2048 log=mx_staircase_tile_gu_my_cov_weak_40k_eps1e-8_20260522_133233.log
+[OK] bin=my_cov_weak_40k eps=1e-8 rel=1.63053e-08 abs=2.93121e-06 res=2.66542e-09 tiles=fp32=99;fp64=76;e2m1=24;mx_e4m3=11;
+[RUN] bin=my_cov_weak_65k underflow=gu eps=1e-5 nb=4096 log=mx_staircase_tile_gu_my_cov_weak_65k_eps1e-5_20260522_140018.log
+[OK] bin=my_cov_weak_65k eps=1e-5 rel=1.56446e-05 abs=0.00445904 res=2.62667e-06 tiles=fp32=42;mx_e4m3=40;e2m1=38;fp64=16;
+[RUN] bin=my_cov_weak_65k underflow=gu eps=1e-6 nb=4096 log=mx_staircase_tile_gu_my_cov_weak_65k_eps1e-6_20260522_151300.log
+[OK] bin=my_cov_weak_65k eps=1e-6 rel=1.38549e-06 abs=0.000394893 res=3.09904e-07 tiles=fp32=58;e2m1=38;fp16=24;fp64=16;
+[RUN] bin=my_cov_weak_65k underflow=gu eps=1e-7 nb=4096 log=mx_staircase_tile_gu_my_cov_weak_65k_eps1e-7_20260522_162648.log
+[OK] bin=my_cov_weak_65k eps=1e-7 rel=7.68806e-07 abs=0.000219125 res=2.45599e-07 tiles=fp32=82;e2m1=30;fp64=16;mx_e4m3=8;
+[RUN] bin=my_cov_weak_65k underflow=gu eps=1e-8 nb=4096 log=mx_staircase_tile_gu_my_cov_weak_65k_eps1e-8_20260522_172822.log
+[OK] bin=my_cov_weak_65k eps=1e-8 rel=1.7486e-08 abs=4.98388e-06 res=2.34089e-09 tiles=fp64=58;fp32=48;e2m1=30;
+[END] 2026-05-22T18:11:50+03:00

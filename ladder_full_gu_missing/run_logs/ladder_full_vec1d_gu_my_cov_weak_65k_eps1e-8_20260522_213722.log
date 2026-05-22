@@ -1,0 +1,1045 @@
+[DEBUG] using NB=4096 (autotune=0)
+
+[DEBUG] --- ENTERING makeMixedPrecisionTiledArray ---
+[DEBUG] nb used: 4096, nt: 16
+
+[DEBUG] Epsilon Ratio for Tile (0, 0): 3.79893
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (0, 0) fp64
+[TILE_DTYPE] (0, 0) fp64
+[BOUND_SELECT] tile(1,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(1,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.605 nrmF=23.7045 nrmE+nrmF=47.3094 underflows=11483322 scale_groups=524288 s_min=2 s_avg=2.88896e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(1,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90125 nrmF=0 nrmE+nrmF=5.90125 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88896e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(1,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.092207 nrmF=0 nrmE+nrmF=0.092207 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88896e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(1,0) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12557e-05 nrmF=0 nrmE+nrmF=1.12557e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (1, 0) fp64
+[BOUND_DECISION] tile(1,0) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (1, 0) fp64
+
+[DEBUG] Epsilon Ratio for Tile (1, 1): 3.79857
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (1, 1) fp64
+[TILE_DTYPE] (1, 1) fp64
+[BOUND_SELECT] tile(2,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(2,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6302 nrmF=20.3967 nrmE+nrmF=44.0269 underflows=8917973 scale_groups=524288 s_min=2 s_avg=3.69459e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(2,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90755 nrmF=0 nrmE+nrmF=5.90755 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69459e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(2,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0923055 nrmF=0 nrmE+nrmF=0.0923055 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69459e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(2,0) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12678e-05 nrmF=0 nrmE+nrmF=1.12678e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (2, 0) fp64
+[BOUND_DECISION] tile(2,0) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (2, 0) fp64
+[BOUND_SELECT] tile(2,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(2,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.89501 nrmF=5.08432 nrmE+nrmF=9.97933 underflows=11121296 scale_groups=524288 s_min=2 s_avg=2.18257e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(2,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22375 nrmF=0 nrmE+nrmF=1.22375 underflows=0 scale_groups=524288 s_min=2 s_avg=2.18257e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(2,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191211 nrmF=0 nrmE+nrmF=0.0191211 underflows=0 scale_groups=524288 s_min=2 s_avg=2.18257e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(2,1) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33412e-06 nrmF=0 nrmE+nrmF=2.33412e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (2, 1) fp64
+[BOUND_DECISION] tile(2,1) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (2, 1) fp64
+
+[DEBUG] Epsilon Ratio for Tile (2, 2): 3.79859
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (2, 2) fp64
+[TILE_DTYPE] (2, 2) fp64
+[BOUND_SELECT] tile(3,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(3,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.86406 nrmF=4.99805 nrmE+nrmF=9.86211 underflows=11044478 scale_groups=524288 s_min=2 s_avg=2.20268e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(3,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.21602 nrmF=0 nrmE+nrmF=1.21602 underflows=0 scale_groups=524288 s_min=2 s_avg=2.20268e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(3,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0190002 nrmF=0 nrmE+nrmF=0.0190002 underflows=0 scale_groups=524288 s_min=2 s_avg=2.20268e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(3,0) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.31937e-06 nrmF=0 nrmE+nrmF=2.31937e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (3, 0) fp64
+[BOUND_DECISION] tile(3,0) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (3, 0) fp64
+[BOUND_SELECT] tile(3,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(3,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6023 nrmF=20.556 nrmE+nrmF=44.1583 underflows=8951287 scale_groups=524288 s_min=2 s_avg=3.65062e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(3,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90058 nrmF=0 nrmE+nrmF=5.90058 underflows=0 scale_groups=524288 s_min=2 s_avg=3.65062e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(3,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0921965 nrmF=0 nrmE+nrmF=0.0921965 underflows=0 scale_groups=524288 s_min=2 s_avg=3.65062e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(3,1) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12545e-05 nrmF=0 nrmE+nrmF=1.12545e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (3, 1) fp64
+[BOUND_DECISION] tile(3,1) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (3, 1) fp64
+[BOUND_SELECT] tile(3,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(3,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.5957 nrmF=23.7714 nrmE+nrmF=47.367 underflows=11504772 scale_groups=524288 s_min=2 s_avg=2.85758e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(3,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.89891 nrmF=0 nrmE+nrmF=5.89891 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85758e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(3,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0921705 nrmF=0 nrmE+nrmF=0.0921705 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85758e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(3,2) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12513e-05 nrmF=0 nrmE+nrmF=1.12513e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (3, 2) fp64
+[BOUND_DECISION] tile(3,2) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (3, 2) fp64
+
+[DEBUG] Epsilon Ratio for Tile (3, 3): 3.79902
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (3, 3) fp64
+[TILE_DTYPE] (3, 3) fp64
+[BOUND_SELECT] tile(4,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(4,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277425 nrmF=0.00275635 nrmE+nrmF=0.0055306 underflows=11435953 scale_groups=524288 s_min=16384 s_avg=3.05132e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(4,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000693564 nrmF=0 nrmE+nrmF=0.000693564 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.05132e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(4,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08369e-05 nrmF=0 nrmE+nrmF=1.08369e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.05132e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(4,0) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32287e-09 nrmF=0 nrmE+nrmF=1.32287e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (4, 0) fp32
+[BOUND_DECISION] tile(4,0) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (4, 0) fp32
+[BOUND_SELECT] tile(4,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(4,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6877 nrmF=23.8338 nrmE+nrmF=47.5215 underflows=11552577 scale_groups=524288 s_min=2 s_avg=2.83789e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(4,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.92192 nrmF=0 nrmE+nrmF=5.92192 underflows=0 scale_groups=524288 s_min=2 s_avg=2.83789e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(4,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.09253 nrmF=0 nrmE+nrmF=0.09253 underflows=0 scale_groups=524288 s_min=2 s_avg=2.83789e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(4,1) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12952e-05 nrmF=0 nrmE+nrmF=1.12952e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (4, 1) fp64
+[BOUND_DECISION] tile(4,1) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (4, 1) fp64
+[BOUND_SELECT] tile(4,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(4,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000972187 nrmF=0.000964427 nrmE+nrmF=0.00193661 underflows=11707267 scale_groups=524288 s_min=16384 s_avg=4.15781e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(4,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243047 nrmF=0 nrmE+nrmF=0.000243047 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.15781e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(4,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.7976e-06 nrmF=0 nrmE+nrmF=3.7976e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.15781e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(4,2) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.63575e-10 nrmF=0 nrmE+nrmF=4.63575e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (4, 2) fp32
+[BOUND_DECISION] tile(4,2) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (4, 2) fp32
+[BOUND_SELECT] tile(4,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(4,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.86568 nrmF=4.80789 nrmE+nrmF=9.67358 underflows=11086649 scale_groups=524288 s_min=2 s_avg=2.16907e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(4,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.21642 nrmF=0 nrmE+nrmF=1.21642 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16907e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(4,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0190066 nrmF=0 nrmE+nrmF=0.0190066 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16907e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(4,3) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.32014e-06 nrmF=0 nrmE+nrmF=2.32014e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (4, 3) fp64
+[BOUND_DECISION] tile(4,3) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (4, 3) fp64
+
+[DEBUG] Epsilon Ratio for Tile (4, 4): 3.79868
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (4, 4) fp64
+[TILE_DTYPE] (4, 4) fp64
+[BOUND_SELECT] tile(5,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(5,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.2767e-07 nrmF=2.31608e-07 nrmE+nrmF=4.59277e-07 underflows=11363494 scale_groups=524288 s_min=2.68435e+08 s_avg=3.76363e+14 s_max=3.60288e+16
+[TILE_TARGET] (5, 0) e2m1
+--- Tile (5, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.20613e-09, Mode: vec1d
+[BOUND_DECISION] tile(5,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (5, 0) fp32
+[BOUND_SELECT] tile(5,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(5,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277669 nrmF=0.00277812 nrmE+nrmF=0.00555481 underflows=11513482 scale_groups=524288 s_min=16384 s_avg=3.01969e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(5,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000694173 nrmF=0 nrmE+nrmF=0.000694173 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.01969e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(5,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08464e-05 nrmF=0 nrmE+nrmF=1.08464e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.01969e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(5,1) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32403e-09 nrmF=0 nrmE+nrmF=1.32403e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (5, 1) fp32
+[BOUND_DECISION] tile(5,1) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (5, 1) fp32
+[BOUND_SELECT] tile(5,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(5,2) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.73499e-08 nrmF=9.77056e-08 nrmE+nrmF=1.95056e-07 underflows=11635710 scale_groups=524288 s_min=2.68435e+08 s_avg=2.22252e+15 s_max=1.15292e+18
+[TILE_TARGET] (5, 2) e2m1
+--- Tile (5, 2) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.84351e-09, Mode: vec1d
+[BOUND_DECISION] tile(5,2) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (5, 2) fp32
+[BOUND_SELECT] tile(5,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(5,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000973553 nrmF=0.000986736 nrmE+nrmF=0.00196029 underflows=11668657 scale_groups=524288 s_min=16384 s_avg=4.14455e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(5,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243388 nrmF=0 nrmE+nrmF=0.000243388 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.14455e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(5,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.80294e-06 nrmF=0 nrmE+nrmF=3.80294e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.14455e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(5,3) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.64226e-10 nrmF=0 nrmE+nrmF=4.64226e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (5, 3) fp32
+[BOUND_DECISION] tile(5,3) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (5, 3) fp32
+[BOUND_SELECT] tile(5,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(5,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6359 nrmF=23.7833 nrmE+nrmF=47.4192 underflows=11533415 scale_groups=524288 s_min=2 s_avg=2.87445e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(5,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90899 nrmF=0 nrmE+nrmF=5.90899 underflows=0 scale_groups=524288 s_min=2 s_avg=2.87445e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(5,4) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0923279 nrmF=0 nrmE+nrmF=0.0923279 underflows=0 scale_groups=524288 s_min=2 s_avg=2.87445e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(5,4) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12705e-05 nrmF=0 nrmE+nrmF=1.12705e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (5, 4) fp64
+[BOUND_DECISION] tile(5,4) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (5, 4) fp64
+
+[DEBUG] Epsilon Ratio for Tile (5, 5): 3.7978
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (5, 5) fp64
+[TILE_DTYPE] (5, 5) fp64
+[BOUND_SELECT] tile(6,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(6,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976394 nrmF=0.000978511 nrmE+nrmF=0.00195491 underflows=11641058 scale_groups=524288 s_min=16384 s_avg=4.21017e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(6,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244099 nrmF=0 nrmE+nrmF=0.000244099 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.21017e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(6,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81404e-06 nrmF=0 nrmE+nrmF=3.81404e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.21017e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(6,0) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65581e-10 nrmF=0 nrmE+nrmF=4.65581e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (6, 0) fp32
+[BOUND_DECISION] tile(6,0) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (6, 0) fp32
+[BOUND_SELECT] tile(6,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(6,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.9043 nrmF=4.97244 nrmE+nrmF=9.87675 underflows=11113080 scale_groups=524288 s_min=2 s_avg=2.13229e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(6,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22608 nrmF=0 nrmE+nrmF=1.22608 underflows=0 scale_groups=524288 s_min=2 s_avg=2.13229e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(6,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191574 nrmF=0 nrmE+nrmF=0.0191574 underflows=0 scale_groups=524288 s_min=2 s_avg=2.13229e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(6,1) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33855e-06 nrmF=0 nrmE+nrmF=2.33855e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (6, 1) fp64
+[BOUND_DECISION] tile(6,1) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (6, 1) fp64
+[BOUND_SELECT] tile(6,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(6,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277169 nrmF=0.0027565 nrmE+nrmF=0.0055282 underflows=11435933 scale_groups=524288 s_min=16384 s_avg=3.0248e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(6,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000692923 nrmF=0 nrmE+nrmF=0.000692923 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.0248e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(6,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08269e-05 nrmF=0 nrmE+nrmF=1.08269e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.0248e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(6,2) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32165e-09 nrmF=0 nrmE+nrmF=1.32165e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (6, 2) fp32
+[BOUND_DECISION] tile(6,2) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (6, 2) fp32
+[BOUND_SELECT] tile(6,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(6,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6533 nrmF=23.6631 nrmE+nrmF=47.3164 underflows=11532391 scale_groups=524288 s_min=2 s_avg=2.88065e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(6,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.91332 nrmF=0 nrmE+nrmF=5.91332 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88065e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(6,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0923956 nrmF=0 nrmE+nrmF=0.0923956 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88065e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(6,3) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12788e-05 nrmF=0 nrmE+nrmF=1.12788e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (6, 3) fp64
+[BOUND_DECISION] tile(6,3) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (6, 3) fp64
+[BOUND_SELECT] tile(6,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(6,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.5802 nrmF=20.4689 nrmE+nrmF=44.0491 underflows=8924642 scale_groups=524288 s_min=2 s_avg=3.69343e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(6,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.89505 nrmF=0 nrmE+nrmF=5.89505 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69343e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(6,4) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0921102 nrmF=0 nrmE+nrmF=0.0921102 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69343e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(6,4) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12439e-05 nrmF=0 nrmE+nrmF=1.12439e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (6, 4) fp64
+[BOUND_DECISION] tile(6,4) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (6, 4) fp64
+[BOUND_SELECT] tile(6,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(6,5) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.90053 nrmF=4.82272 nrmE+nrmF=9.72325 underflows=11101425 scale_groups=524288 s_min=2 s_avg=2.1917e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(6,5) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22513 nrmF=0 nrmE+nrmF=1.22513 underflows=0 scale_groups=524288 s_min=2 s_avg=2.1917e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(6,5) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191427 nrmF=0 nrmE+nrmF=0.0191427 underflows=0 scale_groups=524288 s_min=2 s_avg=2.1917e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(6,5) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33676e-06 nrmF=0 nrmE+nrmF=2.33676e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (6, 5) fp64
+[BOUND_DECISION] tile(6,5) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (6, 5) fp64
+
+[DEBUG] Epsilon Ratio for Tile (6, 6): 3.79898
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (6, 6) fp64
+[TILE_DTYPE] (6, 6) fp64
+[BOUND_SELECT] tile(7,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.80232e-08 nrmF=9.79785e-08 nrmE+nrmF=1.96002e-07 underflows=11583382 scale_groups=524288 s_min=2.68435e+08 s_avg=2.26028e+15 s_max=1.15292e+18
+[TILE_TARGET] (7, 0) e2m1
+--- Tile (7, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.02376e-09, Mode: vec1d
+[BOUND_DECISION] tile(7,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 0) fp32
+[BOUND_SELECT] tile(7,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976752 nrmF=0.00100816 nrmE+nrmF=0.00198492 underflows=11721611 scale_groups=524288 s_min=16384 s_avg=4.08934e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(7,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244188 nrmF=0 nrmE+nrmF=0.000244188 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.08934e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(7,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81544e-06 nrmF=0 nrmE+nrmF=3.81544e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.08934e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(7,1) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65752e-10 nrmF=0 nrmE+nrmF=4.65752e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (7, 1) fp32
+[BOUND_DECISION] tile(7,1) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 1) fp32
+[BOUND_SELECT] tile(7,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,2) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.27931e-07 nrmF=2.32377e-07 nrmE+nrmF=4.60308e-07 underflows=11359979 scale_groups=524288 s_min=2.68435e+08 s_avg=3.7244e+14 s_max=3.60288e+16
+[TILE_TARGET] (7, 2) e2m1
+--- Tile (7, 2) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.17921e-09, Mode: vec1d
+[BOUND_DECISION] tile(7,2) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 2) fp32
+[BOUND_SELECT] tile(7,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277548 nrmF=0.00278923 nrmE+nrmF=0.00556471 underflows=11500905 scale_groups=524288 s_min=16384 s_avg=3.04782e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(7,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.00069387 nrmF=0 nrmE+nrmF=0.00069387 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.04782e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(7,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08417e-05 nrmF=0 nrmE+nrmF=1.08417e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.04782e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(7,3) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32345e-09 nrmF=0 nrmE+nrmF=1.32345e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (7, 3) fp32
+[BOUND_DECISION] tile(7,3) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 3) fp32
+[BOUND_SELECT] tile(7,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.94935 nrmF=5.03352 nrmE+nrmF=9.98287 underflows=11176134 scale_groups=524288 s_min=2 s_avg=2.19484e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(7,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.23734 nrmF=0 nrmE+nrmF=1.23734 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19484e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(7,4) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0193334 nrmF=0 nrmE+nrmF=0.0193334 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19484e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(7,4) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.36004e-06 nrmF=0 nrmE+nrmF=2.36004e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (7, 4) fp64
+[BOUND_DECISION] tile(7,4) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 4) fp64
+[BOUND_SELECT] tile(7,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,5) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6824 nrmF=20.5362 nrmE+nrmF=44.2186 underflows=8934816 scale_groups=524288 s_min=2 s_avg=3.68221e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(7,5) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.9206 nrmF=0 nrmE+nrmF=5.9206 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68221e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(7,5) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0925094 nrmF=0 nrmE+nrmF=0.0925094 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68221e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(7,5) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12927e-05 nrmF=0 nrmE+nrmF=1.12927e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (7, 5) fp64
+[BOUND_DECISION] tile(7,5) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 5) fp64
+[BOUND_SELECT] tile(7,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(7,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.602 nrmF=23.6791 nrmE+nrmF=47.281 underflows=11527708 scale_groups=524288 s_min=2 s_avg=2.88059e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(7,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.9005 nrmF=0 nrmE+nrmF=5.9005 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88059e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(7,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0921952 nrmF=0 nrmE+nrmF=0.0921952 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88059e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(7,6) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12543e-05 nrmF=0 nrmE+nrmF=1.12543e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (7, 6) fp64
+[BOUND_DECISION] tile(7,6) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (7, 6) fp64
+
+[DEBUG] Epsilon Ratio for Tile (7, 7): 3.79801
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (7, 7) fp64
+[TILE_DTYPE] (7, 7) fp64
+[BOUND_SELECT] tile(8,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277399 nrmF=0.00209789 nrmE+nrmF=0.00487187 underflows=7732257 scale_groups=524288 s_min=16384 s_avg=4.07611e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(8,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000693497 nrmF=0 nrmE+nrmF=0.000693497 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.07611e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(8,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08359e-05 nrmF=0 nrmE+nrmF=1.08359e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.07611e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(8,0) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32274e-09 nrmF=0 nrmE+nrmF=1.32274e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (8, 0) fp32
+[BOUND_DECISION] tile(8,0) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 0) fp32
+[BOUND_SELECT] tile(8,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000974943 nrmF=0.000805876 nrmE+nrmF=0.00178082 underflows=10019481 scale_groups=524288 s_min=16384 s_avg=4.74984e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(8,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243736 nrmF=0 nrmE+nrmF=0.000243736 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.74984e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(8,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.80837e-06 nrmF=0 nrmE+nrmF=3.80837e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.74984e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(8,1) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.64889e-10 nrmF=0 nrmE+nrmF=4.64889e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (8, 1) fp32
+[BOUND_DECISION] tile(8,1) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 1) fp32
+[BOUND_SELECT] tile(8,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6897 nrmF=20.4421 nrmE+nrmF=44.1318 underflows=8917831 scale_groups=524288 s_min=2 s_avg=3.68908e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(8,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.92242 nrmF=0 nrmE+nrmF=5.92242 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68908e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(8,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0925378 nrmF=0 nrmE+nrmF=0.0925378 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68908e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(8,2) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12961e-05 nrmF=0 nrmE+nrmF=1.12961e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (8, 2) fp64
+[BOUND_DECISION] tile(8,2) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 2) fp64
+[BOUND_SELECT] tile(8,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.8623 nrmF=4.79526 nrmE+nrmF=9.65757 underflows=11103261 scale_groups=524288 s_min=2 s_avg=2.19831e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(8,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.21558 nrmF=0 nrmE+nrmF=1.21558 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19831e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(8,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0189934 nrmF=0 nrmE+nrmF=0.0189934 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19831e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(8,3) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.31853e-06 nrmF=0 nrmE+nrmF=2.31853e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (8, 3) fp64
+[BOUND_DECISION] tile(8,3) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 3) fp64
+[BOUND_SELECT] tile(8,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.83736e-06 nrmF=7.4963e-06 nrmE+nrmF=1.53337e-05 underflows=11452186 scale_groups=524288 s_min=1.04858e+06 s_avg=1.4521e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(8,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.95934e-06 nrmF=0 nrmE+nrmF=1.95934e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.4521e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(8,4) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.06147e-08 nrmF=0 nrmE+nrmF=3.06147e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.4521e+14 s_max=1.44115e+17
+[TILE_TARGET] (8, 4) mx_fp16
+--- Tile (8, 4) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.04678e-06, Mode: vec1d
+[BOUND_DECISION] tile(8,4) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 4) fp32
+[BOUND_SELECT] tile(8,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,5) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.76315e-09 nrmF=3.83649e-09 nrmE+nrmF=7.59964e-09 underflows=11748576 scale_groups=524288 s_min=4.29497e+09 s_avg=2.07721e+17 s_max=1.47574e+20
+[TILE_TARGET] (8, 5) e2m1
+--- Tile (8, 5) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.39897e-10, Mode: vec1d
+[BOUND_DECISION] tile(8,5) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 5) fp32
+[BOUND_SELECT] tile(8,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976374 nrmF=0.000975346 nrmE+nrmF=0.00195172 underflows=11694046 scale_groups=524288 s_min=16384 s_avg=4.14262e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(8,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244093 nrmF=0 nrmE+nrmF=0.000244093 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.14262e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(8,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81396e-06 nrmF=0 nrmE+nrmF=3.81396e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.14262e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(8,6) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65571e-10 nrmF=0 nrmE+nrmF=4.65571e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (8, 6) fp32
+[BOUND_DECISION] tile(8,6) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 6) fp32
+[BOUND_SELECT] tile(8,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(8,7) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.76358e-08 nrmF=9.91242e-08 nrmE+nrmF=1.9676e-07 underflows=11606807 scale_groups=524288 s_min=2.68435e+08 s_avg=2.21946e+15 s_max=1.15292e+18
+[TILE_TARGET] (8, 7) e2m1
+--- Tile (8, 7) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.08118e-09, Mode: vec1d
+[BOUND_DECISION] tile(8,7) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (8, 7) fp32
+
+[DEBUG] Epsilon Ratio for Tile (8, 8): 3.79832
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (8, 8) fp64
+[TILE_DTYPE] (8, 8) fp64
+[BOUND_SELECT] tile(9,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000974115 nrmF=0.000804661 nrmE+nrmF=0.00177878 underflows=9902196 scale_groups=524288 s_min=16384 s_avg=4.7919e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243529 nrmF=0 nrmE+nrmF=0.000243529 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.7919e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,0) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.80513e-06 nrmF=0 nrmE+nrmF=3.80513e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.7919e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,0) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.64494e-10 nrmF=0 nrmE+nrmF=4.64494e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 0) fp32
+[BOUND_DECISION] tile(9,0) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 0) fp32
+[BOUND_SELECT] tile(9,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277066 nrmF=0.00210715 nrmE+nrmF=0.00487782 underflows=7744816 scale_groups=524288 s_min=16384 s_avg=4.06148e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(9,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000692665 nrmF=0 nrmE+nrmF=0.000692665 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.06148e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(9,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08229e-05 nrmF=0 nrmE+nrmF=1.08229e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.06148e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(9,1) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32115e-09 nrmF=0 nrmE+nrmF=1.32115e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 1) fp32
+[BOUND_DECISION] tile(9,1) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 1) fp32
+[BOUND_SELECT] tile(9,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.90757 nrmF=4.91692 nrmE+nrmF=9.82449 underflows=11089777 scale_groups=524288 s_min=2 s_avg=2.17359e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(9,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22689 nrmF=0 nrmE+nrmF=1.22689 underflows=0 scale_groups=524288 s_min=2 s_avg=2.17359e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(9,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191702 nrmF=0 nrmE+nrmF=0.0191702 underflows=0 scale_groups=524288 s_min=2 s_avg=2.17359e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(9,2) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.34011e-06 nrmF=0 nrmE+nrmF=2.34011e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 2) fp64
+[BOUND_DECISION] tile(9,2) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 2) fp64
+[BOUND_SELECT] tile(9,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6379 nrmF=20.4793 nrmE+nrmF=44.1172 underflows=8903637 scale_groups=524288 s_min=2 s_avg=3.68697e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(9,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90948 nrmF=0 nrmE+nrmF=5.90948 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68697e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(9,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0923356 nrmF=0 nrmE+nrmF=0.0923356 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68697e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(9,3) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12714e-05 nrmF=0 nrmE+nrmF=1.12714e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 3) fp64
+[BOUND_DECISION] tile(9,3) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 3) fp64
+[BOUND_SELECT] tile(9,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000977725 nrmF=0.000779995 nrmE+nrmF=0.00175772 underflows=9937299 scale_groups=524288 s_min=16384 s_avg=4.8084e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244431 nrmF=0 nrmE+nrmF=0.000244431 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.8084e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,4) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81924e-06 nrmF=0 nrmE+nrmF=3.81924e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.8084e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,4) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.66216e-10 nrmF=0 nrmE+nrmF=4.66216e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 4) fp32
+[BOUND_DECISION] tile(9,4) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 4) fp32
+[BOUND_SELECT] tile(9,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,5) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.90015e-06 nrmF=7.92131e-06 nrmE+nrmF=1.58215e-05 underflows=11461190 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45406e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(9,5) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.97504e-06 nrmF=0 nrmE+nrmF=1.97504e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45406e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(9,5) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.086e-08 nrmF=0 nrmE+nrmF=3.086e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45406e+14 s_max=1.44115e+17
+[TILE_TARGET] (9, 5) mx_fp16
+--- Tile (9, 5) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.13059e-06, Mode: vec1d
+[BOUND_DECISION] tile(9,5) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 5) fp32
+[BOUND_SELECT] tile(9,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.90139 nrmF=4.80075 nrmE+nrmF=9.70214 underflows=11063895 scale_groups=524288 s_min=2 s_avg=2.17258e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(9,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22535 nrmF=0 nrmE+nrmF=1.22535 underflows=0 scale_groups=524288 s_min=2 s_avg=2.17258e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(9,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191461 nrmF=0 nrmE+nrmF=0.0191461 underflows=0 scale_groups=524288 s_min=2 s_avg=2.17258e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(9,6) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33717e-06 nrmF=0 nrmE+nrmF=2.33717e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 6) fp64
+[BOUND_DECISION] tile(9,6) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 6) fp64
+[BOUND_SELECT] tile(9,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,7) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000974567 nrmF=0.000973886 nrmE+nrmF=0.00194845 underflows=11657083 scale_groups=524288 s_min=16384 s_avg=4.15235e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,7) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243642 nrmF=0 nrmE+nrmF=0.000243642 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.15235e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,7) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.8069e-06 nrmF=0 nrmE+nrmF=3.8069e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.15235e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(9,7) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.6471e-10 nrmF=0 nrmE+nrmF=4.6471e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 7) fp32
+[BOUND_DECISION] tile(9,7) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 7) fp32
+[BOUND_SELECT] tile(9,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(9,8) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6108 nrmF=23.5236 nrmE+nrmF=47.1344 underflows=11472969 scale_groups=524288 s_min=2 s_avg=2.88139e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(9,8) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.9027 nrmF=0 nrmE+nrmF=5.9027 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88139e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(9,8) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0922297 nrmF=0 nrmE+nrmF=0.0922297 underflows=0 scale_groups=524288 s_min=2 s_avg=2.88139e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(9,8) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12585e-05 nrmF=0 nrmE+nrmF=1.12585e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (9, 8) fp64
+[BOUND_DECISION] tile(9,8) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (9, 8) fp64
+
+[DEBUG] Epsilon Ratio for Tile (9, 9): 3.79807
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (9, 9) fp64
+[TILE_DTYPE] (9, 9) fp64
+[BOUND_SELECT] tile(10,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.27158e-07 nrmF=1.69454e-07 nrmE+nrmF=3.96613e-07 underflows=7262428 scale_groups=524288 s_min=2.68435e+08 s_avg=5.07677e+14 s_max=7.20576e+16
+[TILE_TARGET] (10, 0) e2m1
+--- Tile (10, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.22087e-09, Mode: vec1d
+[BOUND_DECISION] tile(10,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 0) fp32
+[BOUND_SELECT] tile(10,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,1) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.78655e-08 nrmF=7.88273e-08 nrmE+nrmF=1.76693e-07 underflows=9100797 scale_groups=524288 s_min=2.68435e+08 s_avg=2.73334e+15 s_max=1.15292e+18
+[TILE_TARGET] (10, 1) e2m1
+--- Tile (10, 1) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.06134e-09, Mode: vec1d
+[BOUND_DECISION] tile(10,1) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 1) fp32
+[BOUND_SELECT] tile(10,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00276927 nrmF=0.00208216 nrmE+nrmF=0.00485143 underflows=7712025 scale_groups=524288 s_min=16384 s_avg=4.09578e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(10,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000692316 nrmF=0 nrmE+nrmF=0.000692316 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.09578e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(10,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08174e-05 nrmF=0 nrmE+nrmF=1.08174e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.09578e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(10,2) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32049e-09 nrmF=0 nrmE+nrmF=1.32049e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (10, 2) fp32
+[BOUND_DECISION] tile(10,2) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 2) fp32
+[BOUND_SELECT] tile(10,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000973145 nrmF=0.000788813 nrmE+nrmF=0.00176196 underflows=9967095 scale_groups=524288 s_min=16384 s_avg=4.7869e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(10,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243286 nrmF=0 nrmE+nrmF=0.000243286 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.7869e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(10,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.80135e-06 nrmF=0 nrmE+nrmF=3.80135e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.7869e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(10,3) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.64032e-10 nrmF=0 nrmE+nrmF=4.64032e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (10, 3) fp32
+[BOUND_DECISION] tile(10,3) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 3) fp32
+[BOUND_SELECT] tile(10,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,4) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.7615e-09 nrmF=3.39013e-09 nrmE+nrmF=7.15163e-09 underflows=10798209 scale_groups=524288 s_min=2.14748e+09 s_avg=2.27396e+17 s_max=1.47574e+20
+[TILE_TARGET] (10, 4) e2m1
+--- Tile (10, 4) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.76501e-10, Mode: vec1d
+[BOUND_DECISION] tile(10,4) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 4) fp32
+[BOUND_SELECT] tile(10,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,5) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=1.13608e-11 nrmF=1.14635e-11 nrmE+nrmF=2.28244e-11 underflows=11526880 scale_groups=524288 s_min=1.09951e+12 s_avg=9.98346e+19 s_max=7.55579e+22
+[TILE_TARGET] (10, 5) e2m1
+--- Tile (10, 5) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.62541e-12, Mode: vec1d
+[BOUND_DECISION] tile(10,5) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 5) fp32
+[BOUND_SELECT] tile(10,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.8118e-06 nrmF=7.69649e-06 nrmE+nrmF=1.55083e-05 underflows=11421934 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45599e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(10,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.95295e-06 nrmF=0 nrmE+nrmF=1.95295e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45599e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(10,6) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.05148e-08 nrmF=0 nrmE+nrmF=3.05148e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45599e+14 s_max=1.44115e+17
+[TILE_TARGET] (10, 6) mx_fp16
+--- Tile (10, 6) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.10434e-06, Mode: vec1d
+[BOUND_DECISION] tile(10,6) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 6) fp32
+[BOUND_SELECT] tile(10,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,7) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.73802e-09 nrmF=3.76287e-09 nrmE+nrmF=7.50089e-09 underflows=11693573 scale_groups=524288 s_min=4.29497e+09 s_avg=2.08232e+17 s_max=1.47574e+20
+[TILE_TARGET] (10, 7) e2m1
+--- Tile (10, 7) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.39116e-10, Mode: vec1d
+[BOUND_DECISION] tile(10,7) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 7) fp32
+[BOUND_SELECT] tile(10,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,8) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6017 nrmF=20.5167 nrmE+nrmF=44.1184 underflows=8877119 scale_groups=524288 s_min=2 s_avg=3.69175e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(10,8) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90042 nrmF=0 nrmE+nrmF=5.90042 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69175e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(10,8) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0921941 nrmF=0 nrmE+nrmF=0.0921941 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69175e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(10,8) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12542e-05 nrmF=0 nrmE+nrmF=1.12542e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (10, 8) fp64
+[BOUND_DECISION] tile(10,8) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 8) fp64
+[BOUND_SELECT] tile(10,9) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(10,9) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.88332 nrmF=4.92612 nrmE+nrmF=9.80944 underflows=11162918 scale_groups=524288 s_min=2 s_avg=2.16689e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(10,9) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22083 nrmF=0 nrmE+nrmF=1.22083 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16689e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(10,9) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0190755 nrmF=0 nrmE+nrmF=0.0190755 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16689e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(10,9) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.32855e-06 nrmF=0 nrmE+nrmF=2.32855e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (10, 9) fp64
+[BOUND_DECISION] tile(10,9) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (10, 9) fp64
+
+[DEBUG] Epsilon Ratio for Tile (10, 10): 3.79823
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (10, 10) fp64
+[TILE_DTYPE] (10, 10) fp64
+[BOUND_SELECT] tile(11,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.75068e-08 nrmF=7.85801e-08 nrmE+nrmF=1.76087e-07 underflows=8975923 scale_groups=524288 s_min=2.68435e+08 s_avg=2.75124e+15 s_max=1.15292e+18
+[TILE_TARGET] (11, 0) e2m1
+--- Tile (11, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.12995e-09, Mode: vec1d
+[BOUND_DECISION] tile(11,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 0) fp32
+[BOUND_SELECT] tile(11,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,1) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.27702e-07 nrmF=1.72786e-07 nrmE+nrmF=4.00488e-07 underflows=7259454 scale_groups=524288 s_min=2.68435e+08 s_avg=5.06441e+14 s_max=7.20576e+16
+[TILE_TARGET] (11, 1) e2m1
+--- Tile (11, 1) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.2272e-09, Mode: vec1d
+[BOUND_DECISION] tile(11,1) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 1) fp32
+[BOUND_SELECT] tile(11,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976423 nrmF=0.000775471 nrmE+nrmF=0.00175189 underflows=9928944 scale_groups=524288 s_min=16384 s_avg=4.76221e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(11,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244106 nrmF=0 nrmE+nrmF=0.000244106 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.76221e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(11,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81415e-06 nrmF=0 nrmE+nrmF=3.81415e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.76221e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(11,2) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65595e-10 nrmF=0 nrmE+nrmF=4.65595e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (11, 2) fp32
+[BOUND_DECISION] tile(11,2) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 2) fp32
+[BOUND_SELECT] tile(11,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.0027707 nrmF=0.00205883 nrmE+nrmF=0.00482953 underflows=7675429 scale_groups=524288 s_min=16384 s_avg=4.09802e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(11,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000692674 nrmF=0 nrmE+nrmF=0.000692674 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.09802e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(11,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.0823e-05 nrmF=0 nrmE+nrmF=1.0823e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.09802e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(11,3) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32117e-09 nrmF=0 nrmE+nrmF=1.32117e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (11, 3) fp32
+[BOUND_DECISION] tile(11,3) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 3) fp32
+[BOUND_SELECT] tile(11,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,4) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.77066e-08 nrmF=7.6018e-08 nrmE+nrmF=1.73725e-07 underflows=8988071 scale_groups=524288 s_min=2.68435e+08 s_avg=2.77175e+15 s_max=1.15292e+18
+[TILE_TARGET] (11, 4) e2m1
+--- Tile (11, 4) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.96e-09, Mode: vec1d
+[BOUND_DECISION] tile(11,4) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 4) fp32
+[BOUND_SELECT] tile(11,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,5) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.77431e-09 nrmF=3.43349e-09 nrmE+nrmF=7.2078e-09 underflows=10802021 scale_groups=524288 s_min=2.14748e+09 s_avg=2.26355e+17 s_max=2.95148e+20
+[TILE_TARGET] (11, 5) e2m1
+--- Tile (11, 5) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.68526e-10, Mode: vec1d
+[BOUND_DECISION] tile(11,5) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 5) fp32
+[BOUND_SELECT] tile(11,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000972527 nrmF=0.000773768 nrmE+nrmF=0.00174629 underflows=9870297 scale_groups=524288 s_min=16384 s_avg=4.77092e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(11,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243132 nrmF=0 nrmE+nrmF=0.000243132 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.77092e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(11,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.79893e-06 nrmF=0 nrmE+nrmF=3.79893e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.77092e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(11,6) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.63737e-10 nrmF=0 nrmE+nrmF=4.63737e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (11, 6) fp32
+[BOUND_DECISION] tile(11,6) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 6) fp32
+[BOUND_SELECT] tile(11,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,7) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.82399e-06 nrmF=7.60572e-06 nrmE+nrmF=1.54297e-05 underflows=11398055 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45405e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(11,7) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.956e-06 nrmF=0 nrmE+nrmF=1.956e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45405e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(11,7) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.05625e-08 nrmF=0 nrmE+nrmF=3.05625e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.45405e+14 s_max=1.44115e+17
+[TILE_TARGET] (11, 7) mx_fp16
+--- Tile (11, 7) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.12041e-06, Mode: vec1d
+[BOUND_DECISION] tile(11,7) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 7) fp32
+[BOUND_SELECT] tile(11,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,8) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.8787 nrmF=4.90499 nrmE+nrmF=9.78369 underflows=11042733 scale_groups=524288 s_min=2 s_avg=2.18497e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(11,8) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.21968 nrmF=0 nrmE+nrmF=1.21968 underflows=0 scale_groups=524288 s_min=2 s_avg=2.18497e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(11,8) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0190574 nrmF=0 nrmE+nrmF=0.0190574 underflows=0 scale_groups=524288 s_min=2 s_avg=2.18497e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(11,8) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.32635e-06 nrmF=0 nrmE+nrmF=2.32635e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (11, 8) fp64
+[BOUND_DECISION] tile(11,8) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 8) fp64
+[BOUND_SELECT] tile(11,9) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,9) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6404 nrmF=20.6607 nrmE+nrmF=44.3011 underflows=9003221 scale_groups=524288 s_min=2 s_avg=3.64996e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(11,9) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.9101 nrmF=0 nrmE+nrmF=5.9101 underflows=0 scale_groups=524288 s_min=2 s_avg=3.64996e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(11,9) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0923453 nrmF=0 nrmE+nrmF=0.0923453 underflows=0 scale_groups=524288 s_min=2 s_avg=3.64996e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(11,9) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12726e-05 nrmF=0 nrmE+nrmF=1.12726e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (11, 9) fp64
+[BOUND_DECISION] tile(11,9) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 9) fp64
+[BOUND_SELECT] tile(11,10) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(11,10) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6561 nrmF=23.8316 nrmE+nrmF=47.4877 underflows=11535923 scale_groups=524288 s_min=2 s_avg=2.85687e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(11,10) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.91402 nrmF=0 nrmE+nrmF=5.91402 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85687e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(11,10) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0924066 nrmF=0 nrmE+nrmF=0.0924066 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85687e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(11,10) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12801e-05 nrmF=0 nrmE+nrmF=1.12801e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (11, 10) fp64
+[BOUND_DECISION] tile(11,10) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (11, 10) fp64
+
+[DEBUG] Epsilon Ratio for Tile (11, 11): 3.79788
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (11, 11) fp64
+[TILE_DTYPE] (11, 11) fp64
+[BOUND_SELECT] tile(12,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,0) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.8614e-06 nrmF=8.25579e-06 nrmE+nrmF=1.61172e-05 underflows=11407859 scale_groups=524288 s_min=1.04858e+06 s_avg=1.46343e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(12,0) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.96535e-06 nrmF=0 nrmE+nrmF=1.96535e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.46343e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(12,0) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.07086e-08 nrmF=0 nrmE+nrmF=3.07086e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.46343e+14 s_max=1.44115e+17
+[TILE_TARGET] (12, 0) mx_fp16
+--- Tile (12, 0) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.23904e-06, Mode: vec1d
+[BOUND_DECISION] tile(12,0) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 0) fp32
+[BOUND_SELECT] tile(12,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000978846 nrmF=0.000777791 nrmE+nrmF=0.00175664 underflows=9930313 scale_groups=524288 s_min=16384 s_avg=4.70238e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244711 nrmF=0 nrmE+nrmF=0.000244711 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.70238e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,1) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.82362e-06 nrmF=0 nrmE+nrmF=3.82362e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.70238e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,1) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.6675e-10 nrmF=0 nrmE+nrmF=4.6675e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 1) fp32
+[BOUND_DECISION] tile(12,1) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 1) fp32
+[BOUND_SELECT] tile(12,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000974993 nrmF=0.000977565 nrmE+nrmF=0.00195256 underflows=11672169 scale_groups=524288 s_min=16384 s_avg=4.14457e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243748 nrmF=0 nrmE+nrmF=0.000243748 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.14457e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,2) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.80857e-06 nrmF=0 nrmE+nrmF=3.80857e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.14457e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,2) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.64913e-10 nrmF=0 nrmE+nrmF=4.64913e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 2) fp32
+[BOUND_DECISION] tile(12,2) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 2) fp32
+[BOUND_SELECT] tile(12,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.91011 nrmF=4.7928 nrmE+nrmF=9.70291 underflows=11106396 scale_groups=524288 s_min=2 s_avg=2.20679e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(12,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22753 nrmF=0 nrmE+nrmF=1.22753 underflows=0 scale_groups=524288 s_min=2 s_avg=2.20679e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(12,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191801 nrmF=0 nrmE+nrmF=0.0191801 underflows=0 scale_groups=524288 s_min=2 s_avg=2.20679e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(12,3) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.34132e-06 nrmF=0 nrmE+nrmF=2.34132e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 3) fp64
+[BOUND_DECISION] tile(12,3) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 3) fp64
+[BOUND_SELECT] tile(12,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277136 nrmF=0.00208273 nrmE+nrmF=0.00485409 underflows=7707907 scale_groups=524288 s_min=16384 s_avg=4.09107e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(12,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000692839 nrmF=0 nrmE+nrmF=0.000692839 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.09107e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(12,4) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08256e-05 nrmF=0 nrmE+nrmF=1.08256e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.09107e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(12,4) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32149e-09 nrmF=0 nrmE+nrmF=1.32149e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 4) fp32
+[BOUND_DECISION] tile(12,4) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 4) fp32
+[BOUND_SELECT] tile(12,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,5) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000977777 nrmF=0.000797065 nrmE+nrmF=0.00177484 underflows=9960546 scale_groups=524288 s_min=16384 s_avg=4.77962e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,5) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244444 nrmF=0 nrmE+nrmF=0.000244444 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.77962e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,5) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81944e-06 nrmF=0 nrmE+nrmF=3.81944e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.77962e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,5) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.66241e-10 nrmF=0 nrmE+nrmF=4.66241e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 5) fp32
+[BOUND_DECISION] tile(12,5) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 5) fp32
+[BOUND_SELECT] tile(12,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6705 nrmF=20.4369 nrmE+nrmF=44.1074 underflows=8880108 scale_groups=524288 s_min=2 s_avg=3.67852e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(12,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.91764 nrmF=0 nrmE+nrmF=5.91764 underflows=0 scale_groups=524288 s_min=2 s_avg=3.67852e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(12,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0924631 nrmF=0 nrmE+nrmF=0.0924631 underflows=0 scale_groups=524288 s_min=2 s_avg=3.67852e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(12,6) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.1287e-05 nrmF=0 nrmE+nrmF=1.1287e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 6) fp64
+[BOUND_DECISION] tile(12,6) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 6) fp64
+[BOUND_SELECT] tile(12,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,7) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.86545 nrmF=4.68307 nrmE+nrmF=9.54852 underflows=11051573 scale_groups=524288 s_min=2 s_avg=2.19238e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(12,7) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.21636 nrmF=0 nrmE+nrmF=1.21636 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19238e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(12,7) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0190057 nrmF=0 nrmE+nrmF=0.0190057 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19238e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(12,7) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.32003e-06 nrmF=0 nrmE+nrmF=2.32003e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 7) fp64
+[BOUND_DECISION] tile(12,7) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 7) fp64
+[BOUND_SELECT] tile(12,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,8) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277115 nrmF=0.00278645 nrmE+nrmF=0.0055576 underflows=11440842 scale_groups=524288 s_min=16384 s_avg=3.04943e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(12,8) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000692787 nrmF=0 nrmE+nrmF=0.000692787 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.04943e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(12,8) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08248e-05 nrmF=0 nrmE+nrmF=1.08248e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.04943e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(12,8) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32139e-09 nrmF=0 nrmE+nrmF=1.32139e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 8) fp32
+[BOUND_DECISION] tile(12,8) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 8) fp32
+[BOUND_SELECT] tile(12,9) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,9) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6644 nrmF=23.7464 nrmE+nrmF=47.4109 underflows=11561076 scale_groups=524288 s_min=2 s_avg=2.8456e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(12,9) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.91611 nrmF=0 nrmE+nrmF=5.91611 underflows=0 scale_groups=524288 s_min=2 s_avg=2.8456e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(12,9) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0924392 nrmF=0 nrmE+nrmF=0.0924392 underflows=0 scale_groups=524288 s_min=2 s_avg=2.8456e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(12,9) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12841e-05 nrmF=0 nrmE+nrmF=1.12841e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 9) fp64
+[BOUND_DECISION] tile(12,9) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 9) fp64
+[BOUND_SELECT] tile(12,10) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,10) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000971868 nrmF=0.000970367 nrmE+nrmF=0.00194223 underflows=11727407 scale_groups=524288 s_min=16384 s_avg=4.12288e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,10) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000242967 nrmF=0 nrmE+nrmF=0.000242967 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.12288e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,10) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.79636e-06 nrmF=0 nrmE+nrmF=3.79636e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.12288e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(12,10) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.63423e-10 nrmF=0 nrmE+nrmF=4.63423e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 10) fp32
+[BOUND_DECISION] tile(12,10) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 10) fp32
+[BOUND_SELECT] tile(12,11) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(12,11) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.89714 nrmF=4.91624 nrmE+nrmF=9.81338 underflows=11127269 scale_groups=524288 s_min=2 s_avg=2.17194e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(12,11) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22429 nrmF=0 nrmE+nrmF=1.22429 underflows=0 scale_groups=524288 s_min=2 s_avg=2.17194e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(12,11) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191295 nrmF=0 nrmE+nrmF=0.0191295 underflows=0 scale_groups=524288 s_min=2 s_avg=2.17194e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(12,11) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33514e-06 nrmF=0 nrmE+nrmF=2.33514e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (12, 11) fp64
+[BOUND_DECISION] tile(12,11) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (12, 11) fp64
+
+[DEBUG] Epsilon Ratio for Tile (12, 12): 3.79828
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (12, 12) fp64
+[TILE_DTYPE] (12, 12) fp64
+[BOUND_SELECT] tile(13,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.75972e-09 nrmF=3.95555e-09 nrmE+nrmF=7.71526e-09 underflows=11700804 scale_groups=524288 s_min=2.14748e+09 s_avg=2.08756e+17 s_max=1.47574e+20
+[TILE_TARGET] (13, 0) e2m1
+--- Tile (13, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.85303e-10, Mode: vec1d
+[BOUND_DECISION] tile(13,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 0) fp32
+[BOUND_SELECT] tile(13,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,1) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.85202e-06 nrmF=8.10876e-06 nrmE+nrmF=1.59608e-05 underflows=11465927 scale_groups=524288 s_min=1.04858e+06 s_avg=1.42093e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(13,1) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.963e-06 nrmF=0 nrmE+nrmF=1.963e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.42093e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(13,1) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.0672e-08 nrmF=0 nrmE+nrmF=3.0672e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.42093e+14 s_max=1.44115e+17
+[TILE_TARGET] (13, 1) mx_fp16
+--- Tile (13, 1) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.20935e-06, Mode: vec1d
+[BOUND_DECISION] tile(13,1) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 1) fp32
+[BOUND_SELECT] tile(13,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,2) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.77957e-08 nrmF=9.8631e-08 nrmE+nrmF=1.96427e-07 underflows=11597905 scale_groups=524288 s_min=2.68435e+08 s_avg=2.22606e+15 s_max=1.15292e+18
+[TILE_TARGET] (13, 2) e2m1
+--- Tile (13, 2) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.84416e-09, Mode: vec1d
+[BOUND_DECISION] tile(13,2) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 2) fp32
+[BOUND_SELECT] tile(13,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000975921 nrmF=0.000975265 nrmE+nrmF=0.00195119 underflows=11737505 scale_groups=524288 s_min=16384 s_avg=4.21187e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.00024398 nrmF=0 nrmE+nrmF=0.00024398 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.21187e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81219e-06 nrmF=0 nrmE+nrmF=3.81219e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.21187e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,3) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65356e-10 nrmF=0 nrmE+nrmF=4.65356e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 3) fp32
+[BOUND_DECISION] tile(13,3) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 3) fp32
+[BOUND_SELECT] tile(13,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,4) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976318 nrmF=0.0008256 nrmE+nrmF=0.00180192 underflows=10037932 scale_groups=524288 s_min=16384 s_avg=4.78369e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,4) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244079 nrmF=0 nrmE+nrmF=0.000244079 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.78369e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,4) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81374e-06 nrmF=0 nrmE+nrmF=3.81374e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.78369e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,4) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65545e-10 nrmF=0 nrmE+nrmF=4.65545e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 4) fp32
+[BOUND_DECISION] tile(13,4) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 4) fp32
+[BOUND_SELECT] tile(13,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,5) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277996 nrmF=0.00210523 nrmE+nrmF=0.00488519 underflows=7727366 scale_groups=524288 s_min=16384 s_avg=4.07708e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(13,5) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000694991 nrmF=0 nrmE+nrmF=0.000694991 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.07708e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(13,5) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08592e-05 nrmF=0 nrmE+nrmF=1.08592e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.07708e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(13,5) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32559e-09 nrmF=0 nrmE+nrmF=1.32559e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 5) fp32
+[BOUND_DECISION] tile(13,5) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 5) fp32
+[BOUND_SELECT] tile(13,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.8997 nrmF=4.83065 nrmE+nrmF=9.73035 underflows=11108539 scale_groups=524288 s_min=2 s_avg=2.19242e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(13,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22492 nrmF=0 nrmE+nrmF=1.22492 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19242e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(13,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191394 nrmF=0 nrmE+nrmF=0.0191394 underflows=0 scale_groups=524288 s_min=2 s_avg=2.19242e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(13,6) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33636e-06 nrmF=0 nrmE+nrmF=2.33636e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 6) fp64
+[BOUND_DECISION] tile(13,6) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 6) fp64
+[BOUND_SELECT] tile(13,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,7) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6922 nrmF=20.6193 nrmE+nrmF=44.3116 underflows=8901003 scale_groups=524288 s_min=2 s_avg=3.69336e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(13,7) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.92306 nrmF=0 nrmE+nrmF=5.92306 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69336e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(13,7) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0925478 nrmF=0 nrmE+nrmF=0.0925478 underflows=0 scale_groups=524288 s_min=2 s_avg=3.69336e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(13,7) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12973e-05 nrmF=0 nrmE+nrmF=1.12973e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 7) fp64
+[BOUND_DECISION] tile(13,7) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 7) fp64
+[BOUND_SELECT] tile(13,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,8) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.27847e-07 nrmF=2.3539e-07 nrmE+nrmF=4.63237e-07 underflows=11377304 scale_groups=524288 s_min=2.68435e+08 s_avg=3.75282e+14 s_max=3.60288e+16
+[TILE_TARGET] (13, 8) e2m1
+--- Tile (13, 8) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.18721e-09, Mode: vec1d
+[BOUND_DECISION] tile(13,8) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 8) fp32
+[BOUND_SELECT] tile(13,9) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,9) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277984 nrmF=0.00277351 nrmE+nrmF=0.00555335 underflows=11513898 scale_groups=524288 s_min=16384 s_avg=3.02059e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(13,9) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.00069496 nrmF=0 nrmE+nrmF=0.00069496 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.02059e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(13,9) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08588e-05 nrmF=0 nrmE+nrmF=1.08588e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.02059e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(13,9) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32553e-09 nrmF=0 nrmE+nrmF=1.32553e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 9) fp32
+[BOUND_DECISION] tile(13,9) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 9) fp32
+[BOUND_SELECT] tile(13,10) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,10) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.76772e-08 nrmF=9.90362e-08 nrmE+nrmF=1.96713e-07 underflows=11661903 scale_groups=524288 s_min=2.68435e+08 s_avg=2.22217e+15 s_max=1.15292e+18
+[TILE_TARGET] (13, 10) e2m1
+--- Tile (13, 10) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.91406e-09, Mode: vec1d
+[BOUND_DECISION] tile(13,10) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 10) fp32
+[BOUND_SELECT] tile(13,11) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,11) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000975177 nrmF=0.000971736 nrmE+nrmF=0.00194691 underflows=11708866 scale_groups=524288 s_min=16384 s_avg=4.16346e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,11) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243794 nrmF=0 nrmE+nrmF=0.000243794 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.16346e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,11) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.80929e-06 nrmF=0 nrmE+nrmF=3.80929e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.16346e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(13,11) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65001e-10 nrmF=0 nrmE+nrmF=4.65001e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 11) fp32
+[BOUND_DECISION] tile(13,11) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 11) fp32
+[BOUND_SELECT] tile(13,12) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(13,12) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6229 nrmF=23.685 nrmE+nrmF=47.3079 underflows=11546633 scale_groups=524288 s_min=2 s_avg=2.85403e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(13,12) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.90573 nrmF=0 nrmE+nrmF=5.90573 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85403e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(13,12) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.092277 nrmF=0 nrmE+nrmF=0.092277 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85403e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(13,12) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12643e-05 nrmF=0 nrmE+nrmF=1.12643e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (13, 12) fp64
+[BOUND_DECISION] tile(13,12) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (13, 12) fp64
+
+[DEBUG] Epsilon Ratio for Tile (13, 13): 3.79806
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (13, 13) fp64
+[TILE_DTYPE] (13, 13) fp64
+[BOUND_SELECT] tile(14,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.76525e-09 nrmF=3.60736e-09 nrmE+nrmF=7.37262e-09 underflows=10753364 scale_groups=524288 s_min=2.14748e+09 s_avg=2.27568e+17 s_max=1.47574e+20
+[TILE_TARGET] (14, 0) e2m1
+--- Tile (14, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.98556e-10, Mode: vec1d
+[BOUND_DECISION] tile(14,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 0) fp32
+[BOUND_SELECT] tile(14,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,1) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.82401e-08 nrmF=7.60586e-08 nrmE+nrmF=1.74299e-07 underflows=8994089 scale_groups=524288 s_min=2.68435e+08 s_avg=2.70802e+15 s_max=1.15292e+18
+[TILE_TARGET] (14, 1) e2m1
+--- Tile (14, 1) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.09081e-09, Mode: vec1d
+[BOUND_DECISION] tile(14,1) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 1) fp32
+[BOUND_SELECT] tile(14,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,2) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.88658e-06 nrmF=8.13914e-06 nrmE+nrmF=1.60257e-05 underflows=11456922 scale_groups=524288 s_min=1.04858e+06 s_avg=1.4508e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(14,2) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.97164e-06 nrmF=0 nrmE+nrmF=1.97164e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.4508e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(14,2) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.08069e-08 nrmF=0 nrmE+nrmF=3.08069e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.4508e+14 s_max=1.44115e+17
+[TILE_TARGET] (14, 2) mx_fp16
+--- Tile (14, 2) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.18303e-06, Mode: vec1d
+[BOUND_DECISION] tile(14,2) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 2) fp32
+[BOUND_SELECT] tile(14,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000975463 nrmF=0.000753455 nrmE+nrmF=0.00172892 underflows=9932600 scale_groups=524288 s_min=16384 s_avg=4.82412e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243866 nrmF=0 nrmE+nrmF=0.000243866 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.82412e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,3) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.8104e-06 nrmF=0 nrmE+nrmF=3.8104e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.82412e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,3) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65137e-10 nrmF=0 nrmE+nrmF=4.65137e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 3) fp32
+[BOUND_DECISION] tile(14,3) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 3) fp32
+[BOUND_SELECT] tile(14,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,4) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.28306e-07 nrmF=1.69586e-07 nrmE+nrmF=3.97892e-07 underflows=7237459 scale_groups=524288 s_min=2.68435e+08 s_avg=5.09004e+14 s_max=7.20576e+16
+[TILE_TARGET] (14, 4) e2m1
+--- Tile (14, 4) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.19318e-09, Mode: vec1d
+[BOUND_DECISION] tile(14,4) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 4) fp32
+[BOUND_SELECT] tile(14,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,5) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.83481e-08 nrmF=7.76177e-08 nrmE+nrmF=1.75966e-07 underflows=9030574 scale_groups=524288 s_min=2.68435e+08 s_avg=2.7396e+15 s_max=1.15292e+18
+[TILE_TARGET] (14, 5) e2m1
+--- Tile (14, 5) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.78471e-09, Mode: vec1d
+[BOUND_DECISION] tile(14,5) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 5) fp32
+[BOUND_SELECT] tile(14,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00278228 nrmF=0.00208689 nrmE+nrmF=0.00486917 underflows=7652319 scale_groups=524288 s_min=16384 s_avg=4.07474e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(14,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.00069557 nrmF=0 nrmE+nrmF=0.00069557 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.07474e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(14,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08683e-05 nrmF=0 nrmE+nrmF=1.08683e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.07474e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(14,6) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32669e-09 nrmF=0 nrmE+nrmF=1.32669e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 6) fp32
+[BOUND_DECISION] tile(14,6) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 6) fp32
+[BOUND_SELECT] tile(14,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,7) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976608 nrmF=0.000796639 nrmE+nrmF=0.00177325 underflows=9893031 scale_groups=524288 s_min=16384 s_avg=4.80063e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,7) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000244152 nrmF=0 nrmE+nrmF=0.000244152 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.80063e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,7) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81488e-06 nrmF=0 nrmE+nrmF=3.81488e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.80063e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,7) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65683e-10 nrmF=0 nrmE+nrmF=4.65683e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 7) fp32
+[BOUND_DECISION] tile(14,7) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 7) fp32
+[BOUND_SELECT] tile(14,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,8) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000976241 nrmF=0.000992841 nrmE+nrmF=0.00196908 underflows=11652631 scale_groups=524288 s_min=16384 s_avg=4.16774e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,8) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.00024406 nrmF=0 nrmE+nrmF=0.00024406 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.16774e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,8) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.81344e-06 nrmF=0 nrmE+nrmF=3.81344e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.16774e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(14,8) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.65508e-10 nrmF=0 nrmE+nrmF=4.65508e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 8) fp32
+[BOUND_DECISION] tile(14,8) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 8) fp32
+[BOUND_SELECT] tile(14,9) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,9) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.88139 nrmF=4.96206 nrmE+nrmF=9.84345 underflows=11162909 scale_groups=524288 s_min=2 s_avg=2.15676e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(14,9) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22035 nrmF=0 nrmE+nrmF=1.22035 underflows=0 scale_groups=524288 s_min=2 s_avg=2.15676e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(14,9) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0190679 nrmF=0 nrmE+nrmF=0.0190679 underflows=0 scale_groups=524288 s_min=2 s_avg=2.15676e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(14,9) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.32763e-06 nrmF=0 nrmE+nrmF=2.32763e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 9) fp64
+[BOUND_DECISION] tile(14,9) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 9) fp64
+[BOUND_SELECT] tile(14,10) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,10) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00278258 nrmF=0.00277099 nrmE+nrmF=0.00555357 underflows=11473593 scale_groups=524288 s_min=16384 s_avg=3.03321e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(14,10) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000695646 nrmF=0 nrmE+nrmF=0.000695646 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.03321e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(14,10) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08695e-05 nrmF=0 nrmE+nrmF=1.08695e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.03321e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(14,10) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32684e-09 nrmF=0 nrmE+nrmF=1.32684e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 10) fp32
+[BOUND_DECISION] tile(14,10) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 10) fp32
+[BOUND_SELECT] tile(14,11) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,11) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6934 nrmF=23.5117 nrmE+nrmF=47.2051 underflows=11530691 scale_groups=524288 s_min=2 s_avg=2.87209e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(14,11) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.92334 nrmF=0 nrmE+nrmF=5.92334 underflows=0 scale_groups=524288 s_min=2 s_avg=2.87209e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(14,11) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0925522 nrmF=0 nrmE+nrmF=0.0925522 underflows=0 scale_groups=524288 s_min=2 s_avg=2.87209e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(14,11) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12979e-05 nrmF=0 nrmE+nrmF=1.12979e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 11) fp64
+[BOUND_DECISION] tile(14,11) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 11) fp64
+[BOUND_SELECT] tile(14,12) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,12) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.7061 nrmF=20.4626 nrmE+nrmF=44.1687 underflows=8898922 scale_groups=524288 s_min=2 s_avg=3.6921e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(14,12) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.92653 nrmF=0 nrmE+nrmF=5.92653 underflows=0 scale_groups=524288 s_min=2 s_avg=3.6921e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(14,12) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.092602 nrmF=0 nrmE+nrmF=0.092602 underflows=0 scale_groups=524288 s_min=2 s_avg=3.6921e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(14,12) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.1304e-05 nrmF=0 nrmE+nrmF=1.1304e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 12) fp64
+[BOUND_DECISION] tile(14,12) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 12) fp64
+[BOUND_SELECT] tile(14,13) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(14,13) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.91503 nrmF=4.88376 nrmE+nrmF=9.79879 underflows=11082113 scale_groups=524288 s_min=2 s_avg=2.16323e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(14,13) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22876 nrmF=0 nrmE+nrmF=1.22876 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16323e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(14,13) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191993 nrmF=0 nrmE+nrmF=0.0191993 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16323e+08 s_max=1.37439e+11
+[BOUND_EVAL] tile(14,13) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.34367e-06 nrmF=0 nrmE+nrmF=2.34367e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (14, 13) fp64
+[BOUND_DECISION] tile(14,13) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (14, 13) fp64
+
+[DEBUG] Epsilon Ratio for Tile (14, 14): 3.79747
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (14, 14) fp64
+[TILE_DTYPE] (14, 14) fp64
+[BOUND_SELECT] tile(15,0) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,0) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=1.13767e-11 nrmF=1.1655e-11 nrmE+nrmF=2.30318e-11 underflows=11474636 scale_groups=524288 s_min=1.09951e+12 s_avg=1.00523e+20 s_max=7.55579e+22
+[TILE_TARGET] (15, 0) e2m1
+--- Tile (15, 0) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.70752e-12, Mode: vec1d
+[BOUND_DECISION] tile(15,0) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 0) fp32
+[BOUND_SELECT] tile(15,1) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,1) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.7814e-09 nrmF=3.47284e-09 nrmE+nrmF=7.25423e-09 underflows=10788586 scale_groups=524288 s_min=2.14748e+09 s_avg=2.22047e+17 s_max=1.47574e+20
+[TILE_TARGET] (15, 1) e2m1
+--- Tile (15, 1) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.70409e-10, Mode: vec1d
+[BOUND_DECISION] tile(15,1) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 1) fp32
+[BOUND_SELECT] tile(15,2) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,2) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=3.77548e-09 nrmF=4.00814e-09 nrmE+nrmF=7.78362e-09 underflows=11735915 scale_groups=524288 s_min=2.14748e+09 s_avg=2.07164e+17 s_max=1.47574e+20
+[TILE_TARGET] (15, 2) e2m1
+--- Tile (15, 2) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.76724e-10, Mode: vec1d
+[BOUND_DECISION] tile(15,2) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 2) fp32
+[BOUND_SELECT] tile(15,3) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,3) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=7.87499e-06 nrmF=7.80685e-06 nrmE+nrmF=1.56818e-05 underflows=11473000 scale_groups=524288 s_min=1.04858e+06 s_avg=1.47119e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(15,3) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.96875e-06 nrmF=0 nrmE+nrmF=1.96875e-06 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.47119e+14 s_max=1.44115e+17
+[BOUND_EVAL] tile(15,3) fmt=mx_fp16 fits=1 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.07617e-08 nrmF=0 nrmE+nrmF=3.07617e-08 underflows=0 scale_groups=524288 s_min=1.04858e+06 s_avg=1.47119e+14 s_max=1.44115e+17
+[TILE_TARGET] (15, 3) mx_fp16
+--- Tile (15, 3) selected for CUDA_R_32F (MX_FP16 Quantization) ---
+  Tile Size: 16777216, MaxVals: 1.14593e-06, Mode: vec1d
+[BOUND_DECISION] tile(15,3) selected=mx_fp16 reason=ladder_accept step=2 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 3) fp32
+[BOUND_SELECT] tile(15,4) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,4) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.82498e-08 nrmF=7.96282e-08 nrmE+nrmF=1.77878e-07 underflows=9085641 scale_groups=524288 s_min=2.68435e+08 s_avg=2.73872e+15 s_max=1.15292e+18
+[TILE_TARGET] (15, 4) e2m1
+--- Tile (15, 4) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 4.96169e-09, Mode: vec1d
+[BOUND_DECISION] tile(15,4) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 4) fp32
+[BOUND_SELECT] tile(15,5) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,5) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.28642e-07 nrmF=1.70206e-07 nrmE+nrmF=3.98847e-07 underflows=7248980 scale_groups=524288 s_min=2.68435e+08 s_avg=5.06399e+14 s_max=7.20576e+16
+[TILE_TARGET] (15, 5) e2m1
+--- Tile (15, 5) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.22239e-09, Mode: vec1d
+[BOUND_DECISION] tile(15,5) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 5) fp32
+[BOUND_SELECT] tile(15,6) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,6) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000980288 nrmF=0.000785352 nrmE+nrmF=0.00176564 underflows=9959841 scale_groups=524288 s_min=16384 s_avg=4.77699e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(15,6) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000245072 nrmF=0 nrmE+nrmF=0.000245072 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.77699e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(15,6) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.82925e-06 nrmF=0 nrmE+nrmF=3.82925e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.77699e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(15,6) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.67438e-10 nrmF=0 nrmE+nrmF=4.67438e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 6) fp32
+[BOUND_DECISION] tile(15,6) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 6) fp32
+[BOUND_SELECT] tile(15,7) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,7) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00278199 nrmF=0.00209744 nrmE+nrmF=0.00487943 underflows=7703156 scale_groups=524288 s_min=16384 s_avg=4.0781e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(15,7) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000695497 nrmF=0 nrmE+nrmF=0.000695497 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.0781e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(15,7) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08671e-05 nrmF=0 nrmE+nrmF=1.08671e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.0781e+10 s_max=8.79609e+12
+[BOUND_EVAL] tile(15,7) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32655e-09 nrmF=0 nrmE+nrmF=1.32655e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 7) fp32
+[BOUND_DECISION] tile(15,7) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 7) fp32
+[BOUND_SELECT] tile(15,8) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,8) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=9.74978e-08 nrmF=9.91568e-08 nrmE+nrmF=1.96655e-07 underflows=11605133 scale_groups=524288 s_min=2.68435e+08 s_avg=2.23834e+15 s_max=1.15292e+18
+[TILE_TARGET] (15, 8) e2m1
+--- Tile (15, 8) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.09383e-09, Mode: vec1d
+[BOUND_DECISION] tile(15,8) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 8) fp32
+[BOUND_SELECT] tile(15,9) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,9) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.000972652 nrmF=0.00097089 nrmE+nrmF=0.00194354 underflows=11729322 scale_groups=524288 s_min=16384 s_avg=4.11789e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(15,9) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.000243163 nrmF=0 nrmE+nrmF=0.000243163 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.11789e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(15,9) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=3.79942e-06 nrmF=0 nrmE+nrmF=3.79942e-06 underflows=0 scale_groups=524288 s_min=16384 s_avg=4.11789e+11 s_max=2.81475e+14
+[BOUND_EVAL] tile(15,9) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=4.63797e-10 nrmF=0 nrmE+nrmF=4.63797e-10 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 9) fp32
+[BOUND_DECISION] tile(15,9) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 9) fp32
+[BOUND_SELECT] tile(15,10) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,10) fmt=e2m1 fits=1 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=2.28242e-07 nrmF=2.34068e-07 nrmE+nrmF=4.6231e-07 underflows=11402034 scale_groups=524288 s_min=2.68435e+08 s_avg=3.73666e+14 s_max=3.60288e+16
+[TILE_TARGET] (15, 10) e2m1
+--- Tile (15, 10) selected for CUDA_R_32F (MX_E2M1 Quantization) ---
+  Tile Size: 16777216, MaxVals: 5.16724e-09, Mode: vec1d
+[BOUND_DECISION] tile(15,10) selected=e2m1 reason=ladder_accept step=0 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 10) fp32
+[BOUND_SELECT] tile(15,11) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,11) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=0.00277592 nrmF=0.0027353 nrmE+nrmF=0.00551122 underflows=11484505 scale_groups=524288 s_min=16384 s_avg=3.04169e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(15,11) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=0.00069398 nrmF=0 nrmE+nrmF=0.00069398 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.04169e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(15,11) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=1.08434e-05 nrmF=0 nrmE+nrmF=1.08434e-05 underflows=0 scale_groups=524288 s_min=16384 s_avg=3.04169e+10 s_max=4.39805e+12
+[BOUND_EVAL] tile(15,11) fmt=fp32 fits=1 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.32366e-09 nrmF=0 nrmE+nrmF=1.32366e-09 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 11) fp32
+[BOUND_DECISION] tile(15,11) selected=fp32 reason=ladder_accept step=3 fp32_fit=1 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 11) fp32
+[BOUND_SELECT] tile(15,12) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,12) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=4.89049 nrmF=4.84911 nrmE+nrmF=9.7396 underflows=11146328 scale_groups=524288 s_min=2 s_avg=2.16589e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(15,12) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=1.22262 nrmF=0 nrmE+nrmF=1.22262 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16589e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(15,12) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0191035 nrmF=0 nrmE+nrmF=0.0191035 underflows=0 scale_groups=524288 s_min=2 s_avg=2.16589e+08 s_max=2.74878e+11
+[BOUND_EVAL] tile(15,12) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=2.33197e-06 nrmF=0 nrmE+nrmF=2.33197e-06 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 12) fp64
+[BOUND_DECISION] tile(15,12) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 12) fp64
+[BOUND_SELECT] tile(15,13) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,13) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.6928 nrmF=20.5553 nrmE+nrmF=44.2481 underflows=8937254 scale_groups=524288 s_min=2 s_avg=3.68038e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(15,13) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.9232 nrmF=0 nrmE+nrmF=5.9232 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68038e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(15,13) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.09255 nrmF=0 nrmE+nrmF=0.09255 underflows=0 scale_groups=524288 s_min=2 s_avg=3.68038e+06 s_max=1.07374e+09
+[BOUND_EVAL] tile(15,13) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12976e-05 nrmF=0 nrmE+nrmF=1.12976e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 13) fp64
+[BOUND_DECISION] tile(15,13) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 13) fp64
+[BOUND_SELECT] tile(15,14) fp32_bucket=fp32 fp16_bucket=fp16 low_bucket=mx_e4m3 low_bound=mx_e4m3 ladder=full low_order=e4m3_first ranking=legacy mode=vec1d subtile=32
+[BOUND_EVAL] tile(15,14) fmt=e2m1 fits=0 overflow=0 uses_scale=1 u=0.25 fmin=1 fmax=6 gmin=0.25 tol=1.32725e-06 nrmE=23.654 nrmF=23.7859 nrmE+nrmF=47.4399 underflows=11538456 scale_groups=524288 s_min=2 s_avg=2.85163e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(15,14) fmt=mx_e4m3 fits=0 overflow=0 uses_scale=1 u=0.0625 fmin=0.015625 fmax=448 gmin=0.000976562 tol=1.32725e-06 nrmE=5.91351 nrmF=0 nrmE+nrmF=5.91351 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85163e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(15,14) fmt=mx_fp16 fits=0 overflow=0 uses_scale=1 u=0.000976562 fmin=6.10352e-05 fmax=65504 gmin=5.96046e-08 tol=1.32725e-06 nrmE=0.0923986 nrmF=0 nrmE+nrmF=0.0923986 underflows=0 scale_groups=524288 s_min=2 s_avg=2.85163e+06 s_max=5.36871e+08
+[BOUND_EVAL] tile(15,14) fmt=fp32 fits=0 overflow=0 uses_scale=0 u=1.19209e-07 fmin=1.17549e-38 fmax=3.40282e+38 gmin=1.4013e-45 tol=1.32725e-06 nrmE=1.12791e-05 nrmF=0 nrmE+nrmF=1.12791e-05 underflows=0 scale_groups=0 s_min=1 s_avg=1 s_max=1
+[TILE_TARGET] (15, 14) fp64
+[BOUND_DECISION] tile(15,14) selected=fp64 reason=ladder_reject_all step=-1 fp32_fit=0 fp16_fit=0 low_fit=0 fp32_overflow=0 fp16_overflow=0 low_overflow=0
+[TILE_DTYPE] (15, 14) fp64
+
+[DEBUG] Epsilon Ratio for Tile (15, 15): 3.79887
+[DEBUG] Source Epsilon / FP32 Epsilon: 0.0838861
+[DEBUG] Low format cutoff (mx_e4m3): 1.59994e-07 (scale-aware=1)
+[TILE_TARGET] (15, 15) fp64
+[TILE_DTYPE] (15, 15) fp64
+FLOPS: 7.154037
+[TIMES] tile+quant(us): 1215719223, factor(us): 13115180, uncompress(us): 0
+Runtime: 1330325674420 microseconds
+error: 2.44025e-06
+relative_error: 8.56168e-09
+relative_residual: 1.13054e-09
+kl_divergence: nan

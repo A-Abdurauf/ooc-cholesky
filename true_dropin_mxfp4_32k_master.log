@@ -1,0 +1,18 @@
+[RUN] underflow=fz eps=1e-5  log=true_mxfp4_dropin_fz_eps1e-5_20260521_105730.log
+[OK]   eps=1e-5 rel=5.49999e-05 abs=0.00796508 res=6.13729e-06  tiles=e2m1=60;fp32=50;fp64=16;mx_fp16=10;
+[RUN] underflow=fz eps=1e-6  log=true_mxfp4_dropin_fz_eps1e-6_20260521_110440.log
+[OK]   eps=1e-6 rel=1.76723e-05 abs=0.0025593 res=7.02701e-07  tiles=fp32=50;mx_fp16=40;e2m1=30;fp64=16;
+[RUN] underflow=fz eps=1e-7  log=true_mxfp4_dropin_fz_eps1e-7_20260521_111404.log
+[OK]   eps=1e-7 rel=5.71571e-07 abs=8.27749e-05 res=1.57635e-07  tiles=fp32=61;mx_fp16=35;e2m1=24;fp64=16;
+[RUN] underflow=fz eps=1e-8  log=true_mxfp4_dropin_fz_eps1e-8_20260521_112243.log
+[OK]   eps=1e-8 rel=4.52919e-08 abs=6.55917e-06 res=4.81702e-09  tiles=fp64=57;fp32=53;e2m1=20;mx_fp16=6;
+[RUN] underflow=gu eps=1e-5  log=true_mxfp4_dropin_gu_eps1e-5_20260521_113056.log
+[OK]   eps=1e-5 rel=5.49999e-05 abs=0.00796508 res=6.13729e-06  tiles=e2m1=60;fp32=50;fp64=16;mx_fp16=10;
+[RUN] underflow=gu eps=1e-6  log=true_mxfp4_dropin_gu_eps1e-6_20260521_114024.log
+[OK]   eps=1e-6 rel=1.76723e-05 abs=0.0025593 res=7.02701e-07  tiles=fp32=50;mx_fp16=40;e2m1=30;fp64=16;
+[RUN] underflow=gu eps=1e-7  log=true_mxfp4_dropin_gu_eps1e-7_20260521_114855.log
+[OK]   eps=1e-7 rel=5.71571e-07 abs=8.27749e-05 res=1.57635e-07  tiles=fp32=61;mx_fp16=35;e2m1=24;fp64=16;
+[RUN] underflow=gu eps=1e-8  log=true_mxfp4_dropin_gu_eps1e-8_20260521_115719.log
+[OK]   eps=1e-8 rel=4.52919e-08 abs=6.55917e-06 res=4.81702e-09  tiles=fp64=57;fp32=53;e2m1=20;mx_fp16=6;
+
+Done. CSV: /home/abduraa/MX_project/ooc-cholesky/true_dropin_mxfp4_32k/results.csv

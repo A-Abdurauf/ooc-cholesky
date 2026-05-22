@@ -1,0 +1,18 @@
+# N=20480 nb=4096 nt=5
+# eps=1e-6
+# mode=ladder_mx_staircase MX_FTZ=1
+0 0 FP64
+1 0 FP32
+1 1 FP64
+2 0 FP32
+2 1 FP32
+2 2 FP64
+3 0 MXFP16
+3 1 FP32
+3 2 FP32
+3 3 FP64
+4 0 MXFP4
+4 1 MXFP16
+4 2 FP32
+4 3 FP32
+4 4 FP64
