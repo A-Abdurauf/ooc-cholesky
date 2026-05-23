@@ -1,0 +1,20 @@
+[START] 2026-05-23T18:40:00+03:00
+[CFG] underflow=gu cores=32 eps=1e-5 1e-6 1e-7 1e-8
+[CFG] CSV=/home/abduraa/MX_project/ooc-cholesky/baseline_ieee_gu/results.csv
+[RUN] sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-5 log=baseline_fp8_subnormal_gu_my_cov_weak_32k_nb2048_eps1e-5_20260523_184000.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-5 rel=1.99354e-06 res=2.9096e-07
+[RUN] sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-6 log=baseline_fp8_subnormal_gu_my_cov_weak_32k_nb2048_eps1e-6_20260523_184714.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-6 rel=1.53332e-06 res=2.35694e-07
+[RUN] sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-7 log=baseline_fp8_subnormal_gu_my_cov_weak_32k_nb2048_eps1e-7_20260523_185452.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-7 rel=6.76345e-07 res=1.53233e-07
+[RUN] sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-8 log=baseline_fp8_subnormal_gu_my_cov_weak_32k_nb2048_eps1e-8_20260523_190214.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=32768 nb=2048 eps=1e-8 rel=3.13611e-08 res=2.26344e-09
+[RUN] sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-5 log=baseline_fp8_subnormal_gu_my_cov_weak_40k_nb4096_eps1e-5_20260523_190902.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-5 rel=4.95772e-06 res=4.94847e-07
+[RUN] sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-6 log=baseline_fp8_subnormal_gu_my_cov_weak_40k_nb4096_eps1e-6_20260523_192048.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-6 rel=1.60742e-06 res=3.5442e-07
+[RUN] sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-7 log=baseline_fp8_subnormal_gu_my_cov_weak_40k_nb4096_eps1e-7_20260523_193233.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-7 rel=1.04516e-06 res=3.26077e-07
+[RUN] sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-8 log=baseline_fp8_subnormal_gu_my_cov_weak_40k_nb4096_eps1e-8_20260523_194506.log
+[OK]  sweep=baseline_fp8_subnormal_gu N=40960 nb=4096 eps=1e-8 rel=1.14375e-08 res=1.34943e-09
+[RUN] sweep=baseline_fp8_subnormal_gu N=65536 nb=4096 eps=1e-5 log=baseline_fp8_subnormal_gu_my_cov_weak_65k_nb4096_eps1e-5_20260523_195747.log

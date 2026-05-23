@@ -1,0 +1,9 @@
+sweep,bin,n,nb,mx_mode,underflow,source_epsilon,rel_factor_error,abs_factor_error,relative_residual,tile_breakdown
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,tile,gu,1e-5,1.99354e-06,0.000288704,2.9096e-07,"fp16=70;fp32=50;fp64=16;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,tile,gu,1e-6,1.53332e-06,0.000222055,2.35694e-07,"fp32=63;fp16=57;fp64=16;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,tile,gu,1e-7,6.76345e-07,9.79483e-05,1.53233e-07,"fp32=96;fp16=24;fp64=16;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_32k.bin,32768,2048,tile,gu,1e-8,3.13611e-08,4.54171e-06,2.26344e-09,"fp32=64;fp64=57;fp16=15;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,tile,gu,1e-5,4.95772e-06,0.000891252,4.94847e-07,"fp16=24;fp32=21;fp64=10;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,tile,gu,1e-6,1.60742e-06,0.000288966,3.5442e-07,"fp32=30;fp16=15;fp64=10;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,tile,gu,1e-7,1.04516e-06,0.000187889,3.26077e-07,"fp32=40;fp64=10;fp16=5;"
+baseline_fp8_subnormal_gu,/home/abduraa/MX_project/logs/my_cov_weak_40k.bin,40960,4096,tile,gu,1e-8,1.14375e-08,2.05613e-06,1.34943e-09,"fp64=31;fp32=21;fp16=3;"

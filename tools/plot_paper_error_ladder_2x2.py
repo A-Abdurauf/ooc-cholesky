@@ -159,10 +159,11 @@ def draw_subplot(ax, eps, datasets):
                    hatch=hatch)
             y_min = min(y_min, v); y_max = max(y_max, v)
 
-    # eps reference line.
+    # eps reference line -- drawn ON TOP of the bars (zorder=5) and made
+    # bolder so the target precision band is easy to read at a glance.
     ev = float(eps)
-    ax.axhline(ev, color="gray", linestyle="--", linewidth=0.7, alpha=0.65,
-               zorder=0)
+    ax.axhline(ev, color="#444444", linestyle="--", linewidth=1.4,
+               alpha=0.9, zorder=5)
     y_min = min(y_min, ev)
 
     # Light vertical separators between N groups.
@@ -202,8 +203,9 @@ def main():
             y_min, y_max = draw_subplot(ax, eps, datasets)
             y_min_all = min(y_min_all, y_min)
             y_max_all = max(y_max_all, y_max)
+            # Panel identity = the ε value; no (a)(b)(c)(d) prefix needed.
             ax.text(0.02, 0.965,
-                    f"({chr(ord('a') + ai)})  $\\varepsilon = {EPS_DISPLAY[eps]}$",
+                    f"$\\varepsilon = {EPS_DISPLAY[eps]}$",
                     transform=ax.transAxes, ha="left", va="top",
                     fontsize=8.5, fontweight="bold")
 

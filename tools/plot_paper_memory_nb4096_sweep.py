@@ -485,8 +485,9 @@ def render_paper_2x2(data, by, out_path):
             drawn, panel_max = _draw_paper_subplot(ax, by, key, data, N_ORDER)
             drawn_all |= drawn
             global_max = max(global_max, panel_max)
-            ax.text(0.02, 0.965,
-                    f"({chr(ord('a') + ai)})  {title}",
+            # Panel identity = the eps (by_eps) or mode (by_mode); no
+            # (a)(b)(c)(d) prefix needed.
+            ax.text(0.02, 0.965, f"{title}",
                     transform=ax.transAxes, ha="left", va="top",
                     fontsize=8.5, fontweight="bold")
 
