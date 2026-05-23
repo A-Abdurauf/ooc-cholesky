@@ -213,7 +213,12 @@ def main():
 
         for ax in axes:
             ax.set_xlabel("Matrix size  $N$")
-        axes[0].set_ylabel(r"Relative factorization error  (log)")
+        # Slim y-label, pushed down so the panel-label corner stays clear.
+        # Negative x_coord places it left of the tick-label band; y_coord<0.5
+        # drops it below the axis centre.
+        axes[0].set_ylabel(r"Relative factorization error  (log)",
+                           labelpad=10)
+        axes[0].yaxis.set_label_coords(-0.30, 0.40)
 
         bar_handles = [Patch(facecolor=c, edgecolor="black", hatch=h,
                              label=f"{i+1}. {lbl}")

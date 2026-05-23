@@ -64,6 +64,23 @@ EPS_COLOR = {"1e-5": "#0072B2", "1e-6": "#E69F00",
              "1e-7": "#009E73", "1e-8": "#D55E00"}
 N_ORDER = [20480, 32768, 40960, 65536, 81920, 98304, 122880]
 
+# Display labels matching the bin filenames (e.g. my_cov_weak_100k.bin -> 100k).
+# 98304 / 1024 = 96 in binary-k, but the user's colloquial label (and bin file)
+# is "100k" since 98304 is "almost 100k".  Other Ns use binary-k for now.
+N_LABEL = {
+    20480:  "20k",
+    32768:  "32k",
+    40960:  "40k",
+    65536:  "64k",
+    81920:  "80k",
+    98304:  "100k",
+    122880: "120k",
+}
+
+
+def _xlabel(N):
+    return N_LABEL.get(N, f"{N // 1024}k")
+
 
 MODE_BARS = [
     ("Baseline",         "fp8"),
@@ -246,7 +263,7 @@ def draw_subplot_by_eps(ax, eps, data, ns, show_ylabel):
             panel_max = max(panel_max, bottom)
 
     ax.set_xticks(x_centres)
-    ax.set_xticklabels([f"{N // 1024}k" for N in ns])
+    ax.set_xticklabels([_xlabel(N) for N in ns])
     ax.set_xlim(-0.6, len(ns) - 0.4)
     if show_ylabel:
         ax.set_ylabel("Memory  (GB, lower triangle + half-diagonal)")
@@ -289,7 +306,7 @@ def draw_subplot_by_mode(ax, mode_key, data, ns, show_ylabel):
             panel_max = max(panel_max, bottom)
 
     ax.set_xticks(x_centres)
-    ax.set_xticklabels([f"{N // 1024}k" for N in ns])
+    ax.set_xticklabels([_xlabel(N) for N in ns])
     ax.set_xlim(-0.6, len(ns) - 0.4)
     if show_ylabel:
         ax.set_ylabel("Memory  (GB, lower triangle + half-diagonal)")
@@ -434,7 +451,7 @@ def _draw_paper_subplot(ax, by, key, data, ns):
         ax.axvline(i - 0.5, color="#bbbbbb", linewidth=0.5, alpha=0.6, zorder=0)
 
     ax.set_xticks(x_centres)
-    ax.set_xticklabels([f"{N // 1024}k" for N in ns])
+    ax.set_xticklabels([_xlabel(N) for N in ns])
     ax.set_xlim(-0.6, len(ns) - 0.4)
     ax.set_axisbelow(True)
     ax.xaxis.grid(False)
@@ -458,7 +475,7 @@ def render_paper_2x2(data, by, out_path):
         raise ValueError(by)
 
     with mpl.rc_context(PAPER_RC):
-        fig, axes = plt.subplots(2, 2, figsize=(7.16, 4.2),
+        fig, axes = plt.subplots(2, 2, figsize=(7.16, 3.7),
                                  sharex=True, sharey=True)
         axes_flat = axes.flatten()
 
@@ -494,21 +511,27 @@ def render_paper_2x2(data, by, out_path):
         bar_handles = [Patch(facecolor="white", edgecolor="black", label=lbl)
                        for lbl in right_items]
 
+        # First lock the axes into the top of the figure with explicit margins
+        # so the legend has a predictable place to sit right under the x-label.
+        fig.subplots_adjust(left=0.10, right=0.985, top=0.97,
+                            bottom=0.28,  # ~28% reserved for x-label + 2 legends
+                            wspace=0.06, hspace=0.18)
+
+        # Legends sit immediately under the x-axis label.  Tight = no
+        # whitespace gap between legends and the x-label band.
         leg1 = fig.legend(handles=fmt_handles,
-                          loc="lower center", bbox_to_anchor=(0.27, -0.10),
+                          loc="upper center", bbox_to_anchor=(0.27, 0.18),
                           ncol=4, frameon=True, framealpha=0.95,
                           title="Tile format (bottom $\\rightarrow$ top of stack)",
                           handletextpad=0.5, columnspacing=1.2,
-                          labelspacing=0.3, borderpad=0.35)
+                          labelspacing=0.25, borderpad=0.3)
         fig.add_artist(leg1)
         fig.legend(handles=bar_handles,
-                   loc="lower center", bbox_to_anchor=(0.78, -0.10),
+                   loc="upper center", bbox_to_anchor=(0.78, 0.18),
                    ncol=2, frameon=True, framealpha=0.95,
                    title=right_title,
                    handletextpad=0.5, columnspacing=1.2,
-                   labelspacing=0.3, borderpad=0.35)
-
-        fig.tight_layout(rect=[0, 0.07, 1, 1.0])
+                   labelspacing=0.25, borderpad=0.3)
 
         out = Path(out_path).with_suffix(".pdf")
         out.parent.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,61 @@
+[START] 2026-05-23T04:10:42+03:00
+[CFG] NB=4096 cores=32 eps=1e-5 1e-6 1e-7 1e-8
+[CFG] CSV=/home/abduraa/MX_project/ooc-cholesky/fill_4class_matrix/results.csv
+[RUN] sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-5 log=mx_staircase_tile_fz_my_cov_weak_40k_nb4096_eps1e-5_20260523_041042.log
+[OK]  sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-5 rel=1.10047e-05 res=1.66767e-06
+[RUN] sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-6 log=mx_staircase_tile_fz_my_cov_weak_40k_nb4096_eps1e-6_20260523_042620.log
+[OK]  sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-6 rel=1.56668e-06 res=3.33289e-07
+[RUN] sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-7 log=mx_staircase_tile_fz_my_cov_weak_40k_nb4096_eps1e-7_20260523_044101.log
+[OK]  sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-7 rel=1.07258e-06 res=3.2649e-07
+[RUN] sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-8 log=mx_staircase_tile_fz_my_cov_weak_40k_nb4096_eps1e-8_20260523_045524.log
+[OK]  sweep=mx_staircase_tile_fz N=40960 nb=4096 eps=1e-8 rel=1.4096e-08 res=2.27123e-09
+[RUN] sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-5 log=mx_staircase_tile_gu_my_cov_weak_40k_nb4096_eps1e-5_20260523_051106.log
+[OK]  sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-5 rel=2.77381e-05 res=2.47804e-06
+[RUN] sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-6 log=mx_staircase_tile_gu_my_cov_weak_40k_nb4096_eps1e-6_20260523_052541.log
+[OK]  sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-6 rel=1.9871e-06 res=3.60762e-07
+[RUN] sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-7 log=mx_staircase_tile_gu_my_cov_weak_40k_nb4096_eps1e-7_20260523_054024.log
+[OK]  sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-7 rel=1.07258e-06 res=3.2649e-07
+[RUN] sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-8 log=mx_staircase_tile_gu_my_cov_weak_40k_nb4096_eps1e-8_20260523_055503.log
+[OK]  sweep=mx_staircase_tile_gu N=40960 nb=4096 eps=1e-8 rel=1.4096e-08 res=2.27123e-09
+[RUN] sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-5 log=mx_staircase_vec1d32_fz_my_cov_weak_40k_nb4096_eps1e-5_20260523_061002.log
+[OK]  sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-5 rel=7.61758e-06 res=6.14733e-07
+[RUN] sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-6 log=mx_staircase_vec1d32_fz_my_cov_weak_40k_nb4096_eps1e-6_20260523_062431.log
+[OK]  sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-6 rel=1.08224e-06 res=3.28678e-07
+[RUN] sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-7 log=mx_staircase_vec1d32_fz_my_cov_weak_40k_nb4096_eps1e-7_20260523_064000.log
+[OK]  sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-7 rel=1.04697e-06 res=3.26589e-07
+[RUN] sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-8 log=mx_staircase_vec1d32_fz_my_cov_weak_40k_nb4096_eps1e-8_20260523_065516.log
+[OK]  sweep=mx_staircase_vec1d32_fz N=40960 nb=4096 eps=1e-8 rel=1.19978e-08 res=8.96628e-10
+[RUN] sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-5 log=ladder_full_tile_fz_my_cov_weak_40k_nb4096_eps1e-5_20260523_071046.log
+[OK]  sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-5 rel=1.1861e-05 res=1.68394e-06
+[RUN] sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-6 log=ladder_full_tile_fz_my_cov_weak_40k_nb4096_eps1e-6_20260523_072523.log
+[OK]  sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-6 rel=1.62131e-06 res=3.33584e-07
+[RUN] sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-7 log=ladder_full_tile_fz_my_cov_weak_40k_nb4096_eps1e-7_20260523_074106.log
+[OK]  sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-7 rel=1.07253e-06 res=3.26511e-07
+[RUN] sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-8 log=ladder_full_tile_fz_my_cov_weak_40k_nb4096_eps1e-8_20260523_075652.log
+[OK]  sweep=ladder_full_tile_fz N=40960 nb=4096 eps=1e-8 rel=1.40948e-08 res=2.27125e-09
+[RUN] sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-5 log=ladder_full_tile_fz_my_cov_weak_65k_nb4096_eps1e-5_20260523_081215.log
+[OK]  sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-5 rel=1.56446e-05 res=2.62667e-06
+[RUN] sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-6 log=ladder_full_tile_fz_my_cov_weak_65k_nb4096_eps1e-6_20260523_085556.log
+[OK]  sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-6 rel=7.80013e-07 res=2.4601e-07
+[RUN] sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-7 log=ladder_full_tile_fz_my_cov_weak_65k_nb4096_eps1e-7_20260523_094102.log
+[OK]  sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-7 rel=7.70256e-07 res=2.45611e-07
+[RUN] sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-8 log=ladder_full_tile_fz_my_cov_weak_65k_nb4096_eps1e-8_20260523_102526.log
+[OK]  sweep=ladder_full_tile_fz N=65536 nb=4096 eps=1e-8 rel=1.75585e-08 res=2.34086e-09
+[RUN] sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-5 log=ladder_full_vec1d_fz_my_cov_weak_40k_nb4096_eps1e-5_20260523_110904.log
+[OK]  sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-5 rel=8.2506e-06 res=6.52529e-07
+[RUN] sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-6 log=ladder_full_vec1d_fz_my_cov_weak_40k_nb4096_eps1e-6_20260523_112316.log
+[OK]  sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-6 rel=1.0826e-06 res=3.28958e-07
+[RUN] sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-7 log=ladder_full_vec1d_fz_my_cov_weak_40k_nb4096_eps1e-7_20260523_113800.log
+[OK]  sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-7 rel=1.04745e-06 res=3.26643e-07
+[RUN] sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-8 log=ladder_full_vec1d_fz_my_cov_weak_40k_nb4096_eps1e-8_20260523_115240.log
+[OK]  sweep=ladder_full_vec1d_fz N=40960 nb=4096 eps=1e-8 rel=1.19972e-08 res=8.9685e-10
+[RUN] sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-5 log=ladder_full_vec1d_fz_my_cov_weak_65k_nb4096_eps1e-5_20260523_120754.log
+[OK]  sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-5 rel=4.46628e-06 res=9.67666e-07
+[RUN] sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-6 log=ladder_full_vec1d_fz_my_cov_weak_65k_nb4096_eps1e-6_20260523_124929.log
+[OK]  sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-6 rel=7.81969e-07 res=2.46421e-07
+[RUN] sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-7 log=ladder_full_vec1d_fz_my_cov_weak_65k_nb4096_eps1e-7_20260523_133221.log
+[OK]  sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-7 rel=7.8015e-07 res=2.45848e-07
+[RUN] sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-8 log=ladder_full_vec1d_fz_my_cov_weak_65k_nb4096_eps1e-8_20260523_141422.log
+[OK]  sweep=ladder_full_vec1d_fz N=65536 nb=4096 eps=1e-8 rel=8.56168e-09 res=1.13054e-09
+[END] 2026-05-23T14:59:40+03:00
+CSV: /home/abduraa/MX_project/ooc-cholesky/fill_4class_matrix/results.csv
